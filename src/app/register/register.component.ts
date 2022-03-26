@@ -16,5 +16,6 @@ export class RegisterComponent {
   register() {
     console.log(this.email);
     console.log(this.password);
+    console.log(this.confirmPassword);
     this.router.navigate(['/login']);  }
 }

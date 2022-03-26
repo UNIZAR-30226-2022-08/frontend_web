@@ -10,7 +10,9 @@ import { Router } from '@angular/router';
 export class AppComponent {
 
   title = 'frontend_web';
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    this.router.navigate(['home']);
+  }
   
   goToPage(pageName:string){
     this.router.navigate([`${pageName}`]);
