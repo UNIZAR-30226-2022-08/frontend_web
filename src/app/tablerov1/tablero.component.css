@@ -1,0 +1,23 @@
+/* Board */
+#board {
+  width: 800px;
+  height: 800px;
+  background-color: #0ff;
+}
+
+.square{
+  width: 80px;
+  height: 80px;
+  float:left;
+  font-size: 3em;
+  text-align: center;
+}
+
+.white_square {
+    background-color: #efefef;
+}
+
+.black_square {
+  background-color: #888;
+}
+
