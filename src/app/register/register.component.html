@@ -1,33 +1,33 @@
 <div style="text-align:center">
     <h1>
-      <img src="../../assets/bannerLogo.png" alt="QueenChess_Logo" class="center" height="200">
+      <img src="../../assets/transparentLogo.png" alt="QueenChess_Logo" class="center" height="200">
     </h1>
   </div>
 
 <div class="register">
     <form class="custom-form" method="post">
-      <h1>Register</h1>
+      <h1>Registro:</h1>
       <input
         type="email"
         [(ngModel)]="email"
         name="email"
-        placeholder="Email"
+        placeholder="Correo"
         required="required"
       />
       <input
         type="password"
         [(ngModel)]="password"
         name="password"
-        placeholder="Password"
+        placeholder="Contraseña"
         required="required"
       />
       <input
         type="password"
         [(ngModel)]="confirmPassword"
         name="password"
-        placeholder="Repeat the password"
+        placeholder="Repita la contraseña"
         required="required"
       />
-      <button type="submit" (click)="register()">Register</button>
+      <button type="submit" (click)="register()">Registrarme</button>
     </form>
   </div>

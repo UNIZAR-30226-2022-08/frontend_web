@@ -15,6 +15,10 @@ export class LoginComponent {
   login() {
     console.log(this.email);
     console.log(this.password);
-    this.router.navigateByUrl('/');
+    if (1) {  //Replace with result of calling backend's login validator
+      localStorage.setItem('email', this.email);
+      //localStorage.setItem('userId', ...) Store retrieved user's ID
+      this.router.navigateByUrl('/');
+    }
   }
 }

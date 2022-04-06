@@ -1,29 +1,29 @@
 <div style="text-align:center">
     <h1>
-      <img src="../../assets/bannerLogo.png" alt="QueenChess_Logo" class="center" height = "200">
+      <img src="../../assets/transparentLogo.png" alt="QueenChess_Logo" class="center" height = "200">
     </h1>
   </div>
 
 <div class="login">
     <form class="custom-form" method="post">
-      <h1>Login</h1>
+      <h1>Identifícate:</h1>
       <input
         type="email"
         [(ngModel)]="email"
         name="email"
-        placeholder="Email"
+        placeholder="Correo"
         required="required"
       />
       <input
         type="password"
         [(ngModel)]="password"
         name="password"
-        placeholder="Password"
+        placeholder="Contraseña"
         required="required"
       />
-      <button type="submit" (click)="login()">Log in</button>
-      <button (click)="router.navigate(['/register']);">
-        <span>Register</span>
-     </button>
+      <button type="submit" (click)="login()">ACCEDER</button>
     </form>
+    <button (click)="router.navigate(['/register']);">
+      <span>¿No tienes cuenta? ¡Regístrate!</span>
+    </button>
   </div>
