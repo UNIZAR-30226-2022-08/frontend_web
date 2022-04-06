@@ -22,8 +22,9 @@
         required="required"
       />
       <button type="submit" (click)="login()">ACCEDER</button>
+      <button (click)="router.navigate(['/register']);">
+        <span>¿No tienes cuenta? ¡Regístrate!</span>
+      </button>
     </form>
-    <button (click)="router.navigate(['/register']);">
-      <span>¿No tienes cuenta? ¡Regístrate!</span>
-    </button>
+    
   </div>
