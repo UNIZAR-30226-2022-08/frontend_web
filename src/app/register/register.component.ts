@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
+import axios from 'axios';
 
 @Component({
   selector: "app-register",
@@ -10,6 +11,7 @@ export class RegisterComponent {
   email: string;
   password: string;
   confirmPassword: string;
+  username: string;
 
   constructor(public router: Router) {}
 
@@ -47,6 +49,10 @@ export class RegisterComponent {
       alert("Confirme su contraseña");
       return;
     }
+    if (this.username == null) {
+      alert("Introduzca un nombre de usuario válido");
+      return;
+    }
     if (!this.validateEmail(this.email)){
       alert("Email no válido");
       return;
@@ -60,8 +66,24 @@ export class RegisterComponent {
       alert("Las contraseñas no coinciden");
       return;
     }
-    if (1) { //Replace condition with backend's validator (check if user already exists)
-      this.router.navigate(['/login']);
+    
+    let responseCode = 400;
+    axios
+      .post('https://queenchess-backend.herokuapp.com/account/register', {
+        email: this.email,
+        password:this.password,
+        username:this.username
+      })
+      .then((res) => {
+        responseCode = res.status;
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+    if (responseCode == 200) { 
+      this.router.navigate(['/register']);
+    } else {
+      console.log("error");
     }
   }
 }
