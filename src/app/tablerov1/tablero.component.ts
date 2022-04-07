@@ -17,7 +17,9 @@ export class TableroComponent {
   board: string[][];
   selected: string = "";
   turnWhite: boolean = true;
+  possibleMoves: string[] = [];
 
+  // Removes all pieces from board
   clearBoard(){
     for(let i = 0; i <= 8; i++){
       for(let j = 0; j<= 8; j++){
@@ -50,6 +52,31 @@ export class TableroComponent {
     this.logBoard();
   }
 
+  // Calculates and stores all possible moves in the possibleMoves array
+  setPossibleMoves() {
+    
+  }
+
+  // Changes possible move squares' colour 
+  markHintSquares() {
+    for (let i = 0; i < this.possibleMoves.length; i++) {
+      let square = document.getElementById(this.possibleMoves[i]);
+      square?.classList.add("blue_square");
+      console.log("Marked " + this.possibleMoves[i] + " as hint");
+    }
+  }
+
+  // Turns all hint squares back to normal
+  resetHintSquares() {
+    let elements = document.getElementsByClassName("blue_square");
+    while (elements.length > 0) {
+      console.log("length: " + elements.length);
+      elements[0].classList.remove("blue_square");
+      console.log("Hint square deleted");
+    }
+  }
+
+  //Used for debugging
   logBoard(){
     let boardString = "";
     for(let i = 7; i >= 0; i--){
@@ -62,6 +89,8 @@ export class TableroComponent {
     console.log(boardString);
   }
 
+  // Transforms code "ln" where "l" is a letter and "n" is a number
+  // to [x, y] coordinates, where x is represents n and y represents l
   codeToCoord(code: string): [number, number]{
     let charX = code.charAt(1);
     let charY = code.charAt(0);
@@ -74,6 +103,8 @@ export class TableroComponent {
     return [x,y];
   }
 
+  // From the piece code (corresponding id in html) returns its color and
+  // its type
   parsePiece(pieceCode: string): [boolean, string]{
     var splitted = pieceCode.split("_",2);
     var isWhite;
@@ -85,27 +116,33 @@ export class TableroComponent {
     return [isWhite, pieceType];
   }
 
+  // Click controller 
+  // Checks piece clicked matches current player's turn
+  // Calls movePiece() if the move is allowed
   checkClick(clicked: string) {
     if (this.selected === "") {
       let [x, y] = this.codeToCoord(clicked);
       let [color, pieceType] = this.parsePiece(this.board[x][y]);
+      // Check if turn matches color and piece was clicked
       if (color === this.turnWhite && this.board[x][y] !=="") {
         this.selected = clicked;
+        this.markHintSquares();
         console.log(this.selected);
       }
     }
     else {
-      // If destiny is in possible moves (call to backend possible moves)
+      // If destiny is in possible moves
       let [i, j] = this.codeToCoord(this.selected);
       let [x, y] = this.codeToCoord(clicked);
       if (this.board[i][j] !== "" && (this.board[i][j] !== this.board[x][y])) {
         this.movePiece(clicked);
       }
       this.selected = "";
-
+      this.resetHintSquares();
     }
   }
 
+  // Moves piece to destiny
   movePiece(destiny: string){
     let [i, j] = this.codeToCoord(this.selected);
     let [x, y] = this.codeToCoord(destiny);
@@ -117,7 +154,7 @@ export class TableroComponent {
     console.log(domOriginPiece);
     var domDestiny = document.getElementById(destiny);
 
-    if (this.board[x][y] != "") {
+    if (this.board[x][y] != "") { // Destroy piece that was in destiny
       var domDestinyPiece = <Node>document.getElementById(this.board[x][y]);
       domDestinyPiece?.parentNode?.removeChild(domDestinyPiece);
     }
