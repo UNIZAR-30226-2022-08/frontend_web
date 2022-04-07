@@ -8,11 +8,13 @@ import { ColdObservable } from "rxjs/internal/testing/ColdObservable";
   styleUrls: ["./tablero.component.css"]
 })
 
+
 export class TableroComponent {
 
   constructor(public router: Router) {
     this.startGame();
   }
+
   initialRow: string[] = ["rook_1", "knight_1", "bishop_1", "queen_1", "king_1", "bishop_2", "knight_2", "rook_2"];
   board: string[][];
   selected: string = "";
