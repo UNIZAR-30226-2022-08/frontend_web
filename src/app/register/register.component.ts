@@ -67,7 +67,6 @@ export class RegisterComponent {
       return;
     }
     
-    let responseCode = 400;
     axios
       .post('https://queenchess-backend.herokuapp.com/account/register', {
         email: this.email,
@@ -75,15 +74,14 @@ export class RegisterComponent {
         username:this.username
       })
       .then((res) => {
-        responseCode = res.status;
+        if (res.status === 201) { 
+          this.router.navigate(['/login']);
+        } else {
+          console.log("register error: " + res.status);
+        }
       })
       .catch((error) => {
         console.error(error);
       })
-    if (responseCode == 200) { 
-      this.router.navigate(['/register']);
-    } else {
-      console.log("error");
-    }
   }
 }

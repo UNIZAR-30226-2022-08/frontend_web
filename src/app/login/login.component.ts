@@ -16,22 +16,23 @@ export class LoginComponent {
   login() {
     console.log(this.email);
     console.log(this.password);
-    let responseCode = 400;
     axios
       .post('https://queenchess-backend.herokuapp.com/account/login', {
         email: this.email,
         password:this.password
       })
       .then((res) => {
-        responseCode = res.status;
+        if (res.status === 200) { 
+          localStorage.setItem('email', this.email);
+          //localStorage.setItem('userId', ...) Store retrieved user's ID
+          this.router.navigateByUrl('/');
+        } else {
+          console.log("login error: " + res.status);
+        }
       })
       .catch((error) => {
         console.error(error);
       })
-    if (responseCode == 200) { 
-      localStorage.setItem('email', this.email);
-      //localStorage.setItem('userId', ...) Store retrieved user's ID
-      this.router.navigateByUrl('/');
-    }
+    
   }
 }
