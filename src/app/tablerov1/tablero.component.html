@@ -1,313 +1,333 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Tablero de Ajedrez</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE-edge">
-    <link rel="stylesheet" href="tablero.component.css">
-    <script src="tablero.component.ts"></script>
+
+<head>
+  <title>Tablero de Ajedrez</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE-edge">
+  <link rel="stylesheet" href="tablero.component.css">
+  <script src="tablero.component.ts"></script>
 
 
-  </head>
-  <body>
+</head>
 
-    <main id="board">
+<body>
+  <div class="inline">
+    <div class="col">
+      <main id="board">
 
-      <!-- Inicio fila cabecera (posee las coordenadas)-->
-      <div class="row_header">
+        <!-- Inicio fila cabecera (posee las coordenadas)-->
+        <div class="row_header">
 
-        <div class="square"></div>
-        <div class="square">a</div>
-        <div class="square">b</div>
-        <div class="square">c</div>
-        <div class="square">d</div>
-        <div class="square">e</div>
-        <div class="square">f</div>
-        <div class="square">g</div>
-        <div class="square">h</div>
-        <div class="square"></div>
+          <div class="square"></div>
+          <div class="square">a</div>
+          <div class="square">b</div>
+          <div class="square">c</div>
+          <div class="square">d</div>
+          <div class="square">e</div>
+          <div class="square">f</div>
+          <div class="square">g</div>
+          <div class="square">h</div>
+          <div class="square"></div>
 
+        </div>
+        <!-- Fin fila cabecera -->
+
+        <!-- Inicio fila de la coordenada 8 -->
+        <div class="row8">
+
+          <div class="square">
+            <span>8</span>
+          </div>
+
+          <div id="a8" class="square white_square" (click)="checkClick('a8')">
+            <span id="black_rook_1">&#9820;</span>
+          </div>
+
+          <div id="b8" class="square black_square" (click)="checkClick('b8')">
+            <span id="black_knight_1">&#9822;</span>
+          </div>
+
+          <div id="c8" class="square white_square" (click)="checkClick('c8')">
+            <span id="black_bishop_1">&#9821;</span>
+          </div>
+
+          <div id="d8" class="square black_square" (click)="checkClick('d8')">
+            <span id="black_queen_1">&#9819;</span>
+          </div>
+
+          <div id="e8" class="square white_square" (click)="checkClick('e8')">
+            <span id="black_king_1">&#9818;</span>
+          </div>
+
+          <div id="f8" class="square black_square" (click)="checkClick('f8')">
+            <span id="black_bishop_2">&#9821;</span>
+          </div>
+
+          <div id="g8" class="square white_square" (click)="checkClick('g8')">
+            <span id="black_knight_2">&#9822;</span>
+          </div>
+
+          <div id="h8" class="square black_square" (click)="checkClick('h8')">
+            <span id="black_rook_2">&#9820;</span>
+          </div>
+
+          <div class="square">
+            <span>8</span>
+          </div>
+
+
+
+        </div>
+        <!-- Fin fila de la coordenada 8 -->
+
+        <!-- Inicio fila de la coordenada 7 -->
+        <div class="row7">
+
+          <div class="square">
+            <span>7</span>
+          </div>
+
+          <div id="a7" class="square black_square" (click)="checkClick('a7')">
+            <span id="black_pawn_1">&#9823;</span>
+          </div>
+
+          <div id="b7" class="square white_square" (click)="checkClick('b7')">
+            <span id="black_pawn_2">&#9823;</span>
+          </div>
+
+          <div id="c7" class="square black_square" (click)="checkClick('c7')">
+            <span id="black_pawn_3">&#9823;</span>
+          </div>
+
+          <div id="d7" class="square white_square" (click)="checkClick('d7')">
+            <span id="black_pawn_4">&#9823;</span>
+          </div>
+
+          <div id="e7" class="square black_square" (click)="checkClick('e7')">
+            <span id="black_pawn_5">&#9823;</span>
+          </div>
+
+          <div id="f7" class="square white_square" (click)="checkClick('f7')">
+            <span id="black_pawn_6">&#9823;</span>
+          </div>
+
+          <div id="g7" class="square black_square" (click)="checkClick('g7')">
+            <span id="black_pawn_7">&#9823;</span>
+          </div>
+
+          <div id="h7" class="square white_square" (click)="checkClick('h7')">
+            <span id="black_pawn_8">&#9823;</span>
+          </div>
+
+          <div class="square">
+            <span>7</span>
+          </div>
+
+
+
+        </div>
+        <!-- Fin fila de la coordenada 7 -->
+
+        <!-- Inicio fila de la coordenada 6 -->
+        <div class="row6">
+
+          <div class="square"><span>6</span></div>
+          <div id="a6" class="square white_square" (click)="checkClick('a6')"></div>
+          <div id="b6" class="square black_square" (click)="checkClick('b6')"></div>
+          <div id="c6" class="square white_square" (click)="checkClick('c6')"></div>
+          <div id="d6" class="square black_square" (click)="checkClick('d6')"></div>
+          <div id="e6" class="square white_square" (click)="checkClick('e6')"></div>
+          <div id="f6" class="square black_square" (click)="checkClick('f6')"></div>
+          <div id="g6" class="square white_square" (click)="checkClick('g6')"></div>
+          <div id="h6" class="square black_square" (click)="checkClick('h6')"></div>
+          <div class="square"><span>6</span></div>
+
+        </div>
+        <!-- Fin fila de la coordenada 6 -->
+
+        <!-- Inicio fila de la coordenada 5 -->
+        <div class="row5">
+
+          <div class="square"><span>5</span></div>
+          <div id="a5" class="square black_square" (click)="checkClick('a5')"></div>
+          <div id="b5" class="square white_square" (click)="checkClick('b5')"></div>
+          <div id="c5" class="square black_square" (click)="checkClick('c5')"></div>
+          <div id="d5" class="square white_square" (click)="checkClick('d5')"></div>
+          <div id="e5" class="square black_square" (click)="checkClick('e5')"></div>
+          <div id="f5" class="square white_square" (click)="checkClick('f5')"></div>
+          <div id="g5" class="square black_square" (click)="checkClick('g5')"></div>
+          <div id="h5" class="square white_square" (click)="checkClick('h5')"></div>
+          <div class="square"><span>5</span></div>
+
+        </div>
+        <!-- Fin fila de la coordenada 5 -->
+
+        <!-- Inicio fila de la coordenada 4 -->
+        <div class="row4">
+
+          <div class="square"><span>4</span></div>
+          <div id="a4" class="square white_square" (click)="checkClick('a4')"></div>
+          <div id="b4" class="square black_square" (click)="checkClick('b4')"></div>
+          <div id="c4" class="square white_square" (click)="checkClick('c4')"></div>
+          <div id="d4" class="square black_square" (click)="checkClick('d4')"></div>
+          <div id="e4" class="square white_square" (click)="checkClick('e4')"></div>
+          <div id="f4" class="square black_square" (click)="checkClick('f4')"></div>
+          <div id="g4" class="square white_square" (click)="checkClick('g4')"></div>
+          <div id="h4" class="square black_square" (click)="checkClick('h4')"></div>
+          <div class="square"><span>4</span></div>
+
+        </div>
+        <!-- Fin fila de la coordenada 4 -->
+
+        <!-- Inicio fila de la coordenada 3 -->
+        <div class="row3">
+
+          <div class="square"><span>3</span></div>
+          <div id="a3" class="square black_square" (click)="checkClick('a3')"></div>
+          <div id="b3" class="square white_square" (click)="checkClick('b3')"></div>
+          <div id="c3" class="square black_square" (click)="checkClick('c3')"></div>
+          <div id="d3" class="square white_square" (click)="checkClick('d3')"></div>
+          <div id="e3" class="square black_square" (click)="checkClick('e3')"></div>
+          <div id="f3" class="square white_square" (click)="checkClick('f3')"></div>
+          <div id="g3" class="square black_square" (click)="checkClick('g3')"></div>
+          <div id="h3" class="square white_square" (click)="checkClick('h3')"></div>
+          <div class="square"><span>3</span></div>
+
+        </div>
+        <!-- Fin fila de la coordenada 3 -->
+
+        <!-- Inicio fila de la coordenada 2 -->
+        <div class="row2">
+
+          <div class="square">
+            <span>2</span>
+          </div>
+
+          <div id="a2" class="square white_square" (click)="checkClick('a2')">
+            <span id="white_pawn_1">&#9817;</span>
+          </div>
+
+          <div id="b2" class="square black_square" (click)="checkClick('b2')">
+            <span id="white_pawn_2">&#9817;</span>
+          </div>
+
+          <div id="c2" class="square white_square" (click)="checkClick('c2')">
+            <span id="white_pawn_3">&#9817;</span>
+          </div>
+
+          <div id="d2" class="square black_square" (click)="checkClick('d2')">
+            <span id="white_pawn_4">&#9817;</span>
+          </div>
+
+          <div id="e2" class="square white_square" (click)="checkClick('e2')">
+            <span id="white_pawn_5">&#9817;</span>
+          </div>
+
+          <div id="f2" class="square black_square" (click)="checkClick('f2')">
+            <span id="white_pawn_6">&#9817;</span>
+          </div>
+
+          <div id="g2" class="square white_square" (click)="checkClick('g2')">
+            <span id="white_pawn_7">&#9817;</span>
+          </div>
+
+          <div id="h2" class="square black_square" (click)="checkClick('h2')">
+            <span id="white_pawn_8">&#9817;</span>
+          </div>
+
+          <div class="square">
+            <span>2</span>
+          </div>
+
+
+
+        </div>
+        <!-- Fin fila de la coordenada 2 -->
+
+        <!-- Inicio fila de la coordenada 1 -->
+        <div class="row1">
+
+          <div class="square">
+            <span>1</span>
+          </div>
+
+          <div id="a1" class="square black_square" (click)="checkClick('a1')">
+            <span id="white_rook_1">&#9814;</span>
+          </div>
+
+          <div id="b1" class="square white_square" (click)="checkClick('b1')">
+            <span id="white_knight_1">&#9816;</span>
+          </div>
+
+          <div id="c1" class="square black_square" (click)="checkClick('c1')">
+            <span id="white_bishop_1">&#9815;</span>
+          </div>
+
+          <div id="d1" class="square white_square" (click)="checkClick('d1')">
+            <span id="white_queen_1">&#9813;</span>
+          </div>
+
+          <div id="e1" class="square black_square" (click)="checkClick('e1')">
+            <span id="white_king_1">&#9812;</span>
+          </div>
+
+          <div id="f1" class="square white_square" (click)="checkClick('f1')">
+            <span id="white_bishop_2">&#9815;</span>
+          </div>
+
+          <div id="g1" class="square black_square" (click)="checkClick('g1')">
+            <span id="white_knight_2">&#9816;</span>
+          </div>
+
+          <div id="h1" class="square white_square" (click)="checkClick('h1')">
+            <span id="white_rook_2">&#9814;</span>
+          </div>
+
+          <div class="square">
+            <span>1</span>
+          </div>
+
+
+
+        </div>
+        <!-- Fin fila de la coordenada 1 -->
+
+        <!-- Inicio fila baja (posee las coordenadas)-->
+        <div class="row_footer">
+
+          <div class="square"></div>
+          <div class="square">a</div>
+          <div class="square">b</div>
+          <div class="square">c</div>
+          <div class="square">d</div>
+          <div class="square">e</div>
+          <div class="square">f</div>
+          <div class="square">g</div>
+          <div class="square">h</div>
+          <div class="square"></div>
+
+        </div>
+        <!-- Fin fila baja-->
+      </main>
+    </div>
+    <div class="col">
+      <div class="side_panel">
+        <div class="black_cemetery">
+          <p id="cemeteryA"></p>
+        </div>
+        <div class="timer">
+          <p id="timerB">5:00</p>
+        </div>
+        <div class="timer">
+          <p id="timerA">5:00</p>
+        </div>
+        <div class="white_cemetery">
+          <p id="cemeteryB"></p>
+        </div>
       </div>
-       <!-- Fin fila cabecera -->
+    </div>
+  </div>
+</body>
 
-       <!-- Inicio fila de la coordenada 8 -->
-      <div class="row8">
-
-        <div class="square">
-          <span>8</span>
-        </div>
-
-        <div id="a8" class="square white_square" (click)="checkClick('a8')">
-          <span id="black_rook_1">&#9820;</span>
-        </div>
-
-        <div id="b8" class="square black_square" (click)="checkClick('b8')">
-          <span id="black_knight_1">&#9822;</span>
-        </div>
-
-        <div id="c8" class="square white_square" (click)="checkClick('c8')">
-          <span id="black_bishop_1">&#9821;</span>
-        </div>
-
-        <div id="d8" class="square black_square" (click)="checkClick('d8')">
-          <span id="black_queen_1">&#9819;</span>
-        </div>
-
-        <div id="e8" class="square white_square" (click)="checkClick('e8')">
-          <span id="black_king_1">&#9818;</span>
-        </div>
-
-        <div id="f8" class="square black_square" (click)="checkClick('f8')">
-          <span id="black_bishop_2">&#9821;</span>
-        </div>
-
-        <div id="g8" class="square white_square" (click)="checkClick('g8')">
-          <span id="black_knight_2">&#9822;</span>
-        </div>
-
-        <div id="h8" class="square black_square" (click)="checkClick('h8')">
-          <span id="black_rook_2">&#9820;</span>
-        </div>
-
-        <div class="square">
-          <span>8</span>
-        </div>
-
-
-
-      </div>
-      <!-- Fin fila de la coordenada 8 -->
-      
-      <!-- Inicio fila de la coordenada 7 -->
-      <div class="row7">
-
-        <div class="square">
-          <span>7</span>
-        </div>
-
-        <div id="a7" class="square black_square" (click)="checkClick('a7')">
-          <span id="black_pawn_1">&#9823;</span>
-        </div>
-
-        <div id="b7" class="square white_square" (click)="checkClick('b7')">
-          <span id="black_pawn_2">&#9823;</span>
-        </div>
-
-        <div id="c7" class="square black_square" (click)="checkClick('c7')">
-          <span id="black_pawn_3">&#9823;</span>
-        </div>
-
-        <div id="d7" class="square white_square" (click)="checkClick('d7')">
-          <span id="black_pawn_4">&#9823;</span>
-        </div>
-
-        <div id="e7" class="square black_square" (click)="checkClick('e7')">
-          <span id="black_pawn_5">&#9823;</span>
-        </div>
-
-        <div id="f7" class="square white_square" (click)="checkClick('f7')">
-          <span id="black_pawn_6">&#9823;</span>
-        </div>
-
-        <div id="g7" class="square black_square" (click)="checkClick('g7')">
-          <span id="black_pawn_7">&#9823;</span>
-        </div>
-
-        <div id="h7" class="square white_square" (click)="checkClick('h7')">
-          <span id="black_pawn_8">&#9823;</span>
-        </div>
-
-        <div class="square">
-          <span>7</span>
-        </div>
-
-
-
-      </div>
-      <!-- Fin fila de la coordenada 7 -->
-
-      <!-- Inicio fila de la coordenada 6 -->
-      <div class="row6">
-
-        <div class="square"><span>6</span></div>
-        <div id="a6" class="square white_square" (click)="checkClick('a6')"></div>
-        <div id="b6" class="square black_square" (click)="checkClick('b6')"></div>
-        <div id="c6" class="square white_square" (click)="checkClick('c6')"></div>
-        <div id="d6" class="square black_square" (click)="checkClick('d6')"></div>
-        <div id="e6" class="square white_square" (click)="checkClick('e6')"></div>
-        <div id="f6" class="square black_square" (click)="checkClick('f6')"></div>
-        <div id="g6" class="square white_square" (click)="checkClick('g6')"></div>
-        <div id="h6" class="square black_square" (click)="checkClick('h6')"></div>
-        <div class="square"><span>6</span></div>
-
-      </div>
-      <!-- Fin fila de la coordenada 6 -->
-
-      <!-- Inicio fila de la coordenada 5 -->
-      <div class="row5">
-
-        <div class="square"><span>5</span></div>
-        <div id="a5" class="square black_square" (click)="checkClick('a5')"></div>
-        <div id="b5" class="square white_square" (click)="checkClick('b5')"></div>
-        <div id="c5" class="square black_square" (click)="checkClick('c5')"></div>
-        <div id="d5" class="square white_square" (click)="checkClick('d5')"></div>
-        <div id="e5" class="square black_square" (click)="checkClick('e5')"></div>
-        <div id="f5" class="square white_square" (click)="checkClick('f5')"></div>
-        <div id="g5" class="square black_square" (click)="checkClick('g5')"></div>
-        <div id="h5" class="square white_square" (click)="checkClick('h5')"></div>
-        <div class="square"><span>5</span></div>
-        
-      </div>
-      <!-- Fin fila de la coordenada 5 -->
-
-      <!-- Inicio fila de la coordenada 4 -->
-      <div class="row4">
-
-        <div class="square"><span>4</span></div>
-        <div id="a4" class="square white_square" (click)="checkClick('a4')"></div>
-        <div id="b4" class="square black_square" (click)="checkClick('b4')"></div>
-        <div id="c4" class="square white_square" (click)="checkClick('c4')"></div>
-        <div id="d4" class="square black_square" (click)="checkClick('d4')"></div>
-        <div id="e4" class="square white_square" (click)="checkClick('e4')"></div>
-        <div id="f4" class="square black_square" (click)="checkClick('f4')"></div>
-        <div id="g4" class="square white_square" (click)="checkClick('g4')"></div>
-        <div id="h4" class="square black_square" (click)="checkClick('h4')"></div>
-        <div class="square"><span>4</span></div>
-
-      </div>
-      <!-- Fin fila de la coordenada 4 -->
-
-      <!-- Inicio fila de la coordenada 3 -->
-      <div class="row3">
-
-        <div class="square"><span>3</span></div>
-        <div id="a3" class="square black_square" (click)="checkClick('a3')"></div>
-        <div id="b3" class="square white_square" (click)="checkClick('b3')"></div>
-        <div id="c3" class="square black_square" (click)="checkClick('c3')"></div>
-        <div id="d3" class="square white_square" (click)="checkClick('d3')"></div>
-        <div id="e3" class="square black_square" (click)="checkClick('e3')"></div>
-        <div id="f3" class="square white_square" (click)="checkClick('f3')"></div>
-        <div id="g3" class="square black_square" (click)="checkClick('g3')"></div>
-        <div id="h3" class="square white_square" (click)="checkClick('h3')"></div>
-        <div class="square"><span>3</span></div>
-        
-      </div>
-      <!-- Fin fila de la coordenada 3 -->
-
-      <!-- Inicio fila de la coordenada 2 -->
-      <div class="row2">
-
-        <div class="square">
-          <span>2</span>
-        </div>
-
-        <div id="a2" class="square white_square" (click)="checkClick('a2')">
-          <span id="white_pawn_1">&#9817;</span>
-        </div>
-
-        <div id="b2" class="square black_square" (click)="checkClick('b2')">
-          <span id="white_pawn_2">&#9817;</span>
-        </div>
-
-        <div id="c2" class="square white_square" (click)="checkClick('c2')">
-          <span id="white_pawn_3">&#9817;</span>
-        </div>
-
-        <div id="d2" class="square black_square" (click)="checkClick('d2')">
-          <span id="white_pawn_4">&#9817;</span>
-        </div>
-
-        <div id="e2" class="square white_square" (click)="checkClick('e2')">
-          <span id="white_pawn_5">&#9817;</span>
-        </div>
-
-        <div id="f2" class="square black_square" (click)="checkClick('f2')">
-          <span id="white_pawn_6">&#9817;</span>
-        </div>
-
-        <div id="g2" class="square white_square" (click)="checkClick('g2')">
-          <span id="white_pawn_7">&#9817;</span>
-        </div>
-
-        <div id="h2" class="square black_square" (click)="checkClick('h2')">
-          <span id="white_pawn_8">&#9817;</span>
-        </div>
-
-        <div class="square">
-          <span>2</span>
-        </div>
-
-
-
-      </div>
-      <!-- Fin fila de la coordenada 2 -->
-
-      <!-- Inicio fila de la coordenada 1 -->
-      <div class="row1">
-
-        <div class="square">
-          <span>1</span>
-        </div>
-
-        <div id="a1" class="square black_square" (click)="checkClick('a1')">
-          <span id="white_rook_1">&#9814;</span>
-        </div>
-
-        <div id="b1" class="square white_square" (click)="checkClick('b1')">
-          <span id="white_knight_1">&#9816;</span>
-        </div>
-
-        <div id="c1" class="square black_square" (click)="checkClick('c1')">
-          <span id="white_bishop_1">&#9815;</span>
-        </div>
-
-        <div id="d1" class="square white_square" (click)="checkClick('d1')">
-          <span id="white_queen_1">&#9813;</span>
-        </div>
-
-        <div id="e1" class="square black_square" (click)="checkClick('e1')">
-          <span id="white_king_1">&#9812;</span>
-        </div>
-
-        <div id="f1" class="square white_square" (click)="checkClick('f1')">
-          <span id="white_bishop_2">&#9815;</span>
-        </div>
-
-        <div id="g1" class="square black_square" (click)="checkClick('g1')">
-          <span id="white_knight_2">&#9816;</span>
-        </div>
-
-        <div id="h1" class="square white_square" (click)="checkClick('h1')">
-          <span id="white_rook_2">&#9814;</span>
-        </div>
-
-        <div class="square">
-          <span>1</span>
-        </div>
-
-
-
-      </div>
-      <!-- Fin fila de la coordenada 1 -->
-
-      <!-- Inicio fila baja (posee las coordenadas)-->
-      <div class="row_footer">
-
-        <div class="square"></div>
-        <div class="square">a</div>
-        <div class="square">b</div>
-        <div class="square">c</div>
-        <div class="square">d</div>
-        <div class="square">e</div>
-        <div class="square">f</div>
-        <div class="square">g</div>
-        <div class="square">h</div>
-        <div class="square"></div>
-
-      </div>
-      <!-- Fin fila baja-->
-      
-    </main>
-
-  </body>
 </html>

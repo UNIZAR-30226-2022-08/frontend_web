@@ -2,7 +2,7 @@
 #board {
   width: 800px;
   height: 800px;
-  background-color: #0ff;
+  background-color: #3e3754;
 }
 
 .square{
@@ -25,3 +25,36 @@
   background-color: rgb(76, 118, 196);
 }
 
+.side_panel {
+  width: 800px;
+  height: 800px;
+  background-color: #3e3754;
+  text-align:center;
+}
+
+.inline {
+  width: 100%;
+  height: auto;
+  background-color: #3e3754;
+  display: flex;
+}
+
+.black_cemetery {
+  width: 800px;
+  height: 100px;
+  background-color: black;
+  font-size: 50px;
+  color: white;
+}
+
+.white_cemetery {
+  width: 800px;
+  height: 100px;
+  background-color: white;
+  font-size: 50px;
+  color: black;
+}
+
+.timer {
+  font-size: 90px;
+}

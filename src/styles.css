@@ -3,7 +3,7 @@
   }
   html,
   body {
-    background: #ecf0f3;
+    background: #3e3754;
   }
   h1 {
     margin: 0;
@@ -17,7 +17,7 @@
     padding: 2rem 3rem;
     margin: auto;
     border-radius: 2.5rem;
-    background-color: #ecf0f3;
+    background-color: #3e3754;
     color: black;
     margin-top: 0px;
   }
@@ -40,7 +40,7 @@
     font-size: 0.875rem;
     color: #ffffff;
     font-weight: bold;
-    background-color: #bcd8c1;
+    background-color: #faca5c;
     width: 100%;
     display: block;
     padding: 0.875rem 1rem;
@@ -48,8 +48,8 @@
     box-shadow: 3px 3px 8px #b1b1b1, -3px -3px 8px #ffffff;
     cursor: pointer;
   }
-  html { background-color: rgb(77, 70, 65); }
-  div { background-color: rgb(77, 70, 65); }
+  html { background-color:3e3754; }
+  div { background-color: 3e3754; }
   .center-screen {
     display: flex;
     flex-direction: column;

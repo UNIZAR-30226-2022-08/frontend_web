@@ -22,31 +22,31 @@ export class TableroComponent {
   possibleMoves: string[] = [];
 
   // Removes all pieces from board
-  clearBoard(){
-    for(let i = 0; i <= 8; i++){
-      for(let j = 0; j<= 8; j++){
+  clearBoard() {
+    for (let i = 0; i <= 8; i++) {
+      for (let j = 0; j <= 8; j++) {
         this.board[i][j] = "";
       }
     }
   }
 
   // Back-end should initialize board ## Remove this?
-  startGame(){
+  startGame() {
     this.board = [];
-    for(let i = 0; i < 8; i++){
+    for (let i = 0; i < 8; i++) {
       this.board[i] = [];
-      for(let j = 0; j< 8; j++){
-        if(i == 0){
-          this.board[i][j] = "white_"+this.initialRow[j];
+      for (let j = 0; j < 8; j++) {
+        if (i == 0) {
+          this.board[i][j] = "white_" + this.initialRow[j];
         }
-        else if(i == 7){
-          this.board[i][j] = "black_"+this.initialRow[j];
+        else if (i == 7) {
+          this.board[i][j] = "black_" + this.initialRow[j];
         }
-        else if (i == 1){
-          this.board[i][j] = "white_pawn_" + String.fromCharCode(j+1 + '0'.charCodeAt(0));
+        else if (i == 1) {
+          this.board[i][j] = "white_pawn_" + String.fromCharCode(j + 1 + '0'.charCodeAt(0));
         }
-        else if (i == 6){
-          this.board[i][j] = "black_pawn_" + String.fromCharCode(j+1 + '0'.charCodeAt(0));
+        else if (i == 6) {
+          this.board[i][j] = "black_pawn_" + String.fromCharCode(j + 1 + '0'.charCodeAt(0));
         }
         else this.board[i][j] = "";
       }
@@ -56,7 +56,7 @@ export class TableroComponent {
 
   // Calculates and stores all possible moves in the possibleMoves array
   setPossibleMoves() {
-    
+
   }
 
   // Changes possible move squares' colour 
@@ -79,36 +79,36 @@ export class TableroComponent {
   }
 
   //Used for debugging
-  logBoard(){
+  logBoard() {
     let boardString = "";
-    for(let i = 7; i >= 0; i--){
-      for(let j = 0; j< 8; j++){
+    for (let i = 7; i >= 0; i--) {
+      for (let j = 0; j < 8; j++) {
         boardString += this.board[i][j];
         boardString += "\t";
       }
-      boardString+="\n";
+      boardString += "\n";
     }
     console.log(boardString);
   }
 
   // Transforms code "ln" where "l" is a letter and "n" is a number
   // to [x, y] coordinates, where x is represents n and y represents l
-  codeToCoord(code: string): [number, number]{
+  codeToCoord(code: string): [number, number] {
     let charX = code.charAt(1);
     let charY = code.charAt(0);
-  
+
     let x = Number(charX) - 1;
     let y = charY.charCodeAt(0) - 97;
 
     console.log(x);
     console.log(y);
-    return [x,y];
+    return [x, y];
   }
 
   // From the piece code (corresponding id in html) returns its color and
   // its type
-  parsePiece(pieceCode: string): [boolean, string]{
-    var splitted = pieceCode.split("_",2);
+  parsePiece(pieceCode: string): [boolean, string] {
+    var splitted = pieceCode.split("_", 2);
     var isWhite;
     var pieceType = splitted[1];
     if (splitted[0] === "black") {
@@ -126,7 +126,7 @@ export class TableroComponent {
       let [x, y] = this.codeToCoord(clicked);
       let [color, pieceType] = this.parsePiece(this.board[x][y]);
       // Check if turn matches color and piece was clicked
-      if (color === this.turnWhite && this.board[x][y] !=="") {
+      if (color === this.turnWhite && this.board[x][y] !== "") {
         this.selected = clicked;
         this.markHintSquares();
         console.log(this.selected);
@@ -145,12 +145,12 @@ export class TableroComponent {
   }
 
   // Moves piece to destiny
-  movePiece(destiny: string){
+  movePiece(destiny: string) {
     let [i, j] = this.codeToCoord(this.selected);
     let [x, y] = this.codeToCoord(destiny);
 
-    console.log("Origin"+this.board[i][j]);
-    console.log("Destiny"+this.board[x][y]);
+    console.log("Origin" + this.board[i][j]);
+    console.log("Destiny" + this.board[x][y]);
 
     var domOriginPiece = document.getElementById(this.board[i][j]);
     console.log(domOriginPiece);
@@ -158,6 +158,18 @@ export class TableroComponent {
 
     if (this.board[x][y] != "") { // Destroy piece that was in destiny
       var domDestinyPiece = <Node>document.getElementById(this.board[x][y]);
+      var pieceText = domDestinyPiece.textContent;
+
+
+      let [color, _] = this.parsePiece(this.board[x][y]);
+      if (color) {
+        var cemetery = document.getElementById("cemeteryA");
+      } else {
+        var cemetery = document.getElementById("cemeteryB");
+      }
+      if (cemetery != undefined && pieceText != undefined) {
+        cemetery.textContent += pieceText;
+      }
       domDestinyPiece?.parentNode?.removeChild(domDestinyPiece);
     }
     domDestiny?.appendChild(<Node>domOriginPiece);
@@ -168,7 +180,7 @@ export class TableroComponent {
     this.turnWhite = !this.turnWhite;
   }
 
-  prueba(){
+  prueba() {
     console.log("HOLA");
   }
 
