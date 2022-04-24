@@ -4,13 +4,14 @@ import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
 import { HomeComponent } from "./home/home.component";
 import { TableroComponent } from "./tablerov1/tablero.component";
-
+import { MainMenuComponent } from "./mainMenu/mainMenu.component";
 
 const appRoutes = [
     { path: '', component: AppComponent, pathMatch: "full"},
     { path: 'register', component: RegisterComponent, pathMatch: "full"},
     { path: 'login', component: LoginComponent, pathMatch: "full"},
     { path: 'home', component: HomeComponent, pathMatch: "full"},
-    { path: 'tablero', component: TableroComponent, pathMatch: "full"}
+    { path: 'tablero', component: TableroComponent, pathMatch: "full"},
+    { path: 'mainMenu', component: MainMenuComponent, pathMatch: "full"}
 ];
 export const routing = RouterModule.forRoot(appRoutes);

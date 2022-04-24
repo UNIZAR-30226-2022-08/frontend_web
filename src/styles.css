@@ -58,6 +58,20 @@
     text-align: center;
     min-height: 100vh;
   }
+  .centered {
+    min-width: 300px;
+    max-width: 60%;
+    margin: 0px auto;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 2rem 3rem;
+    margin: auto;
+    border-radius: 2.5rem;
+    background-color: #3e3754;
+    color: black;
+    margin-top: 0px;
+    justify-content: center;
+    text-align: center;
+  }
   .roundButton {
     text-transform: uppercase;
     letter-spacing: 0.15em;

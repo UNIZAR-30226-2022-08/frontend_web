@@ -25,7 +25,7 @@ export class LoginComponent {
         if (res.status === 200) { 
           localStorage.setItem('email', this.email);
           //localStorage.setItem('userId', ...) Store retrieved user's ID
-          this.router.navigateByUrl('/');
+          this.router.navigateByUrl('/mainMenu');
         } else {
           console.log("login error: " + res.status);
         }

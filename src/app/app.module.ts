@@ -9,14 +9,16 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { TableroComponent } from './tablerov1/tablero.component';
-
+import { MainMenuComponent } from './mainMenu/mainMenu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    TableroComponent,
+    MainMenuComponent
   ],
   imports: [
     BrowserModule,
