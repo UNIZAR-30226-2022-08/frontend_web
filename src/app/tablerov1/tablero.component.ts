@@ -36,17 +36,17 @@ export class TableroComponent {
     for (let i = 0; i < 8; i++) {
       this.board[i] = [];
       for (let j = 0; j < 8; j++) {
-        if (i == 0) {
-          this.board[i][j] = "white_" + this.initialRow[j];
+        if (j == 0) {
+          this.board[i][j] = "white_" + this.initialRow[i];
         }
-        else if (i == 7) {
-          this.board[i][j] = "black_" + this.initialRow[j];
+        else if (j == 7) {
+          this.board[i][j] = "black_" + this.initialRow[i];
         }
-        else if (i == 1) {
-          this.board[i][j] = "white_pawn_" + String.fromCharCode(j + 1 + '0'.charCodeAt(0));
+        else if (j == 1) {
+          this.board[i][j] = "white_pawn_" + String.fromCharCode(i + 1 + '0'.charCodeAt(0));
         }
-        else if (i == 6) {
-          this.board[i][j] = "black_pawn_" + String.fromCharCode(j + 1 + '0'.charCodeAt(0));
+        else if (j == 6) {
+          this.board[i][j] = "black_pawn_" + String.fromCharCode(i + 1 + '0'.charCodeAt(0));
         }
         else this.board[i][j] = "";
       }
@@ -56,7 +56,27 @@ export class TableroComponent {
 
   // Calculates and stores all possible moves in the possibleMoves array
   setPossibleMoves() {
-
+    this.possibleMoves = [];
+    let [x, y] = this.codeToCoord(this.selected);
+    let [color, pieceType] = this.parsePiece(this.board[x][y]);
+    console.log("Tipo:" + pieceType);
+    switch (pieceType) {
+      case "pawn":
+        let code = this.coordToCode(x,y+1);
+        console.log("A marcar:" + code);
+        this.possibleMoves.push(code);
+      break;
+      case "knight":
+      break;
+      case "rook":
+      break;
+      case "king":
+      break;
+      case "queen":
+      break;
+      case "bishop":
+      break;
+    }
   }
 
   // Changes possible move squares' colour 
@@ -83,7 +103,7 @@ export class TableroComponent {
     let boardString = "";
     for (let i = 7; i >= 0; i--) {
       for (let j = 0; j < 8; j++) {
-        boardString += this.board[i][j];
+        boardString += this.board[j][i];
         boardString += "\t";
       }
       boardString += "\n";
@@ -97,12 +117,20 @@ export class TableroComponent {
     let charX = code.charAt(1);
     let charY = code.charAt(0);
 
-    let x = Number(charX) - 1;
-    let y = charY.charCodeAt(0) - 97;
+    let x = charY.charCodeAt(0) - 97;
+    let y = Number(charX) - 1;
 
     console.log(x);
     console.log(y);
     return [x, y];
+  }
+
+  // Transforms coord [x,y] into code "{a-h}{0-7}"
+  coordToCode(x: number, y: number): string {
+    let charX = 'a'.charCodeAt(0) + x;
+    let charY = (y+1).toString();
+
+    return String.fromCharCode(charX)+charY;
   }
 
   // From the piece code (corresponding id in html) returns its color and
@@ -123,11 +151,13 @@ export class TableroComponent {
   // Calls movePiece() if the move is allowed
   checkClick(clicked: string) {
     if (this.selected === "") {
+      console.log("Clicked square: " + clicked);
       let [x, y] = this.codeToCoord(clicked);
       let [color, pieceType] = this.parsePiece(this.board[x][y]);
       // Check if turn matches color and piece was clicked
       if (color === this.turnWhite && this.board[x][y] !== "") {
         this.selected = clicked;
+        this.setPossibleMoves();
         this.markHintSquares();
         console.log(this.selected);
       }
