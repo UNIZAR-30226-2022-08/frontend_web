@@ -10,6 +10,10 @@ export class HomeComponent {
   email: string;
   password: string;
 
-  constructor(public router: Router) {}
+  constructor(public router: Router) {
+    if (localStorage.getItem("email") !== null) {
+      this.router.navigateByUrl('/mainMenu');
+    }
+  }
 
 }

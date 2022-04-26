@@ -8,5 +8,14 @@ import axios from 'axios';
   styleUrls: ["./mainMenu.component.css"]
 })
 export class MainMenuComponent {
- 
+  constructor(public router: Router) {
+    if (localStorage.getItem("email") === null) {
+      this.router.navigateByUrl('/home');
+    }
+  }
+
+  logOut() {
+    localStorage.removeItem("email");
+    this.router.navigateByUrl('/home');
+  }
 }

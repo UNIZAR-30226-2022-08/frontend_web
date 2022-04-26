@@ -10,6 +10,9 @@ import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { TableroComponent } from './tablerov1/tablero.component';
 import { MainMenuComponent } from './mainMenu/mainMenu.component';
+import { ProfileComponent } from './profile/profile.component';
+import { FriendListComponent } from './friendList/friendList.component';
+import { MatchListComponent } from './matchList/matchList.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { MainMenuComponent } from './mainMenu/mainMenu.component';
     RegisterComponent,
     HomeComponent,
     TableroComponent,
-    MainMenuComponent
+    MainMenuComponent,
+    ProfileComponent,
+    FriendListComponent,
+    MatchListComponent
   ],
   imports: [
     BrowserModule,
