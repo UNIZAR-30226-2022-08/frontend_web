@@ -86,3 +86,94 @@
     cursor: pointer;
     margin-top: 20px;
   }
+
+  .wrapper{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .buttonSlideA{
+    width: 400px;
+    height: 100px;
+    line-height: 40px;
+    font-size: 30px;
+    cursor: pointer;
+    font-family: sans-serif;
+    text-decoration: none;
+    color: #333;
+    border: 2px solid #333;
+    letter-spacing: 2px;
+    text-align: center;
+    position: relative;
+    transition: all .35s;
+    margin-top: 0px;
+  }
+  
+  .buttonSlideA span{
+    position: relative;
+    z-index: 2;
+  }
+  
+  .buttonSlideA:after{
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: #ff003b;
+    transition: all .35s;
+    justify-content: center;
+  }
+  
+  .buttonSlideA:hover{
+    color: #fff;
+  }
+  
+  .buttonSlideA:hover:after{
+    width: 100%;
+  }
+
+  .buttonSlideB{
+    width: 200px;
+    height: 100px;
+    line-height: 40px;
+    font-size: 30px;
+    cursor: pointer;
+    font-family: sans-serif;
+    text-decoration: none;
+    color: #333;
+    border: 2px solid #333;
+    letter-spacing: 2px;
+    text-align: center;
+    position: relative;
+    transition: all .35s;
+    margin-top: 0px;
+  }
+  
+  .buttonSlideB span{
+    position: relative;
+    z-index: 2;
+  }
+  
+  .buttonSlideB:after{
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: #ff003b;
+    transition: all .35s;
+    justify-content: center;
+  }
+  
+  .buttonSlideB:hover{
+    color: #fff;
+  }
+  
+  .buttonSlideB:hover:after{
+    width: 100%;
+  }

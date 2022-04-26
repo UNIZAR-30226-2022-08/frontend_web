@@ -30,7 +30,7 @@ export class TableroComponent {
     }
   }
 
-  // Back-end should initialize board ## Remove this?
+  // Back-end should initialize board?
   startGame() {
     this.board = [];
     for (let i = 0; i < 8; i++) {

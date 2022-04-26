@@ -20,6 +20,6 @@ const appRoutes = [
     { path: 'profile', component: ProfileComponent, pathMatch: "full"},
     { path: 'friendList', component: FriendListComponent, pathMatch: "full"},
     { path: 'shop', component: ShopComponent, pathMatch: "full"},
-    { path: 'shop', component: MatchListComponent, pathMatch: "full"}
+    { path: 'matchList', component: MatchListComponent, pathMatch: "full"}
 ];
 export const routing = RouterModule.forRoot(appRoutes);
