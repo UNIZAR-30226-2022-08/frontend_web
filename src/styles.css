@@ -71,6 +71,7 @@
     margin-top: 0px;
     justify-content: center;
     text-align: center;
+    align-content: center;
   }
   .roundButton {
     text-transform: uppercase;
