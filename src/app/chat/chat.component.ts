@@ -3,11 +3,11 @@ import { Router } from "@angular/router";
 import axios from 'axios';
 
 @Component({
-  selector: "app-friend",
-  templateUrl: "./friendList.component.html",
-  styleUrls: ["./friendList.component.css"]
+  selector: "app-chat",
+  templateUrl: "./chat.component.html",
+  styleUrls: ["./chat.component.css"]
 })
-export class FriendListComponent {
+export class ChatComponent {
   constructor(public router: Router) {}
   
 }

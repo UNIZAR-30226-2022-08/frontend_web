@@ -9,6 +9,7 @@ import { ProfileComponent } from "./profile/profile.component";
 import { FriendListComponent } from "./friendList/friendList.component";
 import { ShopComponent } from "./shop/shop.component";
 import { MatchListComponent } from "./matchList/matchList.component";
+import { ChatComponent } from "./chat/chat.component";
 
 const appRoutes = [
     { path: '', component: AppComponent, pathMatch: "full"},
@@ -20,6 +21,7 @@ const appRoutes = [
     { path: 'profile', component: ProfileComponent, pathMatch: "full"},
     { path: 'friendList', component: FriendListComponent, pathMatch: "full"},
     { path: 'shop', component: ShopComponent, pathMatch: "full"},
-    { path: 'matchList', component: MatchListComponent, pathMatch: "full"}
+    { path: 'matchList', component: MatchListComponent, pathMatch: "full"},
+    { path: 'chat', component: ChatComponent, pathMatch: "full"},
 ];
 export const routing = RouterModule.forRoot(appRoutes);

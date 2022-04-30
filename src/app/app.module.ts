@@ -13,6 +13,7 @@ import { MainMenuComponent } from './mainMenu/mainMenu.component';
 import { ProfileComponent } from './profile/profile.component';
 import { FriendListComponent } from './friendList/friendList.component';
 import { MatchListComponent } from './matchList/matchList.component';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MatchListComponent } from './matchList/matchList.component';
     MainMenuComponent,
     ProfileComponent,
     FriendListComponent,
-    MatchListComponent
+    MatchListComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
