@@ -1,24 +1,26 @@
 .profile {
     width: 300px;
-    height: 60px;
+    height: 100px;
     background: #EEE;
     border-bottom: 1px solid #DDD;
     display: flex;
     align-items: center;
   }
    
-.profile-box .name {
+.profile .name {
     width: 300px;
     height: 60px;
+    font-size: 40px;
     background: #EEE;
     border-bottom: 1px solid #DDD;
     display: flex;
     align-items: center;
   }
 
-.profile-box .elo {
-    width: 45px;
+.profile .elo {
+    width: 200px;
     height: 45px;
+    font-size: 40px;
     cursor: pointer;
     object-fit: cover;
     margin-left: auto; 

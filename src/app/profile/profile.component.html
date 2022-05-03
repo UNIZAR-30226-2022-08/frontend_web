@@ -5,13 +5,33 @@
   </h1>
 </div>
 
-<div class="centered">
-  <div class="profile">
-    <div id="username" class="name">
-      Fulanito
-    </div>
-    <div id="elo" class="elo">
-      🏆 300 LP
+  <div class="centered">
+    <div class="profile">
+      <div id="usernameText" class="name"></div>
+      <div id="elo" class="elo">
+        🏆 300 LP
+      </div>
     </div>
   </div>
-</div>
+
+  <div class="login">
+    <form class="custom-form" method="post">
+      <h1>Cambiar contraseña:</h1>
+      <input
+        type="text"
+        [(ngModel)]="newPassword"
+        name="newPassword"
+        placeholder="Nueva contraseña"
+        required="required"
+      />
+      <input
+        type="text"
+        [(ngModel)]="confirmNewPassword"
+        name="confirmNewPassword"
+        placeholder="Confirme la nueva contraseña"
+        required="required"
+      />
+      <button type="submit" (click)="changePassword()">Cambiar contraseña</button>
+    </form>
+    
+  </div>

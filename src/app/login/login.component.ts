@@ -24,7 +24,7 @@ export class LoginComponent {
       .then((res) => {
         if (res.status === 200) { 
           localStorage.setItem('email', this.email);
-          //localStorage.setItem('userId', ...) Store retrieved user's ID
+          this.getCredentials();
           this.router.navigateByUrl('/mainMenu');
         } else {
           console.log("login error: " + res.status);
@@ -32,7 +32,26 @@ export class LoginComponent {
       })
       .catch((error) => {
         console.error(error);
+        /* Emergency bypass
+        localStorage.setItem('email', this.email);
+        this.router.navigateByUrl('/mainMenu');*/
       })
     
+  }
+
+  getCredentials() {
+    axios
+    .get('https://queenchess-backend.herokuapp.com/account/checkSession', {
+    })
+    .then((res) => {
+      if (res.status === 200) {
+        localStorage.setItem('username', res.data.username);
+      } else {
+        console.log("login error: " + res.status);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    })
   }
 }
