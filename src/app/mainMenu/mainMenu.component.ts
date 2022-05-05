@@ -15,6 +15,7 @@ export class MainMenuComponent {
   }
 
   logOut() {
+    localStorage.removeItem("username");
     localStorage.removeItem("email");
     this.router.navigateByUrl('/home');
   }

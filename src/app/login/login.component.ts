@@ -29,6 +29,9 @@ export class LoginComponent {
       .then((res) => {
         if (res.status === 200) { 
           localStorage.setItem('email', this.email);
+          if (res.headers["set-cookie"] != undefined) {
+          localStorage.setItem('cookie', res.headers["set-cookie"][0]);
+         }
           this.getCredentials();
           this.router.navigateByUrl('/mainMenu');
         } else {
@@ -37,9 +40,6 @@ export class LoginComponent {
       })
       .catch((error) => {
         console.error(error);
-        /* Emergency bypass
-        localStorage.setItem('email', this.email);
-        this.router.navigateByUrl('/mainMenu');*/
       })
     
   }
@@ -52,7 +52,7 @@ export class LoginComponent {
       if (res.status === 200) {
         localStorage.setItem('username', res.data.username);
       } else {
-        console.log("login error: " + res.status);
+        console.log("check session error: " + res.status);
       }
     })
     .catch((error) => {

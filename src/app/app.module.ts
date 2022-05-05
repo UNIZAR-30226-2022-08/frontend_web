@@ -14,6 +14,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { FriendListComponent } from './friendList/friendList.component';
 import { MatchListComponent } from './matchList/matchList.component';
 import { ChatComponent } from './chat/chat.component';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
   declarations: [
@@ -31,7 +34,8 @@ import { ChatComponent } from './chat/chat.component';
   imports: [
     BrowserModule,
     FormsModule,
-    routing
+    routing,
+    SocketIoModule.forRoot(config)
   ],
   providers: [],
   bootstrap: [AppComponent],
