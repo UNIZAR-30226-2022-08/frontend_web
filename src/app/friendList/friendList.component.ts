@@ -20,10 +20,9 @@ export class FriendListComponent {
       })
       .then((res) => {
         if (res.status === 200) {
-          res.data.array.forEach((element: any) => {
-            this.friends.push(element.FriendUserName);
-          });
-          this.friends = (res.data);
+          for (let i = 0; i < res.data.length; i++) {
+            this.friends.push(res.data[i][1]);
+          }
         } else {
           console.log("login error: " + res.status);
         }

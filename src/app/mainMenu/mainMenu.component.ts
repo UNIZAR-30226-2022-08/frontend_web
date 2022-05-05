@@ -15,14 +15,15 @@ export class MainMenuComponent {
   }
 
   logOut() {
+    localStorage.removeItem("username");
+    localStorage.removeItem("email");
+    this.router.navigateByUrl('/home');
     axios
       .post('https://queenchess-backend.herokuapp.com/account/logout', {
       })
       .then((res) => {
         if (res.status === 201) {
-          localStorage.removeItem("username");
-          localStorage.removeItem("email");
-          this.router.navigateByUrl('/home');
+          
         } else {
           console.log("login error: " + res.status);
         }
