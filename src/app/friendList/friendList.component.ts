@@ -19,9 +19,8 @@ export class FriendListComponent {
     console.log(this.friendName);
     axios
     .post('https://queenchess-backend.herokuapp.com/account/addFriend', {
-      username: this.friendName
-    }
-    )
+      friend: this.friendName
+    })
     .then((res) => {
       if (res.status === 200) { 
       } else {

@@ -29,9 +29,6 @@ export class LoginComponent {
       .then((res) => {
         if (res.status === 200) { 
           localStorage.setItem('email', this.email);
-          if (res.headers["set-cookie"] != undefined) {
-          localStorage.setItem('cookie', res.headers["set-cookie"][0]);
-         }
           this.getCredentials();
           this.router.navigateByUrl('/mainMenu');
         } else {

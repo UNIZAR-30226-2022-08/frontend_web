@@ -18,5 +18,17 @@ export class MainMenuComponent {
     localStorage.removeItem("username");
     localStorage.removeItem("email");
     this.router.navigateByUrl('/home');
+    axios
+      .post('https://queenchess-backend.herokuapp.com/account/logout', {
+      })
+      .then((res) => {
+        if (res.status === 200) {
+        } else {
+          console.log("login error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
   }
 }
