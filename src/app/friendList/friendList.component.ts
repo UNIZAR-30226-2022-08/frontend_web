@@ -8,6 +8,17 @@ import axios from 'axios';
   styleUrls: ["./friendList.component.css"]
 })
 export class FriendListComponent {
-  constructor(public router: Router) {}
+  friendName: string;
+  constructor(public router: Router) { }
+  
+  //This gets called after constructor (angular doesn't let you access elements in the constructor)
+  ngOnInit() {
+    
+  }
+
+  addFriend() {
+
+  }
   
 }
+

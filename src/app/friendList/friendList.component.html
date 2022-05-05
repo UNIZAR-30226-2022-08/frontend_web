@@ -31,3 +31,18 @@
     </li>
   </ul>
 </div>
+
+<div class="login">
+  <form class="custom-form" method="post">
+    <h1>Añadir amigo:</h1>
+    <input
+      type="text"
+      [(ngModel)]="friendName"
+      name="friendName"
+      placeholder="Nombre"
+      required="required"
+    />
+    <button type="submit" (click)="addFriend()">Enviar petición de amistad</button>
+  </form>
+  
+</div>
