@@ -18,7 +18,7 @@ export class FriendListComponent {
   addFriend() {
     console.log(this.friendName);
     axios
-    .post('https://queenchess-backend.herokuapp.com/account/addFriend', {
+    .put('https://queenchess-backend.herokuapp.com/account/addFriend', {
       friend: this.friendName
     })
     .then((res) => {
