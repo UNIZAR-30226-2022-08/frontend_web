@@ -5,32 +5,19 @@
   </h1>
 </div>
 
-<div class="centered">
-  <ul id='friend-list'>
-    <li class='friend'>
-      <div class='name'>
-        Fulanito
-      </div>
-      <div class='challenge'>
-        ♟️
-      </div>
-      <div class='chat' (click)="router.navigate(['/chat']);">
-        💬
-      </div>
-    </li>
-    <li class='friend'>
-      <div class='name'>
-        Menganito
-      </div>
-      <div class='challenge'>
-        ♟️
-      </div>
-      <div class='chat' (click)="router.navigate(['/chat']);">
-        💬
-      </div>
-    </li>
-  </ul>
-</div>
+<ul class="friends">
+  <li  class='friend' *ngFor="let friend of friends">
+    <div class='name'>
+      {{friend}}
+    </div>
+    <div class='challenge'>
+      ♟️
+    </div>
+    <div class='chat' (click)="router.navigate(['/chat']);">
+      💬
+    </div>
+  </li>
+</ul>
 
 <div class="login">
   <form class="custom-form" method="post">
