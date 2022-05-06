@@ -22,7 +22,7 @@ export class LoginComponent {
     console.log(this.email);
     console.log(this.password);
     axios
-      .post('https://queenchess-backend.herokuapp.com/account/login', {
+      .post('https://cors-anywhere.herokuapp.com/https://queenchess-backend.herokuapp.com/account/login', {
         email: this.email,
         password:this.password
       })
