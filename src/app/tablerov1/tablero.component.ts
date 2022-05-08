@@ -18,10 +18,14 @@ export class TableroComponent {
 
   initialRow: string[] = ["rook_1", "knight_1", "bishop_1", "queen_1", "king_1", "bishop_2", "knight_2", "rook_2"];
   board: string[][];
+  secondBoard: string[][];
+  auxBoard: string[][];
   selected: string = "";
   turnWhite: boolean = true;
   possibleMoves: string[] = [];
   possibleMovesToCheckWhiteKing: string[] = [];
+  jaqueNegro = false;
+  jaqueBlanco = false;
 
 
   // Removes all pieces from board
@@ -35,6 +39,8 @@ export class TableroComponent {
 
   // Back-end should initialize board?
   startGame() {
+    this.startSecondBoard();
+    this.startAuxBoard();
     this.board = [];
     for (let i = 0; i < 8; i++) {
       this.board[i] = [];
@@ -57,986 +63,1325 @@ export class TableroComponent {
     this.logBoard();
   }
 
-  
-  // Calculates and stores all possible moves in the possibleMoves array
-    // Calculates and stores all possible moves in the possibleMoves array
-    setPossibleMoves(squareCode: string) {
-      this.possibleMoves = []; 
-      let [x, y] = this.codeToCoord(squareCode);
-      let [isWhite, pieceType] = this.parsePiece(this.board[x][y]);
-      let newBoard = this.board;
-      switch (pieceType) {
-        case "pawn":
-          if (isWhite) {
-            // The square in front of the pawn is empty
-            if (this.board[x][y+1] == "") {
-              this.possibleMoves.push(this.coordToCode(x,y+1));
-            }
-            // The pawn is in the starting square and the two in front are empty
-            if (this.board[x][y+2] == "" && y == 1) {
-              this.possibleMoves.push(this.coordToCode(x,y+2));
-            }
-            // Eat right diagonal
-            if (x < 7 && y < 7 && this.parseColour(this.board[x+1][y+1]) == 'b'){
-              this.possibleMoves.push(this.coordToCode(x+1,y+1));
-            }
-            // Eat left diagonal
-            if (x > 0 && y < 7 && this.parseColour(this.board[x-1][y+1]) == 'b'){
-              //newBoard = this.board;
-              //newBoard[x][y] = "";
-              //newBoard[x-1][y+1] = this.board[x][y];
-              //if (!(this.examineWhiteKingCheck(newBoard))) 
-              this.possibleMoves.push(this.coordToCode(x-1,y+1));
-            }
-
-          }
-          else if (!(isWhite)) {
-            // The square in front of the pawn is empty
-            if (this.board[x][y-1] == "") {
-              this.possibleMoves.push(this.coordToCode(x,y-1));
-            }
-            // The pawn is in the starting square and the two in front are empty
-            if (this.board[x][y-2] == "" && y == 6) {
-              this.possibleMoves.push(this.coordToCode(x,y-2));
-            }
-            // Eat right diagonal
-            if (x < 7 && y > 0 && this.parseColour(this.board[x+1][y-1]) == 'w'){
-              this.possibleMoves.push(this.coordToCode(x+1,y-1));
-            }
-            // Eat left diagonal
-            if (x > 0 && y > 0 && this.parseColour(this.board[x-1][y-1]) == 'w'){
-              this.possibleMoves.push(this.coordToCode(x-1,y-1));
-            }
-          }
-        break;
-        case "knight": 
-          if (isWhite) {
-  
-            let aux_x = x;
-            let aux_y = y;
-  
-            // Move up left
-            aux_x = Number(x) - 1;
-            aux_y = Number(y) + 2;
-            if (aux_x >= 0 && aux_y <= 7) {
-              if (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b') this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-            }
-            
-            aux_x = Number(x) - 2;
-            aux_y = Number(y) + 1;
-            if (aux_x >= 0 && aux_y <= 7){
-              if (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b') this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-            } 
-  
-            // Move up right
-            aux_x = Number(x) + 1;
-            aux_y = Number(y) + 2;
-            if (aux_x <= 7 && aux_y <= 7) {
-              if (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b') this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-            } 
-            
-            aux_x = Number(x) + 2;
-            aux_y = Number(y) + 1;        
-            if (aux_x <= 7 && aux_y <= 7) {
-              if (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b') this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-            }
-  
-            // Move down left
-            aux_x = Number(x) - 1;
-            aux_y = Number(y) - 2;  
-            if (aux_x >= 0 && aux_y >= 0) {
-              if (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b') this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-            }
-            
-            aux_x = Number(x) - 2;
-            aux_y = Number(y) - 1;  
-            if (aux_x >= 0 && aux_y >= 0 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b')) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-  
-            // Move down right
-            aux_x = Number(x) + 1;
-            aux_y = Number(y) - 2;  
-            if (aux_x <= 7 && aux_y >=0 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b')) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-            
-            aux_x = Number(x) + 2;
-            aux_y = Number(y) - 1;  
-            if (aux_x <= 7 && aux_y >= 0 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b')) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-          }
-          
-          else if (!(isWhite)) {
-            let aux_x = x;
-            let aux_y = y;
-  
-            // Move up left
-            aux_x = Number(x) - 1;
-            aux_y = Number(y) + 2;
-            if (aux_x >= 0 && aux_y <= 7) {
-              if (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w') this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-            }
-            
-            aux_x = Number(x) - 2;
-            aux_y = Number(y) + 1;
-            if (aux_x >= 0 && aux_y <= 7){
-              if (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w') this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-            } 
-  
-            // Move up right
-            aux_x = Number(x) + 1;
-            aux_y = Number(y) + 2;
-            if (aux_x <= 7 && aux_y <= 7) {
-              if (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w') this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-            } 
-            
-            aux_x = Number(x) + 2;
-            aux_y = Number(y) + 1;        
-            if (aux_x <= 7 && aux_y <= 7) {
-              if (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w') this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-            }
-  
-            // Move down left
-            aux_x = Number(x) - 1;
-            aux_y = Number(y) - 2;  
-            if (aux_x >= 0 && aux_y >= 0) {
-              if (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w') this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-            }
-            
-            aux_x = Number(x) - 2;
-            aux_y = Number(y) - 1;  
-            if (aux_x >= 0 && aux_y >= 0 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w')) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-  
-            // Move down right
-            aux_x = Number(x) + 1;
-            aux_y = Number(y) - 2;  
-            if (aux_x <= 7 && aux_y >=0 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w')) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-            
-            aux_x = Number(x) + 2;
-            aux_y = Number(y) - 1;  
-            if (aux_x <= 7 && aux_y >= 0 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w')) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
-          } 
-        break;
-        case "rook":
-          if (isWhite) {
-            // Move up
-            let i = y;
-            var keep = true; 
-            do {
-              i++;
-              // Out of context
-              if (i > 7) keep = false;
-              // Next square is empty
-              else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x,i));
-              // Next square has enemy
-              else if (this.parseColour(this.board[x][i]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(x,i));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[x][i]) == 'w') keep = false;
-            } while (keep);
-  
-            // Move down
-            i = y;
-            keep = true; 
-            do {
-              i--;
-              // Out of context
-              if (i < 0) keep = false;
-              // Next square is empty
-              else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x,i));
-              // Next square has enemy
-              else if (this.parseColour(this.board[x][i]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(x,i));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[x][i]) == 'w') keep = false;
-            } while (keep);
-  
-            // Move right
-            i = x;
-            keep = true;
-            do {
-              i++;
-              // Out of context
-              if (i > 7) keep = false;
-              // Next square is empty
-              else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i,y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[i][y]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(i,y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[i][y]) == 'w') keep = false;
-            } while (keep);
-  
-            // Move left
-            i = x;
-            keep = true;
-            do {
-              i--;
-              // Out of context
-              if (i < 0) keep = false;
-              // Next square is empty
-              else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i,y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[i][y]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(i,y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[i][y]) == 'w') keep = false;
-            } while (keep);
-          }
-          else if (!(isWhite)) {
-            // Move up
-            let i = y;
-            var keep = true; 
-            do {
-              i++;
-              // Out of context
-              if (i > 7) keep = false;
-              // Next square is empty
-              else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x,i));
-              // Next square has enemy
-              else if (this.parseColour(this.board[x][i]) == 'w'){
-                this.possibleMoves.push(this.coordToCode(x,i));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[x][i]) == 'b') keep = false;
-            } while (keep);
-  
-            // Move down
-            i = y;
-            keep = true; 
-            do {
-              i--;
-              // Out of context
-              if (i < 0) keep = false;
-              // Next square is empty
-              else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x,i));
-              // Next square has enemy
-              else if (this.parseColour(this.board[x][i]) == 'w'){
-                this.possibleMoves.push(this.coordToCode(x,i));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[x][i]) == 'b') keep = false;
-            } while (keep);
-  
-            // Move right
-            i = x;
-            keep = true;
-            do {
-              i++;
-              // Out of context
-              if (i > 7) keep = false;
-              // Next square is empty
-              else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i,y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[i][y]) == 'w'){
-                this.possibleMoves.push(this.coordToCode(i,y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[i][y]) == 'b') keep = false;
-            } while (keep);
-  
-            // Move left
-            i = x;
-            keep = true;
-            do {
-              i--;
-              // Out of context
-              if (i < 0) keep = false;
-              // Next square is empty
-              else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i,y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[i][y]) == 'w'){
-                this.possibleMoves.push(this.coordToCode(i,y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[i][y]) == 'b') keep = false;
-            } while (keep);
-  
-          }
-  
-        break;
-        case "king":
-          if (isWhite) {
-            // Move up
-            let i = y;
-            i++;
-            // Out of context
-            if (i < 8) {
-              // Next square is empty
-              if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x,i));
-              // Next square has enemy
-              else if (this.parseColour(this.board[x][i]) == 'b') this.possibleMoves.push(this.coordToCode(x,i));
-            }
-
-  
-            // Move down
-            i = y;
-            i--;
-            // Out of context
-            if (i >= 0) {
-              // Next square is empty
-              if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x,i));
-              // Next square has enemy
-              else if (this.parseColour(this.board[x][i]) == 'b') this.possibleMoves.push(this.coordToCode(x,i));
-            } 
-  
-            // Move right
-            i = x;
-            i++;
-            // Out of context
-            if (i < 8) {
-              // Next square is empty
-              if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i,y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[i][y]) == 'b') this.possibleMoves.push(this.coordToCode(i,y));
-            }
-  
-            // Move left
-            i = x;
-            i--;
-            // Out of context
-            if (i >= 0) {
-              // Next square is empty
-              if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i,y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[i][y]) == 'b') this.possibleMoves.push(this.coordToCode(i,y));
-            }
-  
-            // Move up left
-            let aux_x = x;
-            let aux_y = y;
-            aux_x--;
-            aux_y++;
-            // Out of context
-            if (aux_x >=0 && aux_y < 8) {
-              // Next square is empty
-              if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-            }
-  
-            // Move up right
-            aux_x = x;
-            aux_y = y;
-            aux_x++;
-            aux_y++;
-            if (aux_x < 8 && aux_y < 8) {
-              // Next square is empty
-              if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-            }
-  
-            // Move down left
-            aux_x = x;
-            aux_y = y;
-            aux_x--;
-            aux_y--;
-            // Out of context
-            if (aux_x >= 0 && aux_y >= 0) {
-              // Next square is empty
-              if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-            }
-  
-            // Move down right
-            aux_x = x;
-            aux_y = y;
-            aux_x++;
-            aux_y--;
-            // Out of context
-            if (aux_x < 8 && aux_y >=  0) {
-              // Next square is empty
-              if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has allie
-            }
-          }
-          else if (!(isWhite)) {
-            // Move up
-            let i = y;
-            i++;
-            // Out of context
-            if (i < 8) {
-              // Next square is empty
-              if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x,i));
-              // Next square has enemy
-              else if (this.parseColour(this.board[x][i]) == 'w') this.possibleMoves.push(this.coordToCode(x,i));
-            }
-
-  
-            // Move down
-            i = y;
-            i--;
-            // Out of context
-            if (i >= 0) {
-              // Next square is empty
-              if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x,i));
-              // Next square has enemy
-              else if (this.parseColour(this.board[x][i]) == 'w') this.possibleMoves.push(this.coordToCode(x,i));
-            } 
-  
-            // Move right
-            i = x;
-            i++;
-            // Out of context
-            if (i < 8) {
-              // Next square is empty
-              if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i,y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[i][y]) == 'w') this.possibleMoves.push(this.coordToCode(i,y));
-            }
-  
-            // Move left
-            i = x;
-            i--;
-            // Out of context
-            if (i >= 0) {
-              // Next square is empty
-              if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i,y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[i][y]) == 'w') this.possibleMoves.push(this.coordToCode(i,y));
-            }
-  
-            // Move up left
-            let aux_x = x;
-            let aux_y = y;
-            aux_x--;
-            aux_y++;
-            // Out of context
-            if (aux_x >=0 && aux_y < 8) {
-              // Next square is empty
-              if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-            }
-  
-            // Move up right
-            aux_x = x;
-            aux_y = y;
-            aux_x++;
-            aux_y++;
-            if (aux_x < 8 && aux_y < 8) {
-              // Next square is empty
-              if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-            }
-  
-            // Move down left
-            aux_x = x;
-            aux_y = y;
-            aux_x--;
-            aux_y--;
-            // Out of context
-            if (aux_x >= 0 && aux_y >= 0) {
-              // Next square is empty
-              if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-            }
-  
-            // Move down right
-            aux_x = x;
-            aux_y = y;
-            aux_x++;
-            aux_y--;
-            // Out of context
-            if (aux_x < 8 && aux_y >=  0) {
-              // Next square is empty
-              if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has allie
-            }
-          }
-        break;
-        case "queen":
-          if (isWhite) {
-            // Move up
-            let i = y;
-            var keep = true; 
-            do {
-              i++;
-              // Out of context
-              if (i > 7) keep = false;
-              // Next square is empty
-              else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x,i));
-              // Next square has enemy
-              else if (this.parseColour(this.board[x][i]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(x,i));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[x][i]) == 'w') keep = false;
-            } while (keep);
-  
-            // Move down
-            i = y;
-            keep = true; 
-            do {
-              i--;
-              // Out of context
-              if (i < 0) keep = false;
-              // Next square is empty
-              else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x,i));
-              // Next square has enemy
-              else if (this.parseColour(this.board[x][i]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(x,i));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[x][i]) == 'w') keep = false;
-            } while (keep);
-  
-            // Move right
-            i = x;
-            keep = true;
-            do {
-              i++;
-              // Out of context
-              if (i > 7) keep = false;
-              // Next square is empty
-              else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i,y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[i][y]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(i,y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[i][y]) == 'w') keep = false;
-            } while (keep);
-  
-            // Move left
-            i = x;
-            keep = true;
-            do {
-              i--;
-              // Out of context
-              if (i < 0) keep = false;
-              // Next square is empty
-              else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i,y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[i][y]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(i,y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[i][y]) == 'w') keep = false;
-            } while (keep);
-  
-            // Move up left
-            let aux_x = x;
-            let aux_y = y;
-            var keep = true; 
-            do {
-              aux_x--;
-              aux_y++;
-              // Out of context
-              if (aux_x < 0 || aux_y > 7) keep = false;
-              // Next square is empty
-              else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
-            } while (keep);
-  
-            // Move up right
-            aux_x = x;
-            aux_y = y;
-            var keep = true; 
-            do {
-              aux_x++;
-              aux_y++;
-              // Out of context
-              if (aux_x > 7 || aux_y > 7) keep = false;
-              // Next square is empty
-              else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
-            } while (keep);
-  
-            // Move down left
-            aux_x = x;
-            aux_y = y;
-            var keep = true; 
-            do {
-              aux_x--;
-              aux_y--;
-              // Out of context
-              if (aux_x < 0 || aux_y < 0) keep = false;
-              // Next square is empty
-              else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
-            } while (keep);
-  
-            // Move down right
-            aux_x = x;
-            aux_y = y;
-            var keep = true; 
-            do {
-              aux_x++;
-              aux_y--;
-              // Out of context
-              if (aux_x > 7 || aux_y < 0) keep = false;
-              // Next square is empty
-              else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
-            } while (keep);
-  
-          }
-          else if (!(isWhite)) {
-            // Move up
-            let i = y;
-            var keep = true; 
-            do {
-              i++;
-              // Out of context
-              if (i > 7) keep = false;
-              // Next square is empty
-              else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x,i));
-              // Next square has enemy
-              else if (this.parseColour(this.board[x][i]) == 'w'){
-                this.possibleMoves.push(this.coordToCode(x,i));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[x][i]) == 'b') keep = false;
-            } while (keep);
-  
-            // Move down
-            i = y;
-            keep = true; 
-            do {
-              i--;
-              // Out of context
-              if (i < 0) keep = false;
-              // Next square is empty
-              else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x,i));
-              // Next square has enemy
-              else if (this.parseColour(this.board[x][i]) == 'w'){
-                this.possibleMoves.push(this.coordToCode(x,i));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[x][i]) == 'b') keep = false;
-            } while (keep);
-  
-            // Move right
-            i = x;
-            keep = true;
-            do {
-              i++;
-              // Out of context
-              if (i > 7) keep = false;
-              // Next square is empty
-              else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i,y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[i][y]) == 'w'){
-                this.possibleMoves.push(this.coordToCode(i,y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[i][y]) == 'b') keep = false;
-            } while (keep);
-  
-            // Move left
-            i = x;
-            keep = true;
-            do {
-              i--;
-              // Out of context
-              if (i < 0) keep = false;
-              // Next square is empty
-              else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i,y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[i][y]) == 'w'){
-                this.possibleMoves.push(this.coordToCode(i,y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[i][y]) == 'b') keep = false;
-            } while (keep);
-  
-           // Move up left
-           let aux_x = x;
-           let aux_y = y;
-           var keep = true; 
-           do {
-             aux_x--;
-             aux_y++;
-             // Out of context
-             if (aux_x < 0 || aux_y > 7) keep = false;
-             // Next square is empty
-             else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-             // Next square has enemy
-             else if (this.parseColour(this.board[aux_x][aux_y]) == 'w'){
-               this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-               keep = false;
-             }
-             // Next square has allie
-             else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
-           } while (keep);
-  
-           // Move up right
-           aux_x = x;
-           aux_y = y;
-           var keep = true; 
-           do {
-             aux_x++;
-             aux_y++;
-             // Out of context
-             if (aux_x > 7 || aux_y > 7) keep = false;
-             // Next square is empty
-             else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-             // Next square has enemy
-             else if (this.parseColour(this.board[aux_x][aux_y]) == 'w'){
-               this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-               keep = false;
-             }
-             // Next square has allie
-             else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
-           } while (keep);
-  
-           // Move down left
-           aux_x = x;
-           aux_y = y;
-           var keep = true; 
-           do {
-             aux_x--;
-             aux_y--;
-             // Out of context
-             if (aux_x < 0 || aux_y < 0) keep = false;
-             // Next square is empty
-             else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-             // Next square has enemy
-             else if (this.parseColour(this.board[aux_x][aux_y]) == 'w'){
-               this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-               keep = false;
-             }
-             // Next square has allie
-             else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
-           } while (keep);
-  
-           // Move down right
-           aux_x = x;
-           aux_y = y;
-           var keep = true; 
-           do {
-             aux_x++;
-             aux_y--;
-             // Out of context
-             if (aux_x > 7 || aux_y < 0) keep = false;
-             // Next square is empty
-             else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-             // Next square has enemy
-             else if (this.parseColour(this.board[aux_x][aux_y]) == 'w'){
-               this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-               keep = false;
-             }
-             // Next square has allie
-             else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
-           } while (keep);
-  
-          }
-        break;
-        case "bishop":
-          if (isWhite) {
-            // Move up left
-            let aux_x = x;
-            let aux_y = y;
-            var keep = true; 
-            do {
-              aux_x--;
-              aux_y++;
-              // Out of context
-              if (aux_x < 0 || aux_y > 7) keep = false;
-              // Next square is empty
-              else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
-            } while (keep);
-  
-            // Move up right
-            aux_x = x;
-            aux_y = y;
-            var keep = true; 
-            do {
-              aux_x++;
-              aux_y++;
-              // Out of context
-              if (aux_x > 7 || aux_y > 7) keep = false;
-              // Next square is empty
-              else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
-            } while (keep);
-  
-            // Move down left
-            aux_x = x;
-            aux_y = y;
-            var keep = true; 
-            do {
-              aux_x--;
-              aux_y--;
-              // Out of context
-              if (aux_x < 0 || aux_y < 0) keep = false;
-              // Next square is empty
-              else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
-            } while (keep);
-  
-            // Move down right
-            aux_x = x;
-            aux_y = y;
-            var keep = true; 
-            do {
-              aux_x++;
-              aux_y--;
-              // Out of context
-              if (aux_x > 7 || aux_y < 0) keep = false;
-              // Next square is empty
-              else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b'){
-                this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
-            } while (keep);
-          }
-          else if (!(isWhite)) {
-            // Move up left
-            let aux_x = x;
-            let aux_y = y;
-            var keep = true; 
-            do {
-              aux_x--;
-              aux_y++;
-              // Out of context
-              if (aux_x < 0 || aux_y > 7) keep = false;
-              // Next square is empty
-              else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w'){
-                this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
-            } while (keep);
-  
-            // Move up right
-            aux_x = x;
-            aux_y = y;
-            var keep = true; 
-            do {
-              aux_x++;
-              aux_y++;
-              // Out of context
-              if (aux_x > 7 || aux_y > 7) keep = false;
-              // Next square is empty
-              else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w'){
-                this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
-            } while (keep);
-  
-            // Move down left
-            aux_x = x;
-            aux_y = y;
-            var keep = true; 
-            do {
-              aux_x--;
-              aux_y--;
-              // Out of context
-              if (aux_x < 0 || aux_y < 0) keep = false;
-              // Next square is empty
-              else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w'){
-                this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
-            } while (keep);
-  
-            // Move down right
-            aux_x = x;
-            aux_y = y;
-            var keep = true; 
-            do {
-              aux_x++;
-              aux_y--;
-              // Out of context
-              if (aux_x > 7 || aux_y < 0) keep = false;
-              // Next square is empty
-              else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-              // Next square has enemy
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'w'){
-                this.possibleMoves.push(this.coordToCode(aux_x,aux_y));
-                keep = false;
-              }
-              // Next square has allie
-              else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
-            } while (keep);
-          }
-        break;
+  startSecondBoard() {
+    this.secondBoard = [];
+    for (let i = 0; i < 8; i++) {
+      this.secondBoard[i] = [];
+      for (let j = 0; j < 8; j++) {
+        this.secondBoard[i][j] = "";
       }
     }
+  }
+
+  startAuxBoard() {
+    this.auxBoard = [];
+    for (let i = 0; i < 8; i++) {
+      this.auxBoard[i] = [];
+      for (let j = 0; j < 8; j++) {
+        this.auxBoard[i][j] = "";
+      }
+    }
+  }
+
+  copyBoard(to: string[][], from: string[][]) {
+    for (let i = 0; i < this.board.length; i++) {
+      for (let j = 0; j < this.board.length; j++) {
+        to[i][j] = from[i][j];
+      }
+    }
+  }
+
+
+
+  copySecondBoard() {
+    for (let i = 0; i < this.board.length; i++) {
+      for (let j = 0; j < this.board.length; j++) {
+        this.secondBoard[i][j] = this.board[i][j];
+      }
+    }
+  }
+
+
+  // Calculates and stores all possible moves in the possibleMoves array
+  // Calculates and stores all possible moves in the possibleMoves array
+  setPossibleMoves(squareCode: string, examine: boolean) {
+    this.possibleMoves = [];
+    let [x, y] = this.codeToCoord(squareCode);
+    let [isWhite, pieceType] = this.parsePiece(this.board[x][y]);
+    switch (pieceType) {
+      case "pawn":
+        if (isWhite) {
+          // The square in front of the pawn is empty
+          if (this.board[x][y + 1] == "") {
+            this.copySecondBoard();
+            this.secondBoard[x][y + 1] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, y + 1));
+
+          }
+          // The pawn is in the starting square and the two in front are empty
+          if (this.board[x][y + 2] == "" && this.board[x][y + 1] == "" && y == 1) {
+            this.copySecondBoard();
+            this.secondBoard[x][y + 2] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, y + 2));
+          }
+          // Eat right diagonal
+          if (x < 7 && y < 7 && this.parseColour(this.board[x + 1][y + 1]) == 'b') {
+            this.copySecondBoard();
+            this.secondBoard[x + 1][y + 1] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x + 1, y + 1));
+          }
+          // Eat left diagonal
+          if (x > 0 && y < 7 && this.parseColour(this.board[x - 1][y + 1]) == 'b') {
+            this.copySecondBoard();
+            this.secondBoard[x - 1][y + 1] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x - 1, y + 1));
+          }
+
+        }
+        else if (!(isWhite)) {
+          // The square in front of the pawn is empty
+          if (this.board[x][y - 1] == "") {
+            this.copySecondBoard();
+            this.secondBoard[x][y - 1] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, y - 1));
+          }
+          // The pawn is in the starting square and the two in front are empty
+          if (this.board[x][y - 2] == "" && this.board[x][y - 1] == "" && y == 6) {
+            this.copySecondBoard();
+            this.secondBoard[x][y - 2] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, y - 2));
+          }
+          // Eat right diagonal
+          if (x < 7 && y > 0 && this.parseColour(this.board[x + 1][y - 1]) == 'w') {
+            this.copySecondBoard();
+            this.secondBoard[x + 1][y - 1] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x + 1, y - 1));
+          }
+          // Eat left diagonal
+          if (x > 0 && y > 0 && this.parseColour(this.board[x - 1][y - 1]) == 'w') {
+            this.copySecondBoard();
+            this.secondBoard[x - 1][y - 1] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x - 1, y - 1));
+          }
+        }
+        break;
+      case "knight":
+        if (isWhite) {
+
+          let aux_x = x;
+          let aux_y = y;
+
+          // Move up left
+          aux_x = Number(x) - 1;
+          aux_y = Number(y) + 2;
+          if (aux_x >= 0 && aux_y <= 7 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+
+
+          aux_x = Number(x) - 2;
+          aux_y = Number(y) + 1;
+          if (aux_x >= 0 && aux_y <= 7 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+
+          // Move up right
+          aux_x = Number(x) + 1;
+          aux_y = Number(y) + 2;
+          if (aux_x <= 7 && aux_y <= 7 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+
+          aux_x = Number(x) + 2;
+          aux_y = Number(y) + 1;
+          if (aux_x <= 7 && aux_y <= 7 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+
+          // Move down left
+          aux_x = Number(x) - 1;
+          aux_y = Number(y) - 2;
+          if (aux_x >= 0 && aux_y >= 0 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+
+          aux_x = Number(x) - 2;
+          aux_y = Number(y) - 1;
+          if (aux_x >= 0 && aux_y >= 0 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+
+          // Move down right
+          aux_x = Number(x) + 1;
+          aux_y = Number(y) - 2;
+          if (aux_x <= 7 && aux_y >= 0 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+
+          aux_x = Number(x) + 2;
+          aux_y = Number(y) - 1;
+          if (aux_x <= 7 && aux_y >= 0 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'b')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+        }
+
+        else if (!(isWhite)) {
+          let aux_x = x;
+          let aux_y = y;
+
+          // Move up left
+          aux_x = Number(x) - 1;
+          aux_y = Number(y) + 2;
+          if (aux_x >= 0 && aux_y <= 7 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+
+          aux_x = Number(x) - 2;
+          aux_y = Number(y) + 1;
+          if (aux_x >= 0 && aux_y <= 7 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+
+          // Move up right
+          aux_x = Number(x) + 1;
+          aux_y = Number(y) + 2;
+          if (aux_x <= 7 && aux_y <= 7 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+
+          aux_x = Number(x) + 2;
+          aux_y = Number(y) + 1;
+          if (aux_x <= 7 && aux_y <= 7 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+
+          // Move down left
+          aux_x = Number(x) - 1;
+          aux_y = Number(y) - 2;
+          if (aux_x >= 0 && aux_y >= 0 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+
+          aux_x = Number(x) - 2;
+          aux_y = Number(y) - 1;
+          if (aux_x >= 0 && aux_y >= 0 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+
+          // Move down right
+          aux_x = Number(x) + 1;
+          aux_y = Number(y) - 2;
+          if (aux_x <= 7 && aux_y >= 0 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+
+          aux_x = Number(x) + 2;
+          aux_y = Number(y) - 1;
+          if (aux_x <= 7 && aux_y >= 0 && (this.board[aux_x][aux_y] == "" || this.parseColour(this.board[aux_x][aux_y]) == 'w')) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = this.board[x][y];
+            this.secondBoard[x][y] = "";
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+          }
+        }
+        break;
+      case "rook":
+        if (isWhite) {
+          // Move up
+          let i = y;
+          var keep = true;
+          do {
+            i++;
+            // Out of context
+            if (i > 7) keep = false;
+            // Next square is empty
+            else if (this.board[x][i] == "") {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[x][i]) == 'b') {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[x][i]) == 'w') keep = false;
+          } while (keep);
+
+          // Move down
+          i = y;
+          keep = true;
+          do {
+            i--;
+            // Out of context
+            if (i < 0) keep = false;
+            // Next square is empty
+            else if (this.board[x][i] == "") {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[x][i]) == 'b') {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[x][i]) == 'w') keep = false;
+          } while (keep);
+
+          // Move right
+          i = x;
+          keep = true;
+          do {
+            i++;
+            // Out of context
+            if (i > 7) keep = false;
+            // Next square is empty
+            else if (this.board[i][y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[i][y]) == 'b') {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[i][y]) == 'w') keep = false;
+          } while (keep);
+
+          // Move left
+          i = x;
+          keep = true;
+          do {
+            i--;
+            // Out of context
+            if (i < 0) keep = false;
+            // Next square is empty
+            else if (this.board[i][y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[i][y]) == 'b') {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[i][y]) == 'w') keep = false;
+          } while (keep);
+        }
+        else if (!(isWhite)) {
+          // Move up
+          let i = y;
+          var keep = true;
+          do {
+            i++;
+            // Out of context
+            if (i > 7) keep = false;
+            // Next square is empty
+            else if (this.board[x][i] == "") {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[x][i]) == 'w') {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[x][i]) == 'b') keep = false;
+          } while (keep);
+
+          // Move down
+          i = y;
+          keep = true;
+          do {
+            i--;
+            // Out of context
+            if (i < 0) keep = false;
+            // Next square is empty
+            else if (this.board[x][i] == "") {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[x][i]) == 'w') {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[x][i]) == 'b') keep = false;
+          } while (keep);
+
+          // Move right
+          i = x;
+          keep = true;
+          do {
+            i++;
+            // Out of context
+            if (i > 7) keep = false;
+            // Next square is empty
+            else if (this.board[i][y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[i][y]) == 'w') {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[i][y]) == 'b') keep = false;
+          } while (keep);
+
+          // Move left
+          i = x;
+          keep = true;
+          do {
+            i--;
+            // Out of context
+            if (i < 0) keep = false;
+            // Next square is empty
+            else if (this.board[i][y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[i][y]) == 'w') {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[i][y]) == 'b') keep = false;
+          } while (keep);
+        }
+        break;
+      case "king":
+        if (isWhite) {
+          // Move up
+          let i = y;
+          i++;
+          // Out of context
+          if (i < 8) {
+            // Next square is empty
+            if (this.board[x][i] == "") {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[x][i]) == 'b') {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
+          }
+
+
+          // Move down
+          i = y;
+          i--;
+          // Out of context
+          if (i >= 0) {
+            // Next square is empty
+            if (this.board[x][i] == "") {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[x][i]) == 'b') {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
+          }
+
+          // Move right
+          i = x;
+          i++;
+          // Out of context
+          if (i < 8) {
+            // Next square is empty
+            if (this.board[i][y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[i][y]) == 'b') {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
+          }
+
+          // Move left
+          i = x;
+          i--;
+          // Out of context
+          if (i >= 0) {
+            // Next square is empty
+            if (this.board[i][y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[i][y]) == 'b') {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
+          }
+
+          // Move up left
+          let aux_x = x;
+          let aux_y = y;
+          aux_x--;
+          aux_y++;
+          // Out of context
+          if (aux_x >= 0 && aux_y < 8) {
+            // Next square is empty
+            if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+          }
+
+          // Move up right
+          aux_x = x;
+          aux_y = y;
+          aux_x++;
+          aux_y++;
+          if (aux_x < 8 && aux_y < 8) {
+            // Next square is empty
+            if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+          }
+
+          // Move down left
+          aux_x = x;
+          aux_y = y;
+          aux_x--;
+          aux_y--;
+          // Out of context
+          if (aux_x >= 0 && aux_y >= 0) {
+            // Next square is empty
+            if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+          }
+
+          // Move down right
+          aux_x = x;
+          aux_y = y;
+          aux_x++;
+          aux_y--;
+          // Out of context
+          if (aux_x < 8 && aux_y >= 0) {
+            // Next square is empty
+            if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+          }
+        }
+        else if (!(isWhite)) {
+          // Move up
+          let i = y;
+          i++;
+          // Out of context
+          if (i < 8) {
+            // Next square is empty
+            if (this.board[x][i] == "") {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[x][i]) == 'w') {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
+          }
+
+
+          // Move down
+          i = y;
+          i--;
+          // Out of context
+          if (i >= 0) {
+            // Next square is empty
+            if (this.board[x][i] == "") {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[x][i]) == 'w') {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
+          }
+
+          // Move right
+          i = x;
+          i++;
+          // Out of context
+          if (i < 8) {
+            // Next square is empty
+            if (this.board[i][y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[i][y]) == 'w') {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
+          }
+
+          // Move left
+          i = x;
+          i--;
+          // Out of context
+          if (i >= 0) {
+            // Next square is empty
+            if (this.board[i][y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[i][y]) == 'w') {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
+          }
+
+          // Move up left
+          let aux_x = x;
+          let aux_y = y;
+          aux_x--;
+          aux_y++;
+          // Out of context
+          if (aux_x >= 0 && aux_y < 8) {
+            // Next square is empty
+            if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+          }
+
+          // Move up right
+          aux_x = x;
+          aux_y = y;
+          aux_x++;
+          aux_y++;
+          if (aux_x < 8 && aux_y < 8) {
+            // Next square is empty
+            if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+          }
+
+          // Move down left
+          aux_x = x;
+          aux_y = y;
+          aux_x--;
+          aux_y--;
+          // Out of context
+          if (aux_x >= 0 && aux_y >= 0) {
+            // Next square is empty
+            if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+          }
+
+          // Move down right
+          aux_x = x;
+          aux_y = y;
+          aux_x++;
+          aux_y--;
+          // Out of context
+          if (aux_x < 8 && aux_y >= 0) {
+            // Next square is empty
+            if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
+          }
+        }
+        break;
+      case "queen":
+        if (isWhite) {
+          // Move up
+          let i = y;
+          var keep = true;
+          do {
+            i++;
+            // Out of context
+            if (i > 7) keep = false;
+            // Next square is empty
+            else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x, i));
+            // Next square has enemy
+            else if (this.parseColour(this.board[x][i]) == 'b') {
+              this.possibleMoves.push(this.coordToCode(x, i));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[x][i]) == 'w') keep = false;
+          } while (keep);
+
+          // Move down
+          i = y;
+          keep = true;
+          do {
+            i--;
+            // Out of context
+            if (i < 0) keep = false;
+            // Next square is empty
+            else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x, i));
+            // Next square has enemy
+            else if (this.parseColour(this.board[x][i]) == 'b') {
+              this.possibleMoves.push(this.coordToCode(x, i));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[x][i]) == 'w') keep = false;
+          } while (keep);
+
+          // Move right
+          i = x;
+          keep = true;
+          do {
+            i++;
+            // Out of context
+            if (i > 7) keep = false;
+            // Next square is empty
+            else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i, y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[i][y]) == 'b') {
+              this.possibleMoves.push(this.coordToCode(i, y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[i][y]) == 'w') keep = false;
+          } while (keep);
+
+          // Move left
+          i = x;
+          keep = true;
+          do {
+            i--;
+            // Out of context
+            if (i < 0) keep = false;
+            // Next square is empty
+            else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i, y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[i][y]) == 'b') {
+              this.possibleMoves.push(this.coordToCode(i, y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[i][y]) == 'w') keep = false;
+          } while (keep);
+
+          // Move up left
+          let aux_x = x;
+          let aux_y = y;
+          var keep = true;
+          do {
+            aux_x--;
+            aux_y++;
+            // Out of context
+            if (aux_x < 0 || aux_y > 7) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
+          } while (keep);
+
+          // Move up right
+          aux_x = x;
+          aux_y = y;
+          var keep = true;
+          do {
+            aux_x++;
+            aux_y++;
+            // Out of context
+            if (aux_x > 7 || aux_y > 7) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
+          } while (keep);
+
+          // Move down left
+          aux_x = x;
+          aux_y = y;
+          var keep = true;
+          do {
+            aux_x--;
+            aux_y--;
+            // Out of context
+            if (aux_x < 0 || aux_y < 0) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
+          } while (keep);
+
+          // Move down right
+          aux_x = x;
+          aux_y = y;
+          var keep = true;
+          do {
+            aux_x++;
+            aux_y--;
+            // Out of context
+            if (aux_x > 7 || aux_y < 0) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
+          } while (keep);
+
+        }
+        else if (!(isWhite)) {
+          // Move up
+          let i = y;
+          var keep = true;
+          do {
+            i++;
+            // Out of context
+            if (i > 7) keep = false;
+            // Next square is empty
+            else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x, i));
+            // Next square has enemy
+            else if (this.parseColour(this.board[x][i]) == 'w') {
+              this.possibleMoves.push(this.coordToCode(x, i));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[x][i]) == 'b') keep = false;
+          } while (keep);
+
+          // Move down
+          i = y;
+          keep = true;
+          do {
+            i--;
+            // Out of context
+            if (i < 0) keep = false;
+            // Next square is empty
+            else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x, i));
+            // Next square has enemy
+            else if (this.parseColour(this.board[x][i]) == 'w') {
+              this.possibleMoves.push(this.coordToCode(x, i));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[x][i]) == 'b') keep = false;
+          } while (keep);
+
+          // Move right
+          i = x;
+          keep = true;
+          do {
+            i++;
+            // Out of context
+            if (i > 7) keep = false;
+            // Next square is empty
+            else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i, y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[i][y]) == 'w') {
+              this.possibleMoves.push(this.coordToCode(i, y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[i][y]) == 'b') keep = false;
+          } while (keep);
+
+          // Move left
+          i = x;
+          keep = true;
+          do {
+            i--;
+            // Out of context
+            if (i < 0) keep = false;
+            // Next square is empty
+            else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i, y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[i][y]) == 'w') {
+              this.possibleMoves.push(this.coordToCode(i, y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[i][y]) == 'b') keep = false;
+          } while (keep);
+
+          // Move up left
+          let aux_x = x;
+          let aux_y = y;
+          var keep = true;
+          do {
+            aux_x--;
+            aux_y++;
+            // Out of context
+            if (aux_x < 0 || aux_y > 7) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
+          } while (keep);
+
+          // Move up right
+          aux_x = x;
+          aux_y = y;
+          var keep = true;
+          do {
+            aux_x++;
+            aux_y++;
+            // Out of context
+            if (aux_x > 7 || aux_y > 7) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
+          } while (keep);
+
+          // Move down left
+          aux_x = x;
+          aux_y = y;
+          var keep = true;
+          do {
+            aux_x--;
+            aux_y--;
+            // Out of context
+            if (aux_x < 0 || aux_y < 0) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
+          } while (keep);
+
+          // Move down right
+          aux_x = x;
+          aux_y = y;
+          var keep = true;
+          do {
+            aux_x++;
+            aux_y--;
+            // Out of context
+            if (aux_x > 7 || aux_y < 0) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
+          } while (keep);
+
+        }
+        break;
+      case "bishop":
+        if (isWhite) {
+          // Move up left
+          let aux_x = x;
+          let aux_y = y;
+          var keep = true;
+          do {
+            aux_x--;
+            aux_y++;
+            // Out of context
+            if (aux_x < 0 || aux_y > 7) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
+          } while (keep);
+
+          // Move up right
+          aux_x = x;
+          aux_y = y;
+          var keep = true;
+          do {
+            aux_x++;
+            aux_y++;
+            // Out of context
+            if (aux_x > 7 || aux_y > 7) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
+          } while (keep);
+
+          // Move down left
+          aux_x = x;
+          aux_y = y;
+          var keep = true;
+          do {
+            aux_x--;
+            aux_y--;
+            // Out of context
+            if (aux_x < 0 || aux_y < 0) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
+          } while (keep);
+
+          // Move down right
+          aux_x = x;
+          aux_y = y;
+          var keep = true;
+          do {
+            aux_x++;
+            aux_y--;
+            // Out of context
+            if (aux_x > 7 || aux_y < 0) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') keep = false;
+          } while (keep);
+        }
+        else if (!(isWhite)) {
+          // Move up left
+          let aux_x = x;
+          let aux_y = y;
+          var keep = true;
+          do {
+            aux_x--;
+            aux_y++;
+            // Out of context
+            if (aux_x < 0 || aux_y > 7) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
+          } while (keep);
+
+          // Move up right
+          aux_x = x;
+          aux_y = y;
+          var keep = true;
+          do {
+            aux_x++;
+            aux_y++;
+            // Out of context
+            if (aux_x > 7 || aux_y > 7) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
+          } while (keep);
+
+          // Move down left
+          aux_x = x;
+          aux_y = y;
+          var keep = true;
+          do {
+            aux_x--;
+            aux_y--;
+            // Out of context
+            if (aux_x < 0 || aux_y < 0) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
+          } while (keep);
+
+          // Move down right
+          aux_x = x;
+          aux_y = y;
+          var keep = true;
+          do {
+            aux_x++;
+            aux_y--;
+            // Out of context
+            if (aux_x > 7 || aux_y < 0) keep = false;
+            // Next square is empty
+            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            // Next square has enemy
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
+              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              keep = false;
+            }
+            // Next square has allie
+            else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
+          } while (keep);
+        }
+        break;
+    }
+  }
 
   // Seek White King position to get the coordenates.
   seekWhiteKingPosition(): string {
@@ -1045,24 +1390,24 @@ export class TableroComponent {
     let i = 0;
     let x = 0;
     let y = 0;
-    while(!(found)) {
+    while (!(found)) {
       let j = 0;
       while (!(found) && j < 8) {
-          let currentPiece = this.board[i][j];
-          if (this.parseColour(currentPiece) != "e"){
-            [isWhite, pieceType] = this.parsePiece(this.board[i][j]);
-            if (isWhite && pieceType == "king"){
-              found = true;
-              x = i;
-              y = j;
+        let currentPiece = this.board[i][j];
+        if (this.parseColour(currentPiece) != "e") {
+          [isWhite, pieceType] = this.parsePiece(this.board[i][j]);
+          if (isWhite && pieceType == "king") {
+            found = true;
+            x = i;
+            y = j;
           }
-         }
-         j++;
         }
-        i++;
+        j++;
       }
+      i++;
+    }
     // 100 % should entry there, because the king should be alive to play the game.
-    return this.coordToCode(x,y);
+    return this.coordToCode(x, y);
   }
 
   // Seek White King position to get the coordenates.
@@ -1072,38 +1417,44 @@ export class TableroComponent {
     let i = 0;
     let x = 0;
     let y = 0;
-    while(!(found)) {
+    while (!(found)) {
       let j = 0;
-        while (!(found) && j < 8) {
-          let currentPiece = this.board[i][j];
-          if (this.parseColour(currentPiece) != "e"){
-            [isWhite, pieceType] = this.parsePiece(this.board[i][j]);
-            if (!(isWhite) && pieceType == "king"){
-              found = true;
-              x = i;
-              y = j;
+      while (!(found) && j < 8) {
+        let currentPiece = this.board[i][j];
+        if (this.parseColour(currentPiece) != "e") {
+          [isWhite, pieceType] = this.parsePiece(this.board[i][j]);
+          if (!(isWhite) && pieceType == "king") {
+            found = true;
+            x = i;
+            y = j;
           }
-         }
-         j++;
         }
-        i++;
+        j++;
       }
+      i++;
+    }
     // 100 % should entry there, because the king should be alive to play the game.
-    return this.coordToCode(x,y);
+    return this.coordToCode(x, y);
   }
 
   // Examine king check
-  examineWhiteKingCheck(boardToCheck : string[][]) {
+  examineWhiteKingCheck(boardToCheck: string[][]) {
+    // Aquí copio board en un auxiliar
+    this.copyBoard(this.auxBoard, this.board);
+    // En board copio second
+    this.copyBoard(this.board, this.secondBoard);
     let squareWhiteKingCode = this.seekWhiteKingPosition();
     let possibleMovesAux = this.possibleMoves;
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         let currentPiece = boardToCheck[i][j];
-        if (this.parseColour(currentPiece) != 'e'){ 
+        if (this.parseColour(currentPiece) != 'e') {
           if (this.parseColour(currentPiece) == 'b') {
-            this.setPossibleMoves(this.coordToCode(i,j));
+            this.setPossibleMoves(this.coordToCode(i, j), false);
             if (this.possibleMoves.includes(squareWhiteKingCode)) {
               this.possibleMoves = possibleMovesAux;
+              // Copio auxiliar en board
+              this.copyBoard(this.board, this.auxBoard);
               return true;
             }
             // Si el rey esta en el possibleMoves devuelve true
@@ -1112,21 +1463,30 @@ export class TableroComponent {
       }
     }
     this.possibleMoves = possibleMovesAux;
+    console.log("No hay jaque");
+    // Copio auxiliar en board
+    this.copyBoard(this.board, this.auxBoard);
     return false;
   }
 
   // Examine king check
-  examineBlackKingCheck(boardToCheck : string[][]) {
+  examineBlackKingCheck(boardToCheck: string[][]) {
+    // Aquí copio board en un auxiliar
+    this.copyBoard(this.auxBoard, this.board);
+    // En board copio second
+    this.copyBoard(this.board, this.secondBoard);
     let squareBlackKingCode = this.seekBlackKingPosition();
     let possibleMovesAux = this.possibleMoves;
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         let currentPiece = boardToCheck[i][j];
-        if (this.parseColour(currentPiece) != 'e'){ 
+        if (this.parseColour(currentPiece) != 'e') {
           if (this.parseColour(currentPiece) == 'w') {
-            this.setPossibleMoves(this.coordToCode(i,j));
+            this.setPossibleMoves(this.coordToCode(i, j), false);
             if (this.possibleMoves.includes(squareBlackKingCode)) {
               this.possibleMoves = possibleMovesAux;
+              // Copio auxiliar en board
+              this.copyBoard(this.board, this.auxBoard);
               return true;
             }
             // Si el rey esta en el possibleMoves devuelve true
@@ -1135,6 +1495,8 @@ export class TableroComponent {
       }
     }
     this.possibleMoves = possibleMovesAux;
+    // Copio auxiliar en board
+    this.copyBoard(this.board, this.auxBoard);
     return false;
   }
 
@@ -1182,9 +1544,9 @@ export class TableroComponent {
   // Transforms coord [x,y] into code "{a-h}{0-7}"
   coordToCode(x: number, y: number): string {
     let charX = 'a'.charCodeAt(0) + x;
-    let charY = (y+1).toString();
+    let charY = (y + 1).toString();
 
-    return String.fromCharCode(charX)+charY;
+    return String.fromCharCode(charX) + charY;
   }
 
   // From the piece code (corresponding id in html) returns its color:
@@ -1200,7 +1562,7 @@ export class TableroComponent {
         colour = 'b';
       }
       return colour;
-  }
+    }
   }
 
   // From the piece code (corresponding id in html) returns its color and
@@ -1225,7 +1587,7 @@ export class TableroComponent {
       // Check if turn matches color and piece was clicked
       if (color === this.turnWhite && this.board[x][y] !== "") {
         this.selected = clicked;
-        this.setPossibleMoves(this.selected);
+        this.setPossibleMoves(this.selected, true);
         this.markHintSquares();
       }
     }
@@ -1237,17 +1599,20 @@ export class TableroComponent {
       if (this.possibleMoves.includes(clicked)) {
         this.movePiece(clicked);
       }
+      this.copyBoard(this.secondBoard, this.board);
+      this.copyBoard(this.auxBoard, this.board);
       if (this.turnWhite) {
-        if(this.examineWhiteKingCheck(this.board)){
+        if (this.examineWhiteKingCheck(this.board)) {
           // Avisar al enemigo negro de jaque
           console.log("Jaque al blanco");
+          // Check de si es jaque mate mirando si las fichas de su color le pueden defender ( hay movimientos de su color ) hay que hacer funcion nueva
         }
       } else if (!(this.turnWhite)) {
-        if (this.examineBlackKingCheck(this.board)){
+        if (this.examineBlackKingCheck(this.board)) {
           // Avisar al enemigo blanco de jaque
           console.log("Jaque al negro")
         }
-      } 
+      }
       this.selected = "";
       this.resetHintSquares();
     }

@@ -32,9 +32,9 @@ export class LoginComponent {
       })
       .catch((error) => {
         console.error(error);
-        /* Emergency bypass
+        //Emergency bypass
         localStorage.setItem('email', this.email);
-        this.router.navigateByUrl('/mainMenu');*/
+        this.router.navigateByUrl('/mainMenu');
       })
     
   }
