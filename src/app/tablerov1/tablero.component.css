@@ -15,14 +15,18 @@
 
 .white_square {
     background-color: #efefef;
+    padding-top: 10px;
+    
 }
 
 .black_square {
   background-color: #888;
+  padding-top: 10px;
 }
 
 .blue_square {
   background-color: rgb(76, 118, 196);
+  padding-top: 10px;
 }
 
 .side_panel {
@@ -41,7 +45,7 @@
 
 .black_cemetery {
   width: 800px;
-  height: 100px;
+  height: 60px;
   background-color: black;
   font-size: 50px;
   color: white;
@@ -49,7 +53,7 @@
 
 .white_cemetery {
   width: 800px;
-  height: 100px;
+  height: 60px;
   background-color: white;
   font-size: 50px;
   color: black;
@@ -57,4 +61,8 @@
 
 .timer {
   font-size: 90px;
+}
+
+.piece {
+  cursor: pointer;
 }

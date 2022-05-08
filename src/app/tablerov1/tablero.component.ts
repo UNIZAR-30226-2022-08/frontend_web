@@ -1273,9 +1273,8 @@ export class TableroComponent {
         var cemetery = document.getElementById("cemeteryB");
       }
       if (cemetery != undefined && pieceText != undefined) {
-        cemetery.textContent += pieceText;
+        cemetery.appendChild(<Node>domDestinyPiece);
       }
-      domDestinyPiece?.parentNode?.removeChild(domDestinyPiece);
     }
     domDestiny?.appendChild(<Node>domOriginPiece);
 
