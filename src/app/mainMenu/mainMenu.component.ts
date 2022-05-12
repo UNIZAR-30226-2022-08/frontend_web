@@ -25,7 +25,7 @@ export class MainMenuComponent {
         if (res.status === 201) {
           
         } else {
-          console.log("login error: " + res.status);
+          console.log("logout error: " + res.status);
         }
       })
       .catch((error) => {

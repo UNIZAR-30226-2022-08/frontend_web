@@ -26,7 +26,7 @@ export class FriendListComponent {
             this.friends.push(res.data[i][1]);
           }
         } else {
-          console.log("login error: " + res.status);
+          console.log("get friends error: " + res.status);
         }
       })
       .catch((error) => {
@@ -35,7 +35,7 @@ export class FriendListComponent {
   }
 
   addFriend() {
-    console.log(this.friendName);
+    console.log("Adding " + this.friendName);
     axios
       .put('https://queenchess-backend.herokuapp.com/account/addFriend', {
         friend: this.friendName
@@ -43,7 +43,7 @@ export class FriendListComponent {
       .then((res) => {
         if (res.status === 200) {
         } else {
-          console.log("login error: " + res.status);
+          console.log("addfriend error: " + res.status);
         }
       })
       .catch((error) => {
@@ -52,7 +52,20 @@ export class FriendListComponent {
   }
 
   removeFriend(friendName: string) {
-    console.log(friendName);
+    console.log("Removing " + friendName);
+    axios
+      .delete('https://queenchess-backend.herokuapp.com/community/removeFriend', {
+        data: {friend: this.friendName}
+      })
+      .then((res) => {
+        if (res.status === 200) {
+        } else {
+          console.log("delete error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
   }
 
   chat(friendName: string) {

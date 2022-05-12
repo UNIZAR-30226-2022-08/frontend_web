@@ -43,7 +43,7 @@ export class ProfileComponent {
           alert("Contraseña cambiada con éxito");
         } else {
           alert("Error cambiando la contraseña");
-          console.log("login error: " + res.status);
+          console.log("changepass error: " + res.status);
         }
       })
       .catch((error) => {
