@@ -13,13 +13,16 @@
     <div class='challenge'>
       ♟️
     </div>
-    <div class='chat' (click)="router.navigate(['/chat']);">
+    <div class='chat' (click)="chat(friend)">
       💬
+    </div>
+    <div class='remove' (click)="removeFriend(friend)">
+      ❌
     </div>
   </li>
 </ul>
 
-<div class="login">
+<div>
   <form class="custom-form" method="post">
     <h1>Añadir amigo:</h1>
     <input

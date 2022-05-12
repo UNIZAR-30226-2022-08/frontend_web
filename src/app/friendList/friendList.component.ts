@@ -15,6 +15,8 @@ export class FriendListComponent {
 
   //This gets called after constructor (angular doesn't let you access elements in the constructor)
   ngOnInit() {
+    this.friends.push("menganito");
+    this.friends.push("fulanito");
     axios
       .get('https://queenchess-backend.herokuapp.com/account/getFriends', {
       })
@@ -47,6 +49,15 @@ export class FriendListComponent {
       .catch((error) => {
         console.error(error);
       })
+  }
+
+  removeFriend(friendName: string) {
+    console.log(friendName);
+  }
+
+  chat(friendName: string) {
+    console.log(friendName);
+    this.router.navigate(['/chat']);
   }
 
 }
