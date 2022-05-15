@@ -25,7 +25,7 @@ export class LoginComponent {
       .post('https://queenchess-backend.herokuapp.com/account/login', {
         email: this.email,
         password:this.password
-      },{ withCredentials: true })
+      })
       .then((res) => {
         if (res.status === 200) { 
           localStorage.setItem('email', this.email);
