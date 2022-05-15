@@ -15,9 +15,6 @@ import { FriendListComponent } from './friendList/friendList.component';
 import { MatchListComponent } from './matchList/matchList.component';
 import { ChatComponent } from './chat/chat.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-import { AuthInterceptor } from './services/auth.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HttpClientModule } from '@angular/common/http';
 
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
@@ -40,13 +37,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     routing,
     SocketIoModule.forRoot(config)
   ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-     multi: true,
-    }
-  ],
+  providers: [],
   bootstrap: [AppComponent],
   exports: [
     RouterModule

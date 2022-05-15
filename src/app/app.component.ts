@@ -12,6 +12,7 @@ export class AppComponent {
 
   title = 'frontend_web';
   constructor(private router: Router) {
+    axios.defaults.withCredentials = true;
     this.router.navigate(['home']);
   }
   
