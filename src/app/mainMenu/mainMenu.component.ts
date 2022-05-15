@@ -20,7 +20,7 @@ export class MainMenuComponent {
     this.router.navigateByUrl('/home');
     axios
       .post('https://queenchess-backend.herokuapp.com/account/logout', {
-      })
+      },{ withCredentials: true })
       .then((res) => {
         if (res.status === 201) {
           
