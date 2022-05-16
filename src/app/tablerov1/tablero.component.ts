@@ -20,6 +20,7 @@ export class TableroComponent {
   board: string[][];
   secondBoard: string[][];
   auxBoard: string[][];
+  auxBoard2: string[][];
   selected: string = "";
   turnWhite: boolean = true;
   possibleMoves: string[] = [];
@@ -41,6 +42,7 @@ export class TableroComponent {
   startGame() {
     this.startSecondBoard();
     this.startAuxBoard();
+    this.startAuxBoard2();
     this.board = [];
     for (let i = 0; i < 8; i++) {
       this.board[i] = [];
@@ -60,7 +62,6 @@ export class TableroComponent {
         else this.board[i][j] = "";
       }
     }
-    this.logBoard();
   }
 
   startSecondBoard() {
@@ -79,6 +80,16 @@ export class TableroComponent {
       this.auxBoard[i] = [];
       for (let j = 0; j < 8; j++) {
         this.auxBoard[i][j] = "";
+      }
+    }
+  }
+
+  startAuxBoard2() {
+    this.auxBoard2 = [];
+    for (let i = 0; i < 8; i++) {
+      this.auxBoard2[i] = [];
+      for (let j = 0; j < 8; j++) {
+        this.auxBoard2[i][j] = "";
       }
     }
   }
@@ -148,10 +159,7 @@ export class TableroComponent {
             this.copySecondBoard();
             this.secondBoard[x][y - 1] = this.board[x][y];
             this.secondBoard[x][y] = "";
-            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) {
-              this.possibleMoves.push(this.coordToCode(x, y - 1));
-              console.log("Aquí meto mov que no debo");
-            }
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, y - 1));
           }
           // The pawn is in the starting square and the two in front are empty
           if (this.board[x][y - 2] == "" && this.board[x][y - 1] == "" && y == 6) {
@@ -1699,15 +1707,14 @@ export class TableroComponent {
   // Examine black possible moves to verify jaque mate
   examineBlackPossibleMoves(boardToCheck: string[][]) {
     // Aquí copio board en un auxiliar
-    this.copyBoard(this.auxBoard, this.board);
-    // En board copio second
-    this.copyBoard(this.board, this.secondBoard);
+    this.copyBoard(this.auxBoard2, this.board);
+    this.possibleMoves=[];
     let possibleMovesAux = this.possibleMoves;
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         let currentPiece = boardToCheck[i][j];
         if (this.parseColour(currentPiece) == 'b') {
-          this.setPossibleMoves(this.coordToCode(i, j), false);
+          this.setPossibleMoves(this.coordToCode(i, j), true);
           if (this.possibleMoves.length > 0) {
             console.log("Aquí devuelvo true porque se puede mover un negro");
             console.log(this.coordToCode(i, j));
@@ -1716,43 +1723,38 @@ export class TableroComponent {
             }
             console.log(this.possibleMoves.length);
             this.possibleMoves = possibleMovesAux;
-            this.copyBoard(this.board, this.auxBoard);
+            this.copyBoard(this.board, this.auxBoard2);
             return true;
           }
         }
       }
     }
-    console.log("Aquí debería ser 0" + this.possibleMoves.length);
     this.possibleMoves = possibleMovesAux;
-    this.copyBoard(this.board, this.auxBoard);
+    this.copyBoard(this.board, this.auxBoard2);
     return false;
   }
 
   // Examine white possible moves to verify jaque mate
   examineWhitePossibleMoves(boardToCheck: string[][]) {
     // Aquí copio board en un auxiliar
-    this.copyBoard(this.auxBoard, this.board);
-    // En board copio second
-    this.copyBoard(this.board, this.secondBoard);
+    this.copyBoard(this.auxBoard2, this.board);
     let possibleMovesAux = this.possibleMoves;
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         let currentPiece = boardToCheck[i][j];
         if (this.parseColour(currentPiece) == 'w') {
-          this.setPossibleMoves(this.coordToCode(i, j), false);
+          this.setPossibleMoves(this.coordToCode(i, j), true);
           if (this.possibleMoves.length > 0) {
             // Aqui se pueden mover tanto no hay jaque mate 
-            console.log(this.possibleMoves.length);
             this.possibleMoves = possibleMovesAux;
-            this.copyBoard(this.board, this.auxBoard);
+            this.copyBoard(this.board, this.auxBoard2);
             return true;
           }
         }
       }
     }
-    console.log("Aquí debería ser 0" + this.possibleMoves.length);
     this.possibleMoves = possibleMovesAux;
-    this.copyBoard(this.board, this.auxBoard);
+    this.copyBoard(this.board, this.auxBoard2);
     return false;
   }
 
@@ -1783,6 +1785,7 @@ export class TableroComponent {
       }
       boardString += "\n";
     }
+    console.log(boardString);
   }
 
   // Transforms code "ln" where "l" is a letter and "n" is a number
@@ -1856,7 +1859,6 @@ export class TableroComponent {
         this.movePiece(clicked);
       }
       this.copyBoard(this.secondBoard, this.board);
-      this.copyBoard(this.auxBoard, this.board);
       if (this.turnWhite) {
         if (this.examineWhiteKingCheck(this.board)) {
           // Avisar al enemigo blanco de jaque
