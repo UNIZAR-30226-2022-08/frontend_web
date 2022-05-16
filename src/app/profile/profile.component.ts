@@ -21,7 +21,7 @@ export class ProfileComponent {
   ngOnInit() {
     var userElement = document.getElementById("usernameText");
     if (userElement != undefined) {
-      let username = localStorage.getItem("username");
+      let username = localStorage.getItem("email");
       if (username != null) {
         userElement.textContent += username;
       }
