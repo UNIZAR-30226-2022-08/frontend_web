@@ -148,7 +148,10 @@ export class TableroComponent {
             this.copySecondBoard();
             this.secondBoard[x][y - 1] = this.board[x][y];
             this.secondBoard[x][y] = "";
-            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, y - 1));
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) {
+              this.possibleMoves.push(this.coordToCode(x, y - 1));
+              console.log("Aquí meto mov que no debo");
+            }
           }
           // The pawn is in the starting square and the two in front are empty
           if (this.board[x][y - 2] == "" && this.board[x][y - 1] == "" && y == 6) {
@@ -916,10 +919,18 @@ export class TableroComponent {
             // Out of context
             if (i > 7) keep = false;
             // Next square is empty
-            else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x, i));
+            else if (this.board[x][i] == "") {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[x][i]) == 'b') {
-              this.possibleMoves.push(this.coordToCode(x, i));
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
               keep = false;
             }
             // Next square has allie
@@ -934,10 +945,18 @@ export class TableroComponent {
             // Out of context
             if (i < 0) keep = false;
             // Next square is empty
-            else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x, i));
+            else if (this.board[x][i] == "") {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[x][i]) == 'b') {
-              this.possibleMoves.push(this.coordToCode(x, i));
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
               keep = false;
             }
             // Next square has allie
@@ -952,10 +971,18 @@ export class TableroComponent {
             // Out of context
             if (i > 7) keep = false;
             // Next square is empty
-            else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i, y));
+            else if (this.board[i][y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[i][y]) == 'b') {
-              this.possibleMoves.push(this.coordToCode(i, y));
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
               keep = false;
             }
             // Next square has allie
@@ -970,10 +997,18 @@ export class TableroComponent {
             // Out of context
             if (i < 0) keep = false;
             // Next square is empty
-            else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i, y));
+            else if (this.board[i][y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[i][y]) == 'b') {
-              this.possibleMoves.push(this.coordToCode(i, y));
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
               keep = false;
             }
             // Next square has allie
@@ -984,16 +1019,25 @@ export class TableroComponent {
           let aux_x = x;
           let aux_y = y;
           var keep = true;
+
           do {
             aux_x--;
             aux_y++;
             // Out of context
             if (aux_x < 0 || aux_y > 7) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1010,10 +1054,18 @@ export class TableroComponent {
             // Out of context
             if (aux_x > 7 || aux_y > 7) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1030,10 +1082,18 @@ export class TableroComponent {
             // Out of context
             if (aux_x < 0 || aux_y < 0) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1050,10 +1110,18 @@ export class TableroComponent {
             // Out of context
             if (aux_x > 7 || aux_y < 0) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1070,10 +1138,18 @@ export class TableroComponent {
             // Out of context
             if (i > 7) keep = false;
             // Next square is empty
-            else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x, i));
+            else if (this.board[x][i] == "") {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[x][i]) == 'w') {
-              this.possibleMoves.push(this.coordToCode(x, i));
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
               keep = false;
             }
             // Next square has allie
@@ -1088,10 +1164,18 @@ export class TableroComponent {
             // Out of context
             if (i < 0) keep = false;
             // Next square is empty
-            else if (this.board[x][i] == "") this.possibleMoves.push(this.coordToCode(x, i));
+            else if (this.board[x][i] == "") {
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[x][i]) == 'w') {
-              this.possibleMoves.push(this.coordToCode(x, i));
+              this.copySecondBoard();
+              this.secondBoard[x][i] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, i));
               keep = false;
             }
             // Next square has allie
@@ -1106,10 +1190,18 @@ export class TableroComponent {
             // Out of context
             if (i > 7) keep = false;
             // Next square is empty
-            else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i, y));
+            else if (this.board[i][y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[i][y]) == 'w') {
-              this.possibleMoves.push(this.coordToCode(i, y));
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
               keep = false;
             }
             // Next square has allie
@@ -1124,10 +1216,18 @@ export class TableroComponent {
             // Out of context
             if (i < 0) keep = false;
             // Next square is empty
-            else if (this.board[i][y] == "") this.possibleMoves.push(this.coordToCode(i, y));
+            else if (this.board[i][y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[i][y]) == 'w') {
-              this.possibleMoves.push(this.coordToCode(i, y));
+              this.copySecondBoard();
+              this.secondBoard[i][y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(i, y));
               keep = false;
             }
             // Next square has allie
@@ -1144,10 +1244,18 @@ export class TableroComponent {
             // Out of context
             if (aux_x < 0 || aux_y > 7) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1164,10 +1272,18 @@ export class TableroComponent {
             // Out of context
             if (aux_x > 7 || aux_y > 7) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1184,10 +1300,18 @@ export class TableroComponent {
             // Out of context
             if (aux_x < 0 || aux_y < 0) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1204,16 +1328,23 @@ export class TableroComponent {
             // Out of context
             if (aux_x > 7 || aux_y < 0) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') keep = false;
           } while (keep);
-
         }
         break;
       case "bishop":
@@ -1222,16 +1353,25 @@ export class TableroComponent {
           let aux_x = x;
           let aux_y = y;
           var keep = true;
+
           do {
             aux_x--;
             aux_y++;
             // Out of context
             if (aux_x < 0 || aux_y > 7) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1248,10 +1388,18 @@ export class TableroComponent {
             // Out of context
             if (aux_x > 7 || aux_y > 7) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1268,10 +1416,18 @@ export class TableroComponent {
             // Out of context
             if (aux_x < 0 || aux_y < 0) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1288,10 +1444,18 @@ export class TableroComponent {
             // Out of context
             if (aux_x > 7 || aux_y < 0) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'b') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1309,10 +1473,18 @@ export class TableroComponent {
             // Out of context
             if (aux_x < 0 || aux_y > 7) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1329,10 +1501,18 @@ export class TableroComponent {
             // Out of context
             if (aux_x > 7 || aux_y > 7) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1349,10 +1529,18 @@ export class TableroComponent {
             // Out of context
             if (aux_x < 0 || aux_y < 0) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1369,10 +1557,18 @@ export class TableroComponent {
             // Out of context
             if (aux_x > 7 || aux_y < 0) keep = false;
             // Next square is empty
-            else if (this.board[aux_x][aux_y] == "") this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            else if (this.board[aux_x][aux_y] == "") {
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+            }
             // Next square has enemy
             else if (this.parseColour(this.board[aux_x][aux_y]) == 'w') {
-              this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
+              this.copySecondBoard();
+              this.secondBoard[aux_x][aux_y] = this.board[x][y];
+              this.secondBoard[x][y] = "";
+              if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
               keep = false;
             }
             // Next square has allie
@@ -1500,6 +1696,66 @@ export class TableroComponent {
     return false;
   }
 
+  // Examine black possible moves to verify jaque mate
+  examineBlackPossibleMoves(boardToCheck: string[][]) {
+    // Aquí copio board en un auxiliar
+    this.copyBoard(this.auxBoard, this.board);
+    // En board copio second
+    this.copyBoard(this.board, this.secondBoard);
+    let possibleMovesAux = this.possibleMoves;
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        let currentPiece = boardToCheck[i][j];
+        if (this.parseColour(currentPiece) == 'b') {
+          this.setPossibleMoves(this.coordToCode(i, j), false);
+          if (this.possibleMoves.length > 0) {
+            console.log("Aquí devuelvo true porque se puede mover un negro");
+            console.log(this.coordToCode(i, j));
+            for (let i = 0; i < this.possibleMoves.length ; i++) {
+              console.log(this.possibleMoves[i]);
+            }
+            console.log(this.possibleMoves.length);
+            this.possibleMoves = possibleMovesAux;
+            this.copyBoard(this.board, this.auxBoard);
+            return true;
+          }
+        }
+      }
+    }
+    console.log("Aquí debería ser 0" + this.possibleMoves.length);
+    this.possibleMoves = possibleMovesAux;
+    this.copyBoard(this.board, this.auxBoard);
+    return false;
+  }
+
+  // Examine white possible moves to verify jaque mate
+  examineWhitePossibleMoves(boardToCheck: string[][]) {
+    // Aquí copio board en un auxiliar
+    this.copyBoard(this.auxBoard, this.board);
+    // En board copio second
+    this.copyBoard(this.board, this.secondBoard);
+    let possibleMovesAux = this.possibleMoves;
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        let currentPiece = boardToCheck[i][j];
+        if (this.parseColour(currentPiece) == 'w') {
+          this.setPossibleMoves(this.coordToCode(i, j), false);
+          if (this.possibleMoves.length > 0) {
+            // Aqui se pueden mover tanto no hay jaque mate 
+            console.log(this.possibleMoves.length);
+            this.possibleMoves = possibleMovesAux;
+            this.copyBoard(this.board, this.auxBoard);
+            return true;
+          }
+        }
+      }
+    }
+    console.log("Aquí debería ser 0" + this.possibleMoves.length);
+    this.possibleMoves = possibleMovesAux;
+    this.copyBoard(this.board, this.auxBoard);
+    return false;
+  }
+
 
   // Changes possible move squares' colour 
   markHintSquares() {
@@ -1603,14 +1859,20 @@ export class TableroComponent {
       this.copyBoard(this.auxBoard, this.board);
       if (this.turnWhite) {
         if (this.examineWhiteKingCheck(this.board)) {
-          // Avisar al enemigo negro de jaque
+          // Avisar al enemigo blanco de jaque
           console.log("Jaque al blanco");
+          if (!(this.examineWhitePossibleMoves(this.board))) {
+            console.log("Se acaba el juego, jaque mate para los blancos");
+          }
           // Check de si es jaque mate mirando si las fichas de su color le pueden defender ( hay movimientos de su color ) hay que hacer funcion nueva
         }
       } else if (!(this.turnWhite)) {
         if (this.examineBlackKingCheck(this.board)) {
-          // Avisar al enemigo blanco de jaque
+          // Avisar al enemigo negro de jaque
           console.log("Jaque al negro")
+          if (!(this.examineBlackPossibleMoves(this.board))) {
+            console.log("Se acaba el juego, jaque mate para los negros");
+          }
         }
       }
       this.selected = "";
