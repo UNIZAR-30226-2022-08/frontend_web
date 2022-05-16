@@ -18,7 +18,7 @@ export class MainMenuComponent {
     localStorage.removeItem("username");
     localStorage.removeItem("email");
     this.router.navigateByUrl('/home');
-    axios
+    /*axios
       .post('https://queenchess-backend.herokuapp.com/account/logout', {
       })
       .then((res) => {
@@ -30,6 +30,6 @@ export class MainMenuComponent {
       })
       .catch((error) => {
         console.error(error);
-      })
+      })*/
   }
 }
