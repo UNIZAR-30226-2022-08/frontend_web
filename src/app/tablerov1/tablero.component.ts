@@ -27,6 +27,12 @@ export class TableroComponent {
   possibleMovesToCheckWhiteKing: string[] = [];
   jaqueNegro = false;
   jaqueBlanco = false;
+  queenCounter = 2;
+  knightCounter = 3;
+  rookCounter = 3;
+  bishopCounter = 3;
+  squareToSummon = "";
+  choosingSummon = false;
 
 
   // Removes all pieces from board
@@ -1840,87 +1846,139 @@ export class TableroComponent {
   // Checks piece clicked matches current player's turn
   // Calls movePiece() if the move is allowed
   checkClick(clicked: string) {
-    if (this.selected === "") {
-      let [x, y] = this.codeToCoord(clicked);
-      let [color, pieceType] = this.parsePiece(this.board[x][y]);
-      // Check if turn matches color and piece was clicked
-      if (color === this.turnWhite && this.board[x][y] !== "") {
-        this.selected = clicked;
-        this.setPossibleMoves(this.selected, true);
-        this.markHintSquares();
+    if (!this.choosingSummon) {
+      if (this.selected === "") {
+        let [x, y] = this.codeToCoord(clicked);
+        let [color, pieceType] = this.parsePiece(this.board[x][y]);
+        // Check if turn matches color and piece was clicked
+        if (color === this.turnWhite && this.board[x][y] !== "") {
+          this.selected = clicked;
+          this.setPossibleMoves(this.selected, true);
+          this.markHintSquares();
+        }
+      }
+      else {
+        // If destiny is in possible moves
+        let possible = false;
+        let [i, j] = this.codeToCoord(this.selected);
+        let [x, y] = this.codeToCoord(clicked);
+        if (this.possibleMoves.includes(clicked)) {
+          this.movePiece(clicked);
+        }
+        console.log(this.parsePiece(this.board[x][y]) + " " + y);
+
+        // Aquí habría que comprobar condición especial: peón final de tablero.
+        let [white, pieceType] = this.parsePiece(this.board[x][y]);
+        if ((white == true && pieceType == "pawn" && y == 7)) {
+          this.choosingSummon = true;
+          this.squareToSummon = clicked;
+          this.showWhiteChoiceButtons();
+        }
+        if (white == false && pieceType == "pawn" && y == 0) {
+          this.choosingSummon = true;
+          this.squareToSummon = clicked;
+          this.showBlackChoiceButtons();
+        }
+
+        this.copyBoard(this.secondBoard, this.board);
+        if (this.turnWhite) {
+          if (this.examineWhiteKingCheck(this.board)) {
+            // Avisar al enemigo blanco de jaque
+            if (!(this.examineWhitePossibleMoves(this.board))) {
+              console.log("Se acaba el juego, jaque mate al rey blanco");
+            }
+            // Avisar al enemigo negro de jaque
+            else { console.log("Jaque al rey blanco"); }
+            // Check de si es jaque mate mirando si las fichas de su color le pueden defender ( hay movimientos de su color ) hay que hacer funcion nueva
+          }
+          else {
+            // Comprobar rey ahogado
+            if (!(this.examineWhitePossibleMoves(this.board))) {
+              console.log("Tablas, el rey blanco está ahogado");
+            }
+          }
+        } else if (!(this.turnWhite)) {
+          if (this.examineBlackKingCheck(this.board)) {
+            // Avisar al enemigo negro de jaque mate
+            if (!(this.examineBlackPossibleMoves(this.board))) {
+              console.log("Se acaba el juego, jaque mate para los negros");
+            }
+            // Avisar al enemigo negro de jaque
+            else { console.log("Jaque al rey negro"); }
+          }
+          else {
+            // Comprobar rey negro ahogado
+            if (!(this.examineBlackPossibleMoves(this.board))) {
+              console.log("Tablas, el rey negro está ahogado");
+            }
+          }
+        }
+        this.selected = "";
+        this.resetHintSquares();
       }
     }
-    else {
-      // If destiny is in possible moves
-      let possible = false;
-      let [i, j] = this.codeToCoord(this.selected);
-      let [x, y] = this.codeToCoord(clicked);
-      if (this.possibleMoves.includes(clicked)) {
-        this.movePiece(clicked);
-      }
-      console.log(this.parsePiece(this.board[x][y]) + " " + y);
-      
-      // Aquí habría que comprobar condición especial: peón final de tablero.
-      let [white, pieceType] = this.parsePiece(this.board[x][y]);
-      if ((white == true && pieceType == "pawn" && y == 7) || white == false && pieceType == "pawn" && y == 0) {
-        this.swapPiece(origin, "white_queen");
-      }
+  }
 
-      this.copyBoard(this.secondBoard, this.board);
-      if (this.turnWhite) {
-        if (this.examineWhiteKingCheck(this.board)) {
-          // Avisar al enemigo blanco de jaque
-          if (!(this.examineWhitePossibleMoves(this.board))) {
-            console.log("Se acaba el juego, jaque mate al rey blanco");
-          }
-          // Avisar al enemigo negro de jaque
-          else { console.log("Jaque al rey blanco"); }
-          // Check de si es jaque mate mirando si las fichas de su color le pueden defender ( hay movimientos de su color ) hay que hacer funcion nueva
-        }
-        else {
-          // Comprobar rey ahogado
-          if (!(this.examineWhitePossibleMoves(this.board))) {
-            console.log("Tablas, el rey blanco está ahogado");
-          }
-        }
-      } else if (!(this.turnWhite)) {
-        if (this.examineBlackKingCheck(this.board)) {
-          // Avisar al enemigo negro de jaque mate
-          if (!(this.examineBlackPossibleMoves(this.board))) {
-            console.log("Se acaba el juego, jaque mate para los negros");
-          }
-          // Avisar al enemigo negro de jaque
-          else { console.log("Jaque al rey negro"); }
-        }
-        else {
-          // Comprobar rey negro ahogado
-          if (!(this.examineBlackPossibleMoves(this.board))) {
-            console.log("Tablas, el rey negro está ahogado");
-          }
-        }
-      }
-      this.selected = "";
-      this.resetHintSquares();
+  showWhiteChoiceButtons() {
+    var buttonContainer = document.getElementById("whiteChoiceButtonsContainer");
+    if (buttonContainer != undefined) {
+      buttonContainer.style.display = "block";
+    }
+  }
+
+  showBlackChoiceButtons() {
+    var buttonContainer = document.getElementById("blackChoiceButtonsContainer");
+    if (buttonContainer != undefined) {
+      buttonContainer.style.display = "block";
+    }
+  }
+
+  hideChoiceButtons() {
+    var buttonContainer = document.getElementById("whiteChoiceButtonsContainer");
+    if (buttonContainer != undefined) {
+      buttonContainer.style.display = "none";
+    }
+    var buttonContainer = document.getElementById("blackChoiceButtonsContainer");
+    if (buttonContainer != undefined) {
+      buttonContainer.style.display = "none";
     }
   }
 
   // Deletes all childs from a node
   removeChilds(parent: Node) {
     while (parent.lastChild) {
-        parent.removeChild(parent.lastChild);
+      parent.removeChild(parent.lastChild);
     }
   }
 
   // Swaps one piece into other type (used for pawn reaching end of the board)
-  swapPiece(origin: string, destType: string) {
-    console.log("SWAPPING PIECE");
-    let [i, j] = this.codeToCoord(origin);
+  swapPiece(destType: string) {
+    this.hideChoiceButtons();
+    let [i, j] = this.codeToCoord(this.squareToSummon);
     this.board[i][j] = destType;
 
-    var domDestiny = document.getElementById(origin);
+    var domDestiny = document.getElementById(this.squareToSummon);
     if (domDestiny != undefined) {
       this.removeChilds(domDestiny);
     }
+
+    const newPieceImg = document.createElement('img');
+    newPieceImg.setAttribute('src', "../../assets/defaultPieces/" + destType + ".png");
+    newPieceImg.setAttribute('width', '40');
+
+    const newPiece = document.createElement('span');
+    newPiece.id = destType + "_" + this.queenCounter;
+    newPiece.className = "piece";
+
+    newPiece.appendChild(newPieceImg);
+    domDestiny?.appendChild(newPiece);
+
+    this.board[i][j] = destType + "_" + this.queenCounter;
+    this.queenCounter++;
+    this.knightCounter++;
+    this.rookCounter++;
+    this.bishopCounter++;
+    this.choosingSummon = false;
   }
 
   // Moves piece to destiny
@@ -1931,18 +1989,7 @@ export class TableroComponent {
     var domOriginPiece = document.getElementById(this.board[i][j]);
     var domDestiny = document.getElementById(destiny);
 
-    
-    
-    if ((this.parsePiece(this.board[i][j]) == [true, "King"] && this.parsePiece(this.board[x][y]) == [true, "Rook"])) {
-      // Enroque blanco
-      //if ((i == 0 && j == 4 && this.parcePiece(this.board[i][j])) )
-
-    }
-    else if ((this.parsePiece(this.board[i][j]) == [false, "King"] && this.parsePiece(this.board[x][y]) == [false, "Rook"])) {
-      // Enroque negro
-
-    }
-    else if (this.board[x][y] != "") { 
+    if (this.board[x][y] != "") {
       // Normal move
       var domDestinyPiece = <Node>document.getElementById(this.board[x][y]);
       var pieceText = domDestinyPiece.textContent;
