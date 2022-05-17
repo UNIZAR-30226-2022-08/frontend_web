@@ -1708,7 +1708,7 @@ export class TableroComponent {
   examineBlackPossibleMoves(boardToCheck: string[][]) {
     // Aquí copio board en un auxiliar
     this.copyBoard(this.auxBoard2, this.board);
-    this.possibleMoves=[];
+    this.possibleMoves = [];
     let possibleMovesAux = this.possibleMoves;
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
@@ -1718,7 +1718,7 @@ export class TableroComponent {
           if (this.possibleMoves.length > 0) {
             console.log("Aquí devuelvo true porque se puede mover un negro");
             console.log(this.coordToCode(i, j));
-            for (let i = 0; i < this.possibleMoves.length ; i++) {
+            for (let i = 0; i < this.possibleMoves.length; i++) {
               console.log(this.possibleMoves[i]);
             }
             console.log(this.possibleMoves.length);
@@ -1858,22 +1858,42 @@ export class TableroComponent {
       if (this.possibleMoves.includes(clicked)) {
         this.movePiece(clicked);
       }
+      // Aquí habría que comprobar condición especial: peón final de tablero.
+      if ((this.parsePiece(this.board[x][y]) == [true, "Pawn"] && y == 7) || (this.parsePiece(this.board[x][y]) == [false, "Pawn"] && y == 0)){
+        // Peón final de tablero
+        // cambiarFicha();
+  
+      }
       this.copyBoard(this.secondBoard, this.board);
       if (this.turnWhite) {
         if (this.examineWhiteKingCheck(this.board)) {
           // Avisar al enemigo blanco de jaque
-          console.log("Jaque al blanco");
           if (!(this.examineWhitePossibleMoves(this.board))) {
-            console.log("Se acaba el juego, jaque mate para los blancos");
+            console.log("Se acaba el juego, jaque mate al rey blanco");
           }
+          // Avisar al enemigo negro de jaque
+          else { console.log("Jaque al rey blanco"); }
           // Check de si es jaque mate mirando si las fichas de su color le pueden defender ( hay movimientos de su color ) hay que hacer funcion nueva
+        }
+        else {
+          // Comprobar rey ahogado
+          if (!(this.examineWhitePossibleMoves(this.board))) {
+            console.log("Tablas, el rey blanco está ahogado");
+          }
         }
       } else if (!(this.turnWhite)) {
         if (this.examineBlackKingCheck(this.board)) {
-          // Avisar al enemigo negro de jaque
-          console.log("Jaque al negro")
+          // Avisar al enemigo negro de jaque mate
           if (!(this.examineBlackPossibleMoves(this.board))) {
             console.log("Se acaba el juego, jaque mate para los negros");
+          }
+          // Avisar al enemigo negro de jaque
+          else { console.log("Jaque al rey negro"); }
+        }
+        else {
+          // Comprobar rey negro ahogado
+          if (!(this.examineBlackPossibleMoves(this.board))) {
+            console.log("Tablas, el rey negro está ahogado");
           }
         }
       }
@@ -1890,7 +1910,19 @@ export class TableroComponent {
     var domOriginPiece = document.getElementById(this.board[i][j]);
     var domDestiny = document.getElementById(destiny);
 
-    if (this.board[x][y] != "") { // Destroy piece that was in destiny
+    
+    
+    if ((this.parsePiece(this.board[i][j]) == [true, "King"] && this.parsePiece(this.board[x][y]) == [true, "Rook"])) {
+      // Enroque blanco
+      //if ((i == 0 && j == 4 && this.parcePiece(this.board[i][j])) )
+
+    }
+    else if ((this.parsePiece(this.board[i][j]) == [false, "King"] && this.parsePiece(this.board[x][y]) == [false, "Rook"])) {
+      // Enroque negro
+
+    }
+    else if (this.board[x][y] != "") { 
+      // Normal move
       var domDestinyPiece = <Node>document.getElementById(this.board[x][y]);
       var pieceText = domDestinyPiece.textContent;
 
