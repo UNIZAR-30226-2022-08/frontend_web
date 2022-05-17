@@ -1858,12 +1858,14 @@ export class TableroComponent {
       if (this.possibleMoves.includes(clicked)) {
         this.movePiece(clicked);
       }
+      console.log(this.parsePiece(this.board[x][y]) + " " + y);
+      
       // Aquí habría que comprobar condición especial: peón final de tablero.
-      if ((this.parsePiece(this.board[x][y]) == [true, "Pawn"] && y == 7) || (this.parsePiece(this.board[x][y]) == [false, "Pawn"] && y == 0)){
-        // Peón final de tablero
-        // cambiarFicha();
-  
+      let [white, pieceType] = this.parsePiece(this.board[x][y]);
+      if ((white == true && pieceType == "pawn" && y == 7) || white == false && pieceType == "pawn" && y == 0) {
+        this.swapPiece(origin, "white_queen");
       }
+
       this.copyBoard(this.secondBoard, this.board);
       if (this.turnWhite) {
         if (this.examineWhiteKingCheck(this.board)) {
@@ -1899,6 +1901,25 @@ export class TableroComponent {
       }
       this.selected = "";
       this.resetHintSquares();
+    }
+  }
+
+  // Deletes all childs from a node
+  removeChilds(parent: Node) {
+    while (parent.lastChild) {
+        parent.removeChild(parent.lastChild);
+    }
+  }
+
+  // Swaps one piece into other type (used for pawn reaching end of the board)
+  swapPiece(origin: string, destType: string) {
+    console.log("SWAPPING PIECE");
+    let [i, j] = this.codeToCoord(origin);
+    this.board[i][j] = destType;
+
+    var domDestiny = document.getElementById(origin);
+    if (domDestiny != undefined) {
+      this.removeChilds(domDestiny);
     }
   }
 
