@@ -20,6 +20,7 @@ export class TableroComponent {
   board: string[][];
   secondBoard: string[][];
   auxBoard: string[][];
+  auxBoard2: string[][];
   selected: string = "";
   turnWhite: boolean = true;
   possibleMoves: string[] = [];
@@ -41,6 +42,7 @@ export class TableroComponent {
   startGame() {
     this.startSecondBoard();
     this.startAuxBoard();
+    this.startAuxBoard2();
     this.board = [];
     for (let i = 0; i < 8; i++) {
       this.board[i] = [];
@@ -60,7 +62,6 @@ export class TableroComponent {
         else this.board[i][j] = "";
       }
     }
-    this.logBoard();
   }
 
   startSecondBoard() {
@@ -79,6 +80,16 @@ export class TableroComponent {
       this.auxBoard[i] = [];
       for (let j = 0; j < 8; j++) {
         this.auxBoard[i][j] = "";
+      }
+    }
+  }
+
+  startAuxBoard2() {
+    this.auxBoard2 = [];
+    for (let i = 0; i < 8; i++) {
+      this.auxBoard2[i] = [];
+      for (let j = 0; j < 8; j++) {
+        this.auxBoard2[i][j] = "";
       }
     }
   }
@@ -148,10 +159,7 @@ export class TableroComponent {
             this.copySecondBoard();
             this.secondBoard[x][y - 1] = this.board[x][y];
             this.secondBoard[x][y] = "";
-            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) {
-              this.possibleMoves.push(this.coordToCode(x, y - 1));
-              console.log("Aquí meto mov que no debo");
-            }
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(x, y - 1));
           }
           // The pawn is in the starting square and the two in front are empty
           if (this.board[x][y - 2] == "" && this.board[x][y - 1] == "" && y == 6) {
@@ -1699,60 +1707,54 @@ export class TableroComponent {
   // Examine black possible moves to verify jaque mate
   examineBlackPossibleMoves(boardToCheck: string[][]) {
     // Aquí copio board en un auxiliar
-    this.copyBoard(this.auxBoard, this.board);
-    // En board copio second
-    this.copyBoard(this.board, this.secondBoard);
+    this.copyBoard(this.auxBoard2, this.board);
+    this.possibleMoves = [];
     let possibleMovesAux = this.possibleMoves;
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         let currentPiece = boardToCheck[i][j];
         if (this.parseColour(currentPiece) == 'b') {
-          this.setPossibleMoves(this.coordToCode(i, j), false);
+          this.setPossibleMoves(this.coordToCode(i, j), true);
           if (this.possibleMoves.length > 0) {
             console.log("Aquí devuelvo true porque se puede mover un negro");
             console.log(this.coordToCode(i, j));
-            for (let i = 0; i < this.possibleMoves.length ; i++) {
+            for (let i = 0; i < this.possibleMoves.length; i++) {
               console.log(this.possibleMoves[i]);
             }
             console.log(this.possibleMoves.length);
             this.possibleMoves = possibleMovesAux;
-            this.copyBoard(this.board, this.auxBoard);
+            this.copyBoard(this.board, this.auxBoard2);
             return true;
           }
         }
       }
     }
-    console.log("Aquí debería ser 0" + this.possibleMoves.length);
     this.possibleMoves = possibleMovesAux;
-    this.copyBoard(this.board, this.auxBoard);
+    this.copyBoard(this.board, this.auxBoard2);
     return false;
   }
 
   // Examine white possible moves to verify jaque mate
   examineWhitePossibleMoves(boardToCheck: string[][]) {
     // Aquí copio board en un auxiliar
-    this.copyBoard(this.auxBoard, this.board);
-    // En board copio second
-    this.copyBoard(this.board, this.secondBoard);
+    this.copyBoard(this.auxBoard2, this.board);
     let possibleMovesAux = this.possibleMoves;
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         let currentPiece = boardToCheck[i][j];
         if (this.parseColour(currentPiece) == 'w') {
-          this.setPossibleMoves(this.coordToCode(i, j), false);
+          this.setPossibleMoves(this.coordToCode(i, j), true);
           if (this.possibleMoves.length > 0) {
             // Aqui se pueden mover tanto no hay jaque mate 
-            console.log(this.possibleMoves.length);
             this.possibleMoves = possibleMovesAux;
-            this.copyBoard(this.board, this.auxBoard);
+            this.copyBoard(this.board, this.auxBoard2);
             return true;
           }
         }
       }
     }
-    console.log("Aquí debería ser 0" + this.possibleMoves.length);
     this.possibleMoves = possibleMovesAux;
-    this.copyBoard(this.board, this.auxBoard);
+    this.copyBoard(this.board, this.auxBoard2);
     return false;
   }
 
@@ -1783,6 +1785,7 @@ export class TableroComponent {
       }
       boardString += "\n";
     }
+    console.log(boardString);
   }
 
   // Transforms code "ln" where "l" is a letter and "n" is a number
@@ -1855,23 +1858,42 @@ export class TableroComponent {
       if (this.possibleMoves.includes(clicked)) {
         this.movePiece(clicked);
       }
+      // Aquí habría que comprobar condición especial: peón final de tablero.
+      if ((this.parsePiece(this.board[x][y]) == [true, "Pawn"] && y == 7) || (this.parsePiece(this.board[x][y]) == [false, "Pawn"] && y == 0)){
+        // Peón final de tablero
+        // cambiarFicha();
+  
+      }
       this.copyBoard(this.secondBoard, this.board);
-      this.copyBoard(this.auxBoard, this.board);
       if (this.turnWhite) {
         if (this.examineWhiteKingCheck(this.board)) {
           // Avisar al enemigo blanco de jaque
-          console.log("Jaque al blanco");
           if (!(this.examineWhitePossibleMoves(this.board))) {
-            console.log("Se acaba el juego, jaque mate para los blancos");
+            console.log("Se acaba el juego, jaque mate al rey blanco");
           }
+          // Avisar al enemigo negro de jaque
+          else { console.log("Jaque al rey blanco"); }
           // Check de si es jaque mate mirando si las fichas de su color le pueden defender ( hay movimientos de su color ) hay que hacer funcion nueva
+        }
+        else {
+          // Comprobar rey ahogado
+          if (!(this.examineWhitePossibleMoves(this.board))) {
+            console.log("Tablas, el rey blanco está ahogado");
+          }
         }
       } else if (!(this.turnWhite)) {
         if (this.examineBlackKingCheck(this.board)) {
-          // Avisar al enemigo negro de jaque
-          console.log("Jaque al negro")
+          // Avisar al enemigo negro de jaque mate
           if (!(this.examineBlackPossibleMoves(this.board))) {
             console.log("Se acaba el juego, jaque mate para los negros");
+          }
+          // Avisar al enemigo negro de jaque
+          else { console.log("Jaque al rey negro"); }
+        }
+        else {
+          // Comprobar rey negro ahogado
+          if (!(this.examineBlackPossibleMoves(this.board))) {
+            console.log("Tablas, el rey negro está ahogado");
           }
         }
       }
@@ -1888,7 +1910,19 @@ export class TableroComponent {
     var domOriginPiece = document.getElementById(this.board[i][j]);
     var domDestiny = document.getElementById(destiny);
 
-    if (this.board[x][y] != "") { // Destroy piece that was in destiny
+    
+    
+    if ((this.parsePiece(this.board[i][j]) == [true, "King"] && this.parsePiece(this.board[x][y]) == [true, "Rook"])) {
+      // Enroque blanco
+      //if ((i == 0 && j == 4 && this.parcePiece(this.board[i][j])) )
+
+    }
+    else if ((this.parsePiece(this.board[i][j]) == [false, "King"] && this.parsePiece(this.board[x][y]) == [false, "Rook"])) {
+      // Enroque negro
+
+    }
+    else if (this.board[x][y] != "") { 
+      // Normal move
       var domDestinyPiece = <Node>document.getElementById(this.board[x][y]);
       var pieceText = domDestinyPiece.textContent;
 
@@ -1900,9 +1934,8 @@ export class TableroComponent {
         var cemetery = document.getElementById("cemeteryB");
       }
       if (cemetery != undefined && pieceText != undefined) {
-        cemetery.textContent += pieceText;
+        cemetery.appendChild(<Node>domDestinyPiece);
       }
-      domDestinyPiece?.parentNode?.removeChild(domDestinyPiece);
     }
     domDestiny?.appendChild(<Node>domOriginPiece);
 
