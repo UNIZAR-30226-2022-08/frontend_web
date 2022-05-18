@@ -1952,19 +1952,80 @@ export class TableroComponent {
         let possible = false;
         let [i, j] = this.codeToCoord(this.selected);
         let [x, y] = this.codeToCoord(clicked);
+
         if (this.possibleMoves.includes(clicked)) {
-          this.movePiece(clicked);
+          // Aquí compruebo enroque para hacer dos movs.
+          let checkCastling = this.checkCastling(clicked);
+          console.log(this.checkCastling);
+          console.log("Castling " + checkCastling);
+          switch (checkCastling) {
+            case 0:
+              console.log("no hay enroque");
+              this.movePiece(clicked);
+              break;
+            case 1:
+              this.castling = true;
+              this.movePiece(clicked);
+              this.selected = "h1";
+              this.movePiece("f1");
+              break;
+            case 2:
+              this.castling = true;
+              this.movePiece(clicked);
+              this.selected = "a1";
+              this.movePiece("d1");
+              break;
+            case 3:
+              this.castling = true;
+              this.movePiece(clicked);
+              this.selected = "h8";
+              this.movePiece("f8");
+              break;
+            case 4:
+              this.castling = true;
+              this.movePiece(clicked);
+              this.selected = "a8";
+              this.movePiece("d8");
+              break;
+          }
+          let [isWhite, pieceType] = this.parsePieceComplete(this.board[x][y]); //ME QUEDO AQUI PARA PONERLE LOS BOOLEANOS SI SE MUEVEN
+          console.log(pieceType);
+          if (isWhite) {
+            switch (pieceType) {
+              case "rook_1":
+                this.whiteRook1 = false;
+                break;
+              case "rook_2":
+                this.whiteRook2 = false;
+                break;
+              case "king_1":
+                this.whiteKing = false;
+                break;
+            }
+          } else {
+            switch (pieceType) {
+              case "rook_1":
+                this.blackRook1 = false;
+                break;
+              case "rook_2":
+                this.blackRook2 = false;
+                break;
+              case "king_1":
+                this.blackKing = false;
+                break;
+            }
+          }
         }
-        console.log(this.parsePiece(this.board[x][y]) + " " + y);
+
 
         // Aquí habría que comprobar condición especial: peón final de tablero.
-        let [white, pieceType] = this.parsePiece(this.board[x][y]);
-        if ((white == true && pieceType == "pawn" && y == 7)) {
+        let [white, thisPiece] = this.parsePiece(this.board[x][y]);
+        if ((white == true && thisPiece == "pawn" && y == 7)) {
           this.choosingSummon = true;
           this.squareToSummon = clicked;
           this.showWhiteChoiceButtons();
         }
-        if (white == false && pieceType == "pawn" && y == 0) {
+        if (white == false && thisPiece == "pawn" && y == 0) {
           this.choosingSummon = true;
           this.squareToSummon = clicked;
           this.showBlackChoiceButtons();
@@ -2006,117 +2067,6 @@ export class TableroComponent {
         this.selected = "";
         this.resetHintSquares();
       }
-    }
-    else {
-      // If destiny is in possible moves
-      let possible = false;
-      let [i, j] = this.codeToCoord(this.selected);
-      let [x, y] = this.codeToCoord(clicked);
-      if (this.possibleMoves.includes(clicked)) {
-        // Aquí compruebo enroque para hacer dos movs.
-        let checkCastling = this.checkCastling(clicked);
-        console.log(this.checkCastling);
-        console.log("Castling " + checkCastling);
-        switch (checkCastling) {
-          case 0:
-            console.log("no hay enroque");
-            this.movePiece(clicked);
-            break;
-          case 1:
-            this.castling = true;
-            this.movePiece(clicked);
-            this.selected = "h1";
-            this.movePiece("f1");
-            break;
-          case 2:
-            this.castling = true;
-            this.movePiece(clicked);
-            this.selected = "a1";
-            this.movePiece("d1");
-            break;
-          case 3:
-            this.castling = true;
-            this.movePiece(clicked);
-            this.selected = "h8";
-            this.movePiece("f8");
-            break;
-          case 4:
-            this.castling = true;
-            this.movePiece(clicked);
-            this.selected = "a8";
-            this.movePiece("d8");
-            break;
-        }
-      }
-      let [isWhite, pieceType] = this.parsePieceComplete(this.board[x][y]); //ME QUEDO AQUI PARA PONERLE LOS BOOLEANOS SI SE MUEVEN
-      console.log(pieceType);
-      if (isWhite) {
-        switch (pieceType) {
-          case "rook_1":
-            this.whiteRook1 = false;
-            break;
-          case "rook_2":
-            this.whiteRook2 = false;
-            break;
-          case "king_1":
-            this.whiteKing = false;
-            break;
-        }
-      } else {
-        switch (pieceType) {
-          case "rook_1":
-            this.blackRook1 = false;
-            break;
-          case "rook_2":
-            this.blackRook2 = false;
-            break;
-          case "king_1":
-            this.blackKing = false;
-            break;
-        }
-      }
-
-      // Aquí habría que comprobar condición especial: peón final de tablero.
-      if ((this.parsePiece(this.board[x][y]) == [true, "Pawn"] && y == 7) || (this.parsePiece(this.board[x][y]) == [false, "Pawn"] && y == 0)) {
-        // Peón final de tablero
-        // cambiarFicha();
-
-      }
-      this.copyBoard(this.secondBoard, this.board);
-      if (this.turnWhite) {
-        if (this.examineWhiteKingCheck(this.board)) {
-          // Avisar al enemigo blanco de jaque
-          if (!(this.examineWhitePossibleMoves(this.board))) {
-            console.log("Se acaba el juego, jaque mate al rey blanco");
-          }
-          // Avisar al enemigo negro de jaque
-          else { console.log("Jaque al rey blanco"); }
-          // Check de si es jaque mate mirando si las fichas de su color le pueden defender ( hay movimientos de su color ) hay que hacer funcion nueva
-        }
-        else {
-          // Comprobar rey ahogado
-          if (!(this.examineWhitePossibleMoves(this.board))) {
-            console.log("Tablas, el rey blanco está ahogado");
-          }
-        }
-      } else if (!(this.turnWhite)) {
-        if (this.examineBlackKingCheck(this.board)) {
-          // Avisar al enemigo negro de jaque mate
-          if (!(this.examineBlackPossibleMoves(this.board))) {
-            console.log("Se acaba el juego, jaque mate para los negros");
-          }
-          // Avisar al enemigo negro de jaque
-          else { console.log("Jaque al rey negro"); }
-        }
-        else {
-          // Comprobar rey negro ahogado
-          if (!(this.examineBlackPossibleMoves(this.board))) {
-            console.log("Tablas, el rey negro está ahogado");
-          }
-        }
-      }
-      this.selected = "";
-      this.resetHintSquares();
     }
   }
 
