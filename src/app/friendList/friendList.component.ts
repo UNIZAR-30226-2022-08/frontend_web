@@ -38,10 +38,10 @@ export class FriendListComponent {
         if (res.status === 200) {
           for (let i = 0; i < res.data.length; i++) {
             this.friends.push(res.data[i].FriendUsername); 
-            console.log(res.data[i].FriendUsername);
+            console.log("Request " + res.data[i].FriendUsername);
           }
         } else {
-          console.log("get friends error: " + res.status);
+          console.log("get friendRequests error: " + res.status);
         }
       })
       .catch((error) => {
