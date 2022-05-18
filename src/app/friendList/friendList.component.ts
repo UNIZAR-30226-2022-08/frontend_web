@@ -18,7 +18,7 @@ export class FriendListComponent {
     this.friends.push("menganito");
     this.friends.push("fulanito");
     axios
-      .get('https://queenchess-backend.herokuapp.com/account/getFriends', {
+      .get('https://queenchess-backend.herokuapp.com/community/getFriends', {
       })
       .then((res) => {
         if (res.status === 200) {
@@ -37,7 +37,7 @@ export class FriendListComponent {
   addFriend() {
     console.log("Adding " + this.friendName);
     axios
-      .put('https://queenchess-backend.herokuapp.com/account/addFriend', {
+      .put('https://queenchess-backend.herokuapp.com/community/addFriend', {
         friend: this.friendName
       })
       .then((res) => {
