@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import axios from 'axios';
-import { FRIENDS } from './mock-friends'
 
 @Component({
   selector: "app-friend",
@@ -10,13 +9,32 @@ import { FRIENDS } from './mock-friends'
 })
 export class FriendListComponent {
   friendName: string;
-  friends = FRIENDS;
+  friends: string[] = [];
+  friendRequests : string[] = [];
   constructor(public router: Router) { }
 
   //This gets called after constructor (angular doesn't let you access elements in the constructor)
   ngOnInit() {
+    this.friends.push("Menganito");
+    this.friendRequests.push("Fulanito");
     axios
       .get('https://queenchess-backend.herokuapp.com/community/getFriends', {
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          for (let i = 0; i < res.data.length; i++) {
+            this.friends.push(res.data[i].FriendUsername);
+          }
+        } else {
+          console.log("get friends error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+
+      axios
+      .get('https://queenchess-backend.herokuapp.com/community/getFriendRequests', {
       })
       .then((res) => {
         if (res.status === 200) {
@@ -49,11 +67,28 @@ export class FriendListComponent {
       })
   }
 
-  removeFriend(friendName: string) {
-    console.log("Removing " + friendName);
+  acceptFriendRequest(name: string) {
+    console.log("Accepting " + name);
+    axios
+      .put('https://queenchess-backend.herokuapp.com/account/acceptFriendRequest', {
+        friend: name
+      })
+      .then((res) => {
+        if (res.status === 200) {
+        } else {
+          console.log("addfriend error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  }
+
+  removeFriend(name: string) {
+    console.log("Removing " + name);
     axios
       .delete('https://queenchess-backend.herokuapp.com/community/removeFriend', {
-        data: {friend: this.friendName}
+        data: {friend: name}
       })
       .then((res) => {
         if (res.status === 200) {

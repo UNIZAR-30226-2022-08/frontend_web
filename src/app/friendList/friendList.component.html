@@ -23,6 +23,18 @@
   </li>
 </ul>
 
+<ul class="custom-form">
+  <h1>Peticiones de amistad:</h1>
+  <li  class='friend' *ngFor="let friendRequest of friendRequests">
+    <div class='name'>
+      {{friendRequest}}
+    </div>
+    <div class='accept' (click)="acceptFriendRequest(friendRequest)">
+      ✔️
+    </div>
+  </li>
+</ul>
+
 <div>
   <form class="custom-form" method="post">
     <h1>Añadir amigo:</h1>
