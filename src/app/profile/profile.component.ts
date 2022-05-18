@@ -36,7 +36,7 @@ export class ProfileComponent {
     axios
       .post('https://queenchess-backend.herokuapp.com/account/changePassword', {
         email: localStorage.getItem("email"),
-        password:this.newPassword
+        newPassword:this.newPassword
       })
       .then((res) => {
         if (res.status === 201) {
