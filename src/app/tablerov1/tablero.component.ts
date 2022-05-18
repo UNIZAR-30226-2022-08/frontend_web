@@ -27,6 +27,13 @@ export class TableroComponent {
   possibleMovesToCheckWhiteKing: string[] = [];
   jaqueNegro = false;
   jaqueBlanco = false;
+  whiteRook1 = true;
+  whiteRook2 = true;
+  blackRook1 = true;
+  blackRook2 = true;
+  whiteKing = true;
+  blackKing = true;
+  castling = false;
 
 
   // Removes all pieces from board
@@ -738,6 +745,36 @@ export class TableroComponent {
               if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
             }
           }
+
+          // Short castling
+          aux_x = x;
+          aux_y = y;
+          let enroque_x = 7;
+          let enroque_y = 0;
+          let [enroque_color, enroque_pieceType] = this.parsePiece(this.board[enroque_x][enroque_y]);
+
+          if (aux_x == 4 && aux_y == 0 && enroque_color == true && enroque_pieceType == "rook" && this.parseColour(this.board[5][0]) == 'e' && this.parseColour(this.board[6][0]) == 'e' && (this.whiteKing) && (this.whiteRook1)) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = "";
+            this.secondBoard[6][0] = this.board[x][y];
+            this.secondBoard[enroque_x][enroque_y] = "";
+            this.secondBoard[5][0] = this.board[enroque_x][enroque_y];
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(6, enroque_y));
+          }
+
+          // Long castling
+          enroque_x = 0;
+          enroque_y = 0;
+          [enroque_color, enroque_pieceType] = this.parsePiece(this.board[enroque_x][enroque_y]);
+
+          if (aux_x == 4 && aux_y == 0 && enroque_color == true && enroque_pieceType == "rook" && this.parseColour(this.board[1][0]) == 'e' && this.parseColour(this.board[2][0]) == 'e' && this.parseColour(this.board[3][0]) == 'e' && (this.whiteKing) && (this.whiteRook2)) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = "";
+            this.secondBoard[2][0] = this.board[x][y];
+            this.secondBoard[enroque_x][enroque_y] = "";
+            this.secondBoard[3][0] = this.board[enroque_x][enroque_y];
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(2, enroque_y));
+          }
         }
         else if (!(isWhite)) {
           // Move up
@@ -914,6 +951,36 @@ export class TableroComponent {
               this.secondBoard[x][y] = "";
               if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(aux_x, aux_y));
             }
+          }
+
+          // Short castling
+          aux_x = x;
+          aux_y = y;
+          let enroque_x = 7;
+          let enroque_y = 7;
+          let [enroque_color, enroque_pieceType] = this.parsePiece(this.board[enroque_x][enroque_y]);
+
+          if (aux_x == 4 && aux_y == 7 && enroque_color == false && enroque_pieceType == "rook" && this.parseColour(this.board[5][7]) == 'e' && this.parseColour(this.board[6][7]) == 'e' && (this.blackKing) && (this.blackRook1)) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = "";
+            this.secondBoard[6][7] = this.board[x][y];
+            this.secondBoard[enroque_x][enroque_y] = "";
+            this.secondBoard[5][7] = this.board[enroque_x][enroque_y];
+            if (!(examine) || !(this.examineBlackKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(6, enroque_y));
+          }
+
+          // Long castling
+          enroque_x = 0;
+          enroque_y = 7;
+          [enroque_color, enroque_pieceType] = this.parsePiece(this.board[enroque_x][enroque_y]);
+
+          if (aux_x == 4 && aux_y == 7 && enroque_color == false && enroque_pieceType == "rook" && this.parseColour(this.board[1][7]) == 'e' && this.parseColour(this.board[2][7]) == 'e' && this.parseColour(this.board[3][7]) == 'e' && (this.blackKing) && (this.blackRook2)) {
+            this.copySecondBoard();
+            this.secondBoard[aux_x][aux_y] = "";
+            this.secondBoard[2][7] = this.board[x][y];
+            this.secondBoard[enroque_x][enroque_y] = "";
+            this.secondBoard[3][7] = this.board[enroque_x][enroque_y];
+            if (!(examine) || !(this.examineWhiteKingCheck(this.secondBoard))) this.possibleMoves.push(this.coordToCode(2, enroque_y));
           }
         }
         break;
@@ -1667,7 +1734,6 @@ export class TableroComponent {
       }
     }
     this.possibleMoves = possibleMovesAux;
-    console.log("No hay jaque");
     // Copio auxiliar en board
     this.copyBoard(this.board, this.auxBoard);
     return false;
@@ -1716,12 +1782,6 @@ export class TableroComponent {
         if (this.parseColour(currentPiece) == 'b') {
           this.setPossibleMoves(this.coordToCode(i, j), true);
           if (this.possibleMoves.length > 0) {
-            console.log("Aquí devuelvo true porque se puede mover un negro");
-            console.log(this.coordToCode(i, j));
-            for (let i = 0; i < this.possibleMoves.length; i++) {
-              console.log(this.possibleMoves[i]);
-            }
-            console.log(this.possibleMoves.length);
             this.possibleMoves = possibleMovesAux;
             this.copyBoard(this.board, this.auxBoard2);
             return true;
@@ -1836,6 +1896,36 @@ export class TableroComponent {
     return [isWhite, pieceType];
   }
 
+  // From the piece code (corresponding id in html) returns its color and
+  // its type
+  parsePieceComplete(pieceCode: string): [boolean, string] {
+    var splitted = pieceCode.split("_", 3);
+    var isWhite;
+    var pieceType = splitted[1] + '_' + splitted[2];
+    if (splitted[0] === "black") {
+      isWhite = false;
+    } else isWhite = true;
+    return [isWhite, pieceType];
+  }
+
+  checkCastling(clicked: string): number {
+    let [x, y] = this.codeToCoord(this.selected);
+    let [enroque1_color, enroque1_pieceType] = this.parsePiece(this.board[7][0]);
+    let [enroque2_color, enroque2_pieceType] = this.parsePiece(this.board[0][0]);
+    let [enroque3_color, enroque3_pieceType] = this.parsePiece(this.board[7][7]);
+    let [enroque4_color, enroque4_pieceType] = this.parsePiece(this.board[0][7]);
+    if (x == 4 && y == 0 && enroque1_color == true && enroque1_pieceType == "rook" && this.parseColour(this.board[5][0]) == 'e' && this.parseColour(this.board[6][0]) == 'e' && (this.whiteKing) && (this.whiteRook1)) {
+      return 1;
+    } else if (x == 4 && y == 0 && enroque2_color == true && enroque2_pieceType == "rook" && this.parseColour(this.board[1][0]) == 'e' && this.parseColour(this.board[2][0]) == 'e' && this.parseColour(this.board[3][0]) == 'e' && (this.whiteKing) && (this.whiteRook2)) {
+      return 2;
+    } else if (x == 4 && y == 7 && enroque3_color == false && enroque3_pieceType == "rook" && this.parseColour(this.board[5][7]) == 'e' && this.parseColour(this.board[6][7]) == 'e' && (this.blackKing) && (this.blackRook1)) {
+      return 3;
+    } else if (x == 4 && y == 7 && enroque4_color == false && enroque4_pieceType == "rook" && this.parseColour(this.board[1][7]) == 'e' && this.parseColour(this.board[2][7]) == 'e' && this.parseColour(this.board[3][7]) == 'e' && (this.blackKing) && (this.blackRook2)) {
+      return 4;
+    }
+    return 0;
+  }
+
   // Click controller 
   // Checks piece clicked matches current player's turn
   // Calls movePiece() if the move is allowed
@@ -1856,13 +1946,74 @@ export class TableroComponent {
       let [i, j] = this.codeToCoord(this.selected);
       let [x, y] = this.codeToCoord(clicked);
       if (this.possibleMoves.includes(clicked)) {
-        this.movePiece(clicked);
+        // Aquí compruebo enroque para hacer dos movs.
+        let checkCastling = this.checkCastling(clicked);
+        console.log(this.checkCastling);
+        console.log("Castling " + checkCastling);
+        switch (checkCastling) {
+          case 0:
+            console.log("no hay enroque");
+            this.movePiece(clicked);
+            break;
+          case 1:
+            this.castling = true;
+            this.movePiece(clicked);
+            this.selected = "h1";
+            this.movePiece("f1");
+            break;
+          case 2:
+            this.castling = true;
+            this.movePiece(clicked);
+            this.selected = "a1";
+            this.movePiece("d1");
+            break;
+          case 3:
+            this.castling = true;
+            this.movePiece(clicked);
+            this.selected = "h8";
+            this.movePiece("f8");
+            break;
+          case 4:
+            this.castling = true;
+            this.movePiece(clicked);
+            this.selected = "a8";
+            this.movePiece("d8");
+            break;
+        }
       }
+      let [isWhite, pieceType] = this.parsePieceComplete(this.board[x][y]); //ME QUEDO AQUI PARA PONERLE LOS BOOLEANOS SI SE MUEVEN
+      console.log(pieceType);
+      if (isWhite) {
+        switch (pieceType) {
+          case "rook_1":
+            this.whiteRook1 = false;
+            break;
+          case "rook_2":
+            this.whiteRook2 = false;
+            break;
+          case "king_1":
+            this.whiteKing = false;
+            break;
+        }
+      } else {
+        switch (pieceType) {
+          case "rook_1":
+            this.blackRook1 = false;
+            break;
+          case "rook_2":
+            this.blackRook2 = false;
+            break;
+          case "king_1":
+            this.blackKing = false;
+            break;
+        }
+      }
+
       // Aquí habría que comprobar condición especial: peón final de tablero.
-      if ((this.parsePiece(this.board[x][y]) == [true, "Pawn"] && y == 7) || (this.parsePiece(this.board[x][y]) == [false, "Pawn"] && y == 0)){
+      if ((this.parsePiece(this.board[x][y]) == [true, "Pawn"] && y == 7) || (this.parsePiece(this.board[x][y]) == [false, "Pawn"] && y == 0)) {
         // Peón final de tablero
         // cambiarFicha();
-  
+
       }
       this.copyBoard(this.secondBoard, this.board);
       if (this.turnWhite) {
@@ -1910,18 +2061,7 @@ export class TableroComponent {
     var domOriginPiece = document.getElementById(this.board[i][j]);
     var domDestiny = document.getElementById(destiny);
 
-    
-    
-    if ((this.parsePiece(this.board[i][j]) == [true, "King"] && this.parsePiece(this.board[x][y]) == [true, "Rook"])) {
-      // Enroque blanco
-      //if ((i == 0 && j == 4 && this.parcePiece(this.board[i][j])) )
-
-    }
-    else if ((this.parsePiece(this.board[i][j]) == [false, "King"] && this.parsePiece(this.board[x][y]) == [false, "Rook"])) {
-      // Enroque negro
-
-    }
-    else if (this.board[x][y] != "") { 
+    if (this.board[x][y] != "") {
       // Normal move
       var domDestinyPiece = <Node>document.getElementById(this.board[x][y]);
       var pieceText = domDestinyPiece.textContent;
@@ -1942,7 +2082,8 @@ export class TableroComponent {
     let piece = this.board[i][j];
     this.board[i][j] = "";
     this.board[x][y] = piece;
-    this.turnWhite = !this.turnWhite;
+    if (!(this.castling)) { this.turnWhite = !this.turnWhite; }
+    this.castling = false;
   }
 
   prueba() {
