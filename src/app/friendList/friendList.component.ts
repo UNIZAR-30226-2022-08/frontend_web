@@ -69,7 +69,7 @@ export class FriendListComponent {
   acceptFriendRequest(name: string) {
     console.log("Accepting " + name);
     axios
-      .put('https://queenchess-backend.herokuapp.com/account/acceptFriendRequest', {
+      .put('https://queenchess-backend.herokuapp.com/community/acceptFriendRequest', {
         friend: name
       })
       .then((res) => {
