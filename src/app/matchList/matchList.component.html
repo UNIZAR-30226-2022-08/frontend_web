@@ -4,23 +4,14 @@
     </h1>
   </div>
 
-  <div class="centered">
-    <ul id='match-list'>
-      <li class='match'>
-        <div class='opponent'>
-          vs. Fulanito
-        </div>
-        <div class='playMove'>
-          ♟️
-        </div>
-      </li>
-      <li class='match'>
-        <div class='opponent'>
-          vs. Menganito
-        </div>
-        <div class='playMove'>
-          ♟️
-        </div>
-      </li>
-    </ul>
-  </div>
+  <ul class="custom-form">
+    <h1>Partidas pendientes:</h1>
+    <li  class='match' *ngFor="let match of matchList">
+      <div class='name'>
+        {{match}}
+      </div>
+      <div class="play" (click)="playMove(match)">
+        ♟️
+      </div>
+    </li>
+  </ul>

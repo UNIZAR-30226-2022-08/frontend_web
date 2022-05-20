@@ -1,7 +1,8 @@
 import { Component } from "@angular/core";
 import { HAMMER_LOADER } from "@angular/platform-browser";
-import { Router } from "@angular/router";
+import { Params, Router } from "@angular/router";
 import { ColdObservable } from "rxjs/internal/testing/ColdObservable";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: "app-mainMenu",
@@ -12,7 +13,7 @@ import { ColdObservable } from "rxjs/internal/testing/ColdObservable";
 
 export class TableroAsincronoComponent {
 
-  constructor(public router: Router) {
+  constructor(public route: ActivatedRoute, public router: Router) {
     this.startGame();
   }
 
@@ -41,7 +42,17 @@ export class TableroAsincronoComponent {
   squareToSummon = "";
   choosingSummon = false;
 
+  opponent = "";
+  matchId = "";
 
+  ngOnInit() {
+    this.route.queryParams
+      .subscribe(params => {
+        this.matchId = params["matchId"];
+        console.log("Id de partida: " + this.matchId);
+      }
+      );
+  }
   // Removes all pieces from board
   clearBoard() {
     for (let i = 0; i <= 8; i++) {
