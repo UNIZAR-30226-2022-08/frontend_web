@@ -1,0 +1,30 @@
+<div style="text-align:center">
+    <h1>
+      <img src="../../assets/transparentLogo.png" alt="QueenChess_Logo" class="center" height = "200" (click)="router.navigate(['/mainMenu']);">
+    </h1>
+  </div>
+
+<div class="login">
+    <form class="custom-form" method="post">
+      <h1>Identifícate:</h1>
+      <input
+        type="email"
+        [(ngModel)]="email"
+        name="email"
+        placeholder="Correo"
+        required="required"
+      />
+      <input
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        placeholder="Contraseña"
+        required="required"
+      />
+      <button type="submit" (click)="login()">ACCEDER</button>
+      <button (click)="router.navigate(['/register']);">
+        <span>¿No tienes cuenta? ¡Regístrate!</span>
+      </button>
+    </form>
+    
+  </div>

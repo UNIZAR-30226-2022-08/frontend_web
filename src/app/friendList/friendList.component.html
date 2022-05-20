@@ -1,0 +1,51 @@
+<div style="text-align:center">
+  <h1>
+    <img src="../../assets/transparentLogo.png" alt="QueenChess_Logo" class="center" height="200"
+      (click)="router.navigate(['/mainMenu']);">
+  </h1>
+</div>
+
+<ul class="custom-form">
+  <h1>Amigos:</h1>
+  <li  class='friend' *ngFor="let friend of friends">
+    <div class='name'>
+      {{friend}}
+    </div>
+    <div class='challenge'>
+      ♟️
+    </div>
+    <div class='chat' (click)="chat(friend)">
+      💬
+    </div>
+    <div class='remove' (click)="removeFriend(friend)">
+      ❌
+    </div>
+  </li>
+</ul>
+
+<ul class="custom-form">
+  <h1>Peticiones de amistad:</h1>
+  <li  class='friend' *ngFor="let friendRequest of friendRequests">
+    <div class='name'>
+      {{friendRequest}}
+    </div>
+    <div class='accept' (click)="acceptFriendRequest(friendRequest)">
+      ✔️
+    </div>
+  </li>
+</ul>
+
+<div>
+  <form class="custom-form" method="post">
+    <h1>Añadir amigo:</h1>
+    <input
+      type="text"
+      [(ngModel)]="friendName"
+      name="friendName"
+      placeholder="Nombre"
+      required="required"
+    />
+    <button type="submit" (click)="addFriend()">Enviar petición de amistad</button>
+  </form>
+  
+</div>
