@@ -4,14 +4,10 @@ import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
 import { HomeComponent } from "./home/home.component";
 import { TableroComponent } from "./tablerov1/tablero.component";
-<<<<<<< HEAD
 import { TableroAsincronoComponent } from './tableroAsincrono/tableroAsincrono.component';
 import { TableroSincronoComponent } from './tableroSincrono/tableroSincrono.component';
 import { MainMenuComponent } from "./mainMenu/mainMenu.component";
 import { GameModesComponent } from "./gameModes/gameModes.component";
-=======
-import { MainMenuComponent } from "./mainMenu/mainMenu.component";
->>>>>>> parent of ff806f5 (Act: main)
 import { ProfileComponent } from "./profile/profile.component";
 import { FriendListComponent } from "./friendList/friendList.component";
 import { ShopComponent } from "./shop/shop.component";
@@ -24,14 +20,10 @@ const appRoutes = [
     { path: 'login', component: LoginComponent, pathMatch: "full"},
     { path: 'home', component: HomeComponent, pathMatch: "full"},
     { path: 'tablero', component: TableroComponent, pathMatch: "full"},
-<<<<<<< HEAD
     { path: 'tableroAsincrono', component: TableroAsincronoComponent, pathMatch: "full"},
     { path: 'tableroSincrono', component: TableroSincronoComponent, pathMatch: "full"},
     { path: 'mainMenu', component: MainMenuComponent, pathMatch: "full"},
     { path: 'gameModes', component: GameModesComponent, pathMatch: "full"},
-=======
-    { path: 'mainMenu', component: MainMenuComponent, pathMatch: "full"},
->>>>>>> parent of ff806f5 (Act: main)
     { path: 'profile', component: ProfileComponent, pathMatch: "full"},
     { path: 'friendList', component: FriendListComponent, pathMatch: "full"},
     { path: 'shop', component: ShopComponent, pathMatch: "full"},
