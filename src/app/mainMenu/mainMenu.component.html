@@ -1,0 +1,35 @@
+<div style="text-align:center">
+    <h1>
+        <img src="../../assets/transparentLogo.png" alt="QueenChess_Logo" class="center" height="200" (click)="router.navigate(['/mainMenu']);">
+    </h1>
+</div>
+
+<div class="centered" (click)="router.navigate(['/gameModes']);">
+    <button class="buttonSlideA">
+        <span>Jugar</span>
+    </button>
+</div>
+
+<div class="centered">
+    <button class="buttonSlideA" (click)="router.navigate(['/matchList']);">
+        <span>Partidas</span>
+    </button>
+</div>
+
+<div class="centered">
+    <button class="buttonSlideB" (click)="router.navigate(['/friendList']);">
+        <span>Amigos</span>
+    </button>
+    <button class="buttonSlideB" (click)="router.navigate(['/shop']);">
+        <span>Tienda</span>
+    </button>
+</div>
+
+<div class="centered">
+    <button class="buttonSlideB" (click)="router.navigate(['/profile']);">
+        <span>Perfil</span>
+    </button>
+    <button class="buttonSlideB" (click)="logOut()">
+        <span>Logout</span>
+    </button>
+</div>
