@@ -39,7 +39,7 @@ export class FriendListComponent {
         if (res.status === 200) {
           for (let i = 0; i < res.data.friendRequests.length; i++) {
             this.friendRequests.push(res.data.friendRequests[i]); 
-            console.log("Request " + res.data[i].friendRequests[i]);
+            console.log("Request " + res.data.friendRequests[i]);
           }
         } else {
           console.log("get friendRequests error: " + res.status);
