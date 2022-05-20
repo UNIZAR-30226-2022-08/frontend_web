@@ -20,8 +20,9 @@ export class FriendListComponent {
       })
       .then((res) => {
         if (res.status === 200) {
-          for (let i = 0; i < res.data.length; i++) {
-            this.friends.push(res.data[i].FriendUsername);
+          for (let i = 0; i < res.data.friends.length; i++) {
+            this.friends.push(res.data.friends[i]);
+            console.log("Friend " + res.data.friends[i]);
           }
         } else {
           console.log("get friends error: " + res.status);
@@ -36,8 +37,10 @@ export class FriendListComponent {
       })
       .then((res) => {
         if (res.status === 200) {
-          this.friendRequests.push(res.data); 
-          console.log("Request " + res.data);
+          for (let i = 0; i < res.data.friendRequests.length; i++) {
+            this.friendRequests.push(res.data.friendRequests[i]); 
+            console.log("Request " + res.data[i].friendRequests[i]);
+          }
         } else {
           console.log("get friendRequests error: " + res.status);
         }
