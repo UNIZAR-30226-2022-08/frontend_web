@@ -1916,17 +1916,19 @@ export class TableroSincronoComponent {
 
   checkCastling(clicked: string): number {
     let [x, y] = this.codeToCoord(this.selected);
+    let [x_clicked, y_clicked] = this.codeToCoord(clicked);
     let [enroque1_color, enroque1_pieceType] = this.parsePiece(this.board[7][0]);
     let [enroque2_color, enroque2_pieceType] = this.parsePiece(this.board[0][0]);
     let [enroque3_color, enroque3_pieceType] = this.parsePiece(this.board[7][7]);
     let [enroque4_color, enroque4_pieceType] = this.parsePiece(this.board[0][7]);
-    if (x == 4 && y == 0 && enroque1_color == true && enroque1_pieceType == "rook" && this.parseColour(this.board[5][0]) == 'e' && this.parseColour(this.board[6][0]) == 'e' && (this.whiteKing) && (this.whiteRook1)) {
+    console.log("CLICKED: " + x_clicked + " " + y_clicked);
+    if (x == 4 && y == 0 && enroque1_color == true && enroque1_pieceType == "rook" && this.parseColour(this.board[5][0]) == 'e' && this.parseColour(this.board[6][0]) == 'e' && (this.whiteKing) && (this.whiteRook1) && x_clicked == 6 && y_clicked == 0) {
       return 1;
-    } else if (x == 4 && y == 0 && enroque2_color == true && enroque2_pieceType == "rook" && this.parseColour(this.board[1][0]) == 'e' && this.parseColour(this.board[2][0]) == 'e' && this.parseColour(this.board[3][0]) == 'e' && (this.whiteKing) && (this.whiteRook2)) {
+    } else if (x == 4 && y == 0 && enroque2_color == true && enroque2_pieceType == "rook" && this.parseColour(this.board[1][0]) == 'e' && this.parseColour(this.board[2][0]) == 'e' && this.parseColour(this.board[3][0]) == 'e' && (this.whiteKing) && (this.whiteRook2) && x_clicked == 2 && y_clicked == 0) {
       return 2;
-    } else if (x == 4 && y == 7 && enroque3_color == false && enroque3_pieceType == "rook" && this.parseColour(this.board[5][7]) == 'e' && this.parseColour(this.board[6][7]) == 'e' && (this.blackKing) && (this.blackRook1)) {
+    } else if (x == 4 && y == 7 && enroque3_color == false && enroque3_pieceType == "rook" && this.parseColour(this.board[5][7]) == 'e' && this.parseColour(this.board[6][7]) == 'e' && (this.blackKing) && (this.blackRook1) && x_clicked == 6 && y_clicked == 7) {
       return 3;
-    } else if (x == 4 && y == 7 && enroque4_color == false && enroque4_pieceType == "rook" && this.parseColour(this.board[1][7]) == 'e' && this.parseColour(this.board[2][7]) == 'e' && this.parseColour(this.board[3][7]) == 'e' && (this.blackKing) && (this.blackRook2)) {
+    } else if (x == 4 && y == 7 && enroque4_color == false && enroque4_pieceType == "rook" && this.parseColour(this.board[1][7]) == 'e' && this.parseColour(this.board[2][7]) == 'e' && this.parseColour(this.board[3][7]) == 'e' && (this.blackKing) && (this.blackRook2) && x_clicked == 2 && y_clicked == 7) {
       return 4;
     }
     return 0;
