@@ -3,6 +3,7 @@ import { HAMMER_LOADER } from "@angular/platform-browser";
 import { Params, Router } from "@angular/router";
 import { ColdObservable } from "rxjs/internal/testing/ColdObservable";
 import { ActivatedRoute } from '@angular/router';
+import axios from 'axios';
 
 @Component({
   selector: "app-mainMenu",
@@ -44,6 +45,7 @@ export class TableroAsincronoComponent {
 
   opponent = "";
   matchId = "";
+  playerIsWhite = true;
 
   ngOnInit() {
     this.route.queryParams
@@ -86,6 +88,21 @@ export class TableroAsincronoComponent {
         else this.board[i][j] = "";
       }
     }
+    axios
+      .get('https://queenchess-backend.herokuapp.com/game/getGame/' + this.matchId, {
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          if (res.data.whitePlayer.references.key === localStorage.getItem("user")){
+            this.playerIsWhite = true;
+          } else this.playerIsWhite = false;
+        } else {
+          console.log("get matches error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
   }
 
   startSecondBoard() {
@@ -1947,7 +1964,7 @@ export class TableroAsincronoComponent {
   // Checks piece clicked matches current player's turn
   // Calls movePiece() if the move is allowed
   checkClick(clicked: string) {
-    if (!this.choosingSummon) {
+    if (!this.choosingSummon && (this.playerIsWhite != this.turnWhite)) {
       if (this.selected === "") {
         let [x, y] = this.codeToCoord(clicked);
         let [color, pieceType] = this.parsePiece(this.board[x][y]);

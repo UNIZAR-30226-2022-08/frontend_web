@@ -29,6 +29,7 @@ export class LoginComponent {
       .then((res) => {
         if (res.status === 200) { 
           localStorage.setItem('email', this.email);
+          this.getCredentials();
           this.router.navigateByUrl('/mainMenu');
         } else {
           console.log("login error: " + res.status);
@@ -46,6 +47,7 @@ export class LoginComponent {
     })
     .then((res) => {
       if (res.status === 200) {
+        localStorage.setItem("user", res.data.username)
       } else {
         console.log("check session error: " + res.status);
       }
