@@ -104,7 +104,7 @@ export class FriendListComponent {
   challenge(friendName: string) {
     console.log("Challenging " + friendName);
     axios
-      .put('https://queenchess-backend.herokuapp.com/community/newAsyncGame', {
+      .put('https://queenchess-backend.herokuapp.com/game/newAsyncGame', {
         whitePlayer: localStorage.getItem("user"),
         blackPlayer: friendName
       })
