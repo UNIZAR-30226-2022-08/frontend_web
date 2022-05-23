@@ -48,7 +48,7 @@ export class LoginComponent {
     .then((res) => {
       if (res.status === 200) {
         localStorage.setItem("user", res.data.response.username);
-        console.log("Response session data: " + res.data);
+        console.log("Response session data: " + res);
         console.log("Storing username: " + localStorage.getItem("user"));
       } else {
         console.log("check session error: " + res.status);
