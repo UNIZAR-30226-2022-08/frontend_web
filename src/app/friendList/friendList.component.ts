@@ -84,16 +84,39 @@ export class FriendListComponent {
       })
   }
 
-  removeFriend(name: string) {
+  removeFriend(friendName: string) {
     console.log("Removing " + name);
     axios
       .delete('https://queenchess-backend.herokuapp.com/community/removeFriend', {
-        data: {friend: name}
+        data: {friend: friendName}
       })
       .then((res) => {
         if (res.status === 200) {
         } else {
           console.log("delete error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  }
+
+  challenge(friendName: string) {
+    console.log("Challenging " + friendName);
+    axios
+      .put('https://queenchess-backend.herokuapp.com/community/newAsyncGame', {
+        whitePlayer: localStorage.getItem("user"),
+        blackPlayer: friendName
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          this.router.navigate(['/tableroAsincrono/'],
+          {
+            queryParams: { matchId: res.data.id }
+          });
+          
+        } else {
+          console.log("Challenge error: " + res.status);
         }
       })
       .catch((error) => {
