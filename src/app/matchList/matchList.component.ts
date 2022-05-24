@@ -22,13 +22,13 @@ export class MatchListComponent {
       .then((res) => {
         if (res.status === 200) {
           for (let i = 0; i < res.data.response.length; i++) {
-            if (res.data.response[i].whitePlayer === localStorage.getItem("username")) {
+            if (res.data.response[i].whitePlayer === localStorage.getItem("user")) {
               if (res.data.response[i].turn) {
                 this.matchList.push(res.data.response[i].blackPlayer);
               } else {
                 this.playedMatchList.push(res.data.response[i].blackPlayer);
               }
-            } else if (res.data.response[i].blackPlayer === localStorage.getItem("username")){
+            } else if (res.data.response[i].blackPlayer === localStorage.getItem("user")){
               if (res.data.response[i].turn) {
                 this.playedMatchList.push(res.data.response[i].whitePlayer);
               } else {

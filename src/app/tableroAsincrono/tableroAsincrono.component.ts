@@ -93,16 +93,25 @@ export class TableroAsincronoComponent {
       })
       .then((res) => {
         if (res.status === 200) {
-          if (res.data.response.whitePlayer.references.key === localStorage.getItem("user")){
+          if (res.data.response.whitePlayer.references.key === localStorage.getItem("user")) {
             this.playerIsWhite = true;
           } else this.playerIsWhite = false;
+
+          /*
+          //Init board with back's response
+          for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+              this
+            }
+          }*/
+
         } else {
           console.log("get matches error: " + res.status);
         }
       })
       .catch((error) => {
         console.error(error);
-      })
+      })  
   }
 
   startSecondBoard() {
