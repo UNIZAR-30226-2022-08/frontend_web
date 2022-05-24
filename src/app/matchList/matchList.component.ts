@@ -12,6 +12,7 @@ export class MatchListComponent {
 
   match: string;
   matchList: string[] = [];
+  idList: string[] = [];
   playedMatchList: string[] = [];
   //This gets called after constructor (angular doesn't let you access elements in the constructor)
   ngOnInit() {
@@ -25,15 +26,19 @@ export class MatchListComponent {
               console.log("player is white")
               if (res.data.response[i].turn) {
                 this.matchList.push(res.data.response[i].blackPlayer);
+                this.idList.push(res.data.response[i].id);
               } else {
                 this.playedMatchList.push(res.data.response[i].blackPlayer);
+                this.idList.push(res.data.response[i].id);
               }
             } else if (res.data.response[i].blackPlayer === localStorage.getItem("user")){
               console.log("player is black")
               if (res.data.response[i].turn) {
                 this.playedMatchList.push(res.data.response[i].whitePlayer);
+                this.idList.push(res.data.response[i].id);
               } else {
                 this.matchList.push(res.data.response[i].whitePlayer);
+                this.idList.push(res.data.response[i].id);
               }
             } 
           }
