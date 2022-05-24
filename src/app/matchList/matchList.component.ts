@@ -12,6 +12,7 @@ export class MatchListComponent {
 
   match: string;
   matchList: string[] = [];
+  playedMatchList: string[] = [];
   //This gets called after constructor (angular doesn't let you access elements in the constructor)
   ngOnInit() {
     this.matchList.push("match1");
@@ -21,7 +22,19 @@ export class MatchListComponent {
       .then((res) => {
         if (res.status === 200) {
           for (let i = 0; i < res.data.response.length; i++) {
-            this.matchList.push(res.data.response[i].username);
+            if (res.data.response[i].whitePlayer === localStorage.getItem("username")) {
+              if (res.data.response[i].turn) {
+                this.matchList.push(res.data.response[i].blackPlayer);
+              } else {
+                this.playedMatchList.push(res.data.response[i].blackPlayer);
+              }
+            } else if (res.data.response[i].blackPlayer === localStorage.getItem("username")){
+              if (res.data.response[i].turn) {
+                this.playedMatchList.push(res.data.response[i].whitePlayer);
+              } else {
+                this.matchList.push(res.data.response[i].whitePlayer);
+              }
+            } 
           }
         } else {
           console.log("get matches error: " + res.status);

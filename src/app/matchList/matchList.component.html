@@ -15,3 +15,15 @@
       </div>
     </li>
   </ul>
+
+  <ul class="custom-form">
+    <h1>Partidas pendientes:</h1>
+    <li  class='match' *ngFor="let match of playedMatchList">
+      <div class='name'>
+        {{match}}
+      </div>
+      <div class="play" (click)="playMove(match)">
+        ♟️
+      </div>
+    </li>
+  </ul>

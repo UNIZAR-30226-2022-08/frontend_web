@@ -93,7 +93,7 @@ export class TableroAsincronoComponent {
       })
       .then((res) => {
         if (res.status === 200) {
-          if (res.data.whitePlayer.references.key === localStorage.getItem("user")){
+          if (res.data.response.whitePlayer.references.key === localStorage.getItem("user")){
             this.playerIsWhite = true;
           } else this.playerIsWhite = false;
         } else {
