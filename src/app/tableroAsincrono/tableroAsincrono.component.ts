@@ -40,6 +40,7 @@ export class TableroAsincronoComponent {
   knightCounter = 3;
   rookCounter = 3;
   bishopCounter = 3;
+  pawnCounter = 1;
   squareToSummon = "";
   choosingSummon = false;
 
@@ -63,6 +64,53 @@ export class TableroAsincronoComponent {
       }
     }
   }
+  
+  getPieceIndex(type: string) {
+    switch (type) {
+      case "pawn":
+        this.pawnCounter++;
+        return ("_" + (this.pawnCounter - 1));
+      case "rook":
+        this.rookCounter++;
+        return ("_" + (this.pawnCounter - 1));
+      case "bishop":
+        this.bishopCounter++;
+        return ("_" + (this.bishopCounter - 1));
+      case "knight":
+        this.knightCounter++;
+        return ("_" + (this.knightCounter - 1));
+      case "queen":
+        this.queenCounter++;
+        return ("_" + (this.queenCounter - 1));
+      case "king":
+        return ("");
+      default:
+        return ("");
+    }
+  }
+
+  initHTMLBoard() {
+    
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        if (this.board[i][j] != "") {
+          let [x, y] = this.codeToCoord(this.board[i][j]);
+          var squareToPlacePiece = document.getElementById(this.board[x][y]);
+          let pieceToPlace = document.createElement('span');
+          let pieceImage = document.createElement('img');
+          let pieceColor, pieceType = this.parsePiece(this.board[i][j]);
+          pieceImage.setAttribute('src', "../../assets/defaultPieces/" + pieceColor + "_" + pieceType + ".png");
+          pieceImage.setAttribute('width', "40");
+          pieceImage.setAttribute('height', "52");
+          pieceToPlace.setAttribute('id', this.board[i][j]);
+          pieceToPlace.setAttribute('class', "piece");
+          pieceToPlace.appendChild(pieceImage);
+          squareToPlacePiece?.appendChild(<Node>pieceToPlace);
+        }
+      }
+    }
+
+  }
 
   // Back-end should initialize board?
   startGame() {
@@ -73,19 +121,7 @@ export class TableroAsincronoComponent {
     for (let i = 0; i < 8; i++) {
       this.board[i] = [];
       for (let j = 0; j < 8; j++) {
-        if (j == 0) {
-          this.board[i][j] = "white_" + this.initialRow[i];
-        }
-        else if (j == 7) {
-          this.board[i][j] = "black_" + this.initialRow[i];
-        }
-        else if (j == 1) {
-          this.board[i][j] = "white_pawn_" + String.fromCharCode(i + 1 + '0'.charCodeAt(0));
-        }
-        else if (j == 6) {
-          this.board[i][j] = "black_pawn_" + String.fromCharCode(i + 1 + '0'.charCodeAt(0));
-        }
-        else this.board[i][j] = "";
+        this.board[i][j] = "";
       }
     }
     axios
@@ -97,13 +133,19 @@ export class TableroAsincronoComponent {
             this.playerIsWhite = true;
           } else this.playerIsWhite = false;
 
-          /*
-          //Init board with back's response
-          for (let i = 0; i < 8; i++) {
-            for (let j = 0; j < 8; j++) {
-              this
+            // Place white pieces
+            for (let i = 0; i < res.data.response.boardState.whitePieces.length; i++) {
+              let pieceToPlace = res.data.response.boardState.whitePieces[i];
+              let pieceIndex = this.getPieceIndex(pieceToPlace.type);
+              this.board[pieceToPlace.pos.x][pieceToPlace.pos.y] = "white_" + pieceToPlace.type + pieceIndex;
             }
-          }*/
+
+            // Place black pieces
+            for (let i = 0; i < res.data.response.boardState.blackPieces.length; i++) {
+              let pieceToPlace = res.data.response.boardState.blackPieces[i];
+              let pieceIndex = this.getPieceIndex(pieceToPlace.type);
+              this.board[pieceToPlace.pos.x][pieceToPlace.pos.y] = "white_" + pieceToPlace.type + pieceIndex;
+            }
 
         } else {
           console.log("get matches error: " + res.status);
@@ -2201,6 +2243,26 @@ export class TableroAsincronoComponent {
     this.board[x][y] = piece;
     if (!(this.castling)) { this.turnWhite = !this.turnWhite; }
     this.castling = false;
+
+    axios
+      .post('https://queenchess-backend.herokuapp.com/game/move', {
+        x1: i,
+        y1: j,
+        x2: x,
+        y2: y,
+        gameId: this.matchId
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("Back moved " + i+","+j + " to " + x +"," + y)
+        } else {
+          console.log("Move error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+
   }
 
   prueba() {
