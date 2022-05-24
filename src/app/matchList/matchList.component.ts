@@ -15,7 +15,6 @@ export class MatchListComponent {
   playedMatchList: string[] = [];
   //This gets called after constructor (angular doesn't let you access elements in the constructor)
   ngOnInit() {
-    this.matchList.push("match1");
     axios
       .get('https://queenchess-backend.herokuapp.com/game/getActiveGames', {
       })
@@ -23,12 +22,14 @@ export class MatchListComponent {
         if (res.status === 200) {
           for (let i = 0; i < res.data.response.length; i++) {
             if (res.data.response[i].whitePlayer === localStorage.getItem("user")) {
+              console.log("player is white")
               if (res.data.response[i].turn) {
                 this.matchList.push(res.data.response[i].blackPlayer);
               } else {
                 this.playedMatchList.push(res.data.response[i].blackPlayer);
               }
             } else if (res.data.response[i].blackPlayer === localStorage.getItem("user")){
+              console.log("player is black")
               if (res.data.response[i].turn) {
                 this.playedMatchList.push(res.data.response[i].whitePlayer);
               } else {
