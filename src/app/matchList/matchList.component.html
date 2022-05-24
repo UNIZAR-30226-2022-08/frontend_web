@@ -8,7 +8,7 @@
     <h1>Movimientos pendientes:</h1>
     <li  class='match' *ngFor="let match of idList">
       <div class='name'>
-        Vs. {{matchList[parseInt(match)]}}
+        Vs. {{matchList[match]}}
       </div>
       <div class="play" (click)="playMove(match)">
         ♟️
@@ -20,7 +20,7 @@
     <h1>Esperando al rival:</h1>
     <li  class='match' *ngFor="let match of idList">
       <div class='name'>
-        Vs. {{matchList[parseInt(match)]}}
+        Vs. {{matchList[match]}}
       </div>
       <div class="play" (click)="playMove(match)">
         ♟️
