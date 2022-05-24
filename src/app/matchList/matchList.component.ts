@@ -21,7 +21,7 @@ export class MatchListComponent {
       .then((res) => {
         if (res.status === 200) {
           for (let i = 0; i < res.data.response.length; i++) {
-            this.matchList.push(res.data[i].response.username);
+            this.matchList.push(res.data.response[i].username);
           }
         } else {
           console.log("get matches error: " + res.status);
