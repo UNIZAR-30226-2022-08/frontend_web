@@ -20,8 +20,8 @@ export class MatchListComponent {
       })
       .then((res) => {
         if (res.status === 200) {
-          for (let i = 0; i < res.data.length; i++) {
-            this.matchList.push(res.data[i].FriendUsername);
+          for (let i = 0; i < res.data.response.length; i++) {
+            this.matchList.push(res.data[i].response.username);
           }
         } else {
           console.log("get matches error: " + res.status);
