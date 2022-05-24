@@ -22,6 +22,10 @@ export class MatchListComponent {
       .then((res) => {
         if (res.status === 200) {
           for (let i = 0; i < res.data.response.length; i++) {
+            console.log("Turno de blanco: " + res.data.response[0].whitePlayer);
+            console.log("Usuario almacenado: " + localStorage.getItem("user"));
+            console.log("Jugador blanco: " + res.data.response[i].whitePlayer);
+            console.log("Jugador negro: " + res.data.response[i].blackPlayer);
             if (res.data.response[i].whitePlayer === localStorage.getItem("user")) {
               console.log("player is white")
               if (res.data.response[i].turn) {
