@@ -51,10 +51,10 @@ export class MatchListComponent {
       })
   }
 
-  playMove(match: string) {
+  playMove(match: number) {
     this.router.navigate(['/tableroAsincrono/'],
     {
-      queryParams: { matchId: match }
+      queryParams: { matchId: match.toString() }
     });
   }
 
