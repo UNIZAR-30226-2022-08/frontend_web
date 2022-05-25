@@ -151,7 +151,7 @@ export class TableroAsincronoComponent {
             for (let i = 0; i < res.data.response.boardState.blackPieces.length; i++) {
               let pieceToPlace = res.data.response.boardState.blackPieces[i];
               let pieceIndex = this.getPieceIndex(pieceToPlace.type);
-              this.board[pieceToPlace.pos.x][pieceToPlace.pos.y] = "white_" + pieceToPlace.type + pieceIndex;
+              this.board[pieceToPlace.pos.x][pieceToPlace.pos.y] = "black_" + pieceToPlace.type + pieceIndex;
             }
             console.log("board initialized");
             this.logBoard();
