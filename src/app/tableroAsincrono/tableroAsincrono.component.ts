@@ -15,7 +15,6 @@ import axios from 'axios';
 export class TableroAsincronoComponent {
 
   constructor(public route: ActivatedRoute, public router: Router) {
-    this.startGame();
   }
 
   initialRow: string[] = ["rook_1", "knight_1", "bishop_1", "queen_1", "king_1", "bishop_2", "knight_2", "rook_2"];
@@ -53,6 +52,7 @@ export class TableroAsincronoComponent {
       .subscribe(params => {
         this.matchId = params["matchId"];
         console.log("Id de partida: " + this.matchId);
+        this.startGame();
       }
       );
   }
