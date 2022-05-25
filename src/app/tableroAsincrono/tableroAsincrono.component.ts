@@ -125,7 +125,7 @@ export class TableroAsincronoComponent {
       }
     }
     axios
-      .get('https://queenchess-backend.herokuapp.com/game/getGame/' + this.matchId, {
+      .get('https://queenchess-backend.herokuapp.com/game/getGame?gameId=' + this.matchId, {
       })
       .then((res) => {
         if (res.status === 200) {
