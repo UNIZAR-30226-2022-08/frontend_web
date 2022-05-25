@@ -97,7 +97,7 @@ export class TableroAsincronoComponent {
           var squareToPlacePiece = document.getElementById(this.board[i][j]);
           let pieceToPlace = document.createElement('span');
           let pieceImage = document.createElement('img');
-          let pieceColor, pieceType = this.parsePiece(this.board[i][j]);
+          let [pieceColor, pieceType] = this.parsePiece(this.board[i][j]);
           pieceImage.setAttribute('src', "../../assets/defaultPieces/" + pieceColor + "_" + pieceType + ".png");
           pieceImage.setAttribute('width', "40");
           pieceImage.setAttribute('height', "52");
