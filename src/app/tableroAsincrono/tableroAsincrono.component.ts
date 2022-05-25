@@ -72,7 +72,7 @@ export class TableroAsincronoComponent {
         return ("_" + (this.pawnCounter - 1));
       case "rook":
         this.rookCounter++;
-        return ("_" + (this.pawnCounter - 1));
+        return ("_" + (this.rookCounter - 1));
       case "bishop":
         this.bishopCounter++;
         return ("_" + (this.bishopCounter - 1));
@@ -93,7 +93,7 @@ export class TableroAsincronoComponent {
     let boardString ="";
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
-        if (this.board[i][j] != "") {
+        if (this.board[i][j] !== "") {
           var squareToPlacePiece = document.getElementById(this.board[i][j]);
           let pieceToPlace = document.createElement('span');
           let pieceImage = document.createElement('img');
@@ -145,6 +145,7 @@ export class TableroAsincronoComponent {
               let pieceToPlace = res.data.response.boardState.whitePieces[i];
               let pieceIndex = this.getPieceIndex(pieceToPlace.type);
               this.board[pieceToPlace.pos.x][pieceToPlace.pos.y] = "white_" + pieceToPlace.type + pieceIndex;
+              console.log("parsed white " + pieceToPlace.type);
             }
 
             // Place black pieces
@@ -152,6 +153,7 @@ export class TableroAsincronoComponent {
               let pieceToPlace = res.data.response.boardState.blackPieces[i];
               let pieceIndex = this.getPieceIndex(pieceToPlace.type);
               this.board[pieceToPlace.pos.x][pieceToPlace.pos.y] = "black_" + pieceToPlace.type + pieceIndex;
+              console.log("parsed black " + pieceToPlace.type);
             }
             console.log("board initialized");
             this.logBoard();
