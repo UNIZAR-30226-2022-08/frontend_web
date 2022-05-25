@@ -132,7 +132,7 @@ export class TableroAsincronoComponent {
       })
       .then((res) => {
         if (res.status === 200) {
-          if (res.data.response.whitePlayer.references.key === localStorage.getItem("user")) {
+          if (res.data.response.whitePlayer === localStorage.getItem("user")) {
             this.playerIsWhite = true;
             console.log("I am the white player");
           } else{
