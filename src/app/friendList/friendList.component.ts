@@ -112,7 +112,7 @@ export class FriendListComponent {
         if (res.status === 200) {
           this.router.navigate(['/tableroAsincrono/'],
           {
-            queryParams: { matchId: res.data.id }
+            queryParams: { matchId: res.data.response.id }
           });
           
         } else {

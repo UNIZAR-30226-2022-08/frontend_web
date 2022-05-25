@@ -147,6 +147,8 @@ export class TableroAsincronoComponent {
               this.board[pieceToPlace.pos.x][pieceToPlace.pos.y] = "white_" + pieceToPlace.type + pieceIndex;
             }
 
+            this.initHTMLBoard();
+
         } else {
           console.log("get matches error: " + res.status);
         }
