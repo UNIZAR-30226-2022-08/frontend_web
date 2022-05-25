@@ -154,6 +154,7 @@ export class TableroAsincronoComponent {
               this.board[pieceToPlace.pos.x][pieceToPlace.pos.y] = "white_" + pieceToPlace.type + pieceIndex;
             }
             console.log("board initialized");
+            this.logBoard();
             console.log("calling init HTML board...");
             this.initHTMLBoard();
 
