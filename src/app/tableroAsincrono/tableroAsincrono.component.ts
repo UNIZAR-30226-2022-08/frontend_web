@@ -145,7 +145,7 @@ export class TableroAsincronoComponent {
               let pieceToPlace = res.data.response.boardState.whitePieces[i];
               let pieceIndex = this.getPieceIndex(pieceToPlace.type);
               this.board[pieceToPlace.pos.x][pieceToPlace.pos.y] = "white_" + pieceToPlace.type + pieceIndex;
-              console.log("parsed white " + pieceToPlace.type);
+              console.log("parsed white " + pieceToPlace.type + " into [" + pieceToPlace.pos.x + "," + pieceToPlace.pos.y + "]");
             }
 
             // Place black pieces
@@ -153,7 +153,7 @@ export class TableroAsincronoComponent {
               let pieceToPlace = res.data.response.boardState.blackPieces[i];
               let pieceIndex = this.getPieceIndex(pieceToPlace.type);
               this.board[pieceToPlace.pos.x][pieceToPlace.pos.y] = "black_" + pieceToPlace.type + pieceIndex;
-              console.log("parsed black " + pieceToPlace.type);
+              console.log("parsed black " + pieceToPlace.type + " into [" + pieceToPlace.pos.x + "," + pieceToPlace.pos.y + "]");
             }
             console.log("board initialized");
             this.logBoard();
