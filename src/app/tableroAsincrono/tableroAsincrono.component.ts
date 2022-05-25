@@ -2228,6 +2228,26 @@ export class TableroAsincronoComponent {
     this.rookCounter++;
     this.bishopCounter++;
     this.choosingSummon = false;
+
+    let [_, destTypePiece] = this.parsePiece(destType);
+
+    axios
+      .post('https://queenchess-backend.herokuapp.com/game/promotePawn', {
+        x: i,
+        y: j,
+        gameId: this.matchId,
+        wantedPiece: destTypePiece
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("Back promoted " + i+","+j + " to " + destTypePiece);
+        } else {
+          console.log("Move error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
   }
 
   // Moves piece to destiny
