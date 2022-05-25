@@ -90,7 +90,7 @@ export class TableroAsincronoComponent {
   }
 
   initHTMLBoard() {
-    
+    let boardString ="";
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         if (this.board[i][j] != "") {
@@ -107,8 +107,11 @@ export class TableroAsincronoComponent {
           pieceToPlace.appendChild(pieceImage);
           squareToPlacePiece?.appendChild(<Node>pieceToPlace);
         }
+        boardString += this.board[i][j] + ",";
       }
+      boardString += "\n";
     }
+    console.log(boardString);
 
   }
 
@@ -131,7 +134,11 @@ export class TableroAsincronoComponent {
         if (res.status === 200) {
           if (res.data.response.whitePlayer.references.key === localStorage.getItem("user")) {
             this.playerIsWhite = true;
-          } else this.playerIsWhite = false;
+            console.log("I am the white player");
+          } else{
+            this.playerIsWhite = false;
+            console.log("I am the black player");
+          } 
 
             // Place white pieces
             for (let i = 0; i < res.data.response.boardState.whitePieces.length; i++) {
