@@ -20,7 +20,7 @@
     <h1>Esperando al rival:</h1>
     <li  class='match' *ngFor="let match of idList">
       <div class='name'>
-        Vs. {{matchList[match]}}
+        Vs. {{playedMatchList[match]}}
       </div>
       <div class="play" (click)="playMove(match)">
         ♟️
