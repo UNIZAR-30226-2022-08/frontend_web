@@ -31,7 +31,7 @@ export class MatchListComponent {
               if (res.data.response[i].turn) {
                 this.matchList.push(res.data.response[i].blackPlayer);
                 this.idList.push(parseInt(res.data.response[i].id));
-              } else {
+              } else if (!(res.data.response[i].turn)) {
                 this.playedMatchList.push(res.data.response[i].blackPlayer);
                 this.idList.push(parseInt(res.data.response[i].id));
               }
@@ -40,7 +40,7 @@ export class MatchListComponent {
               if (res.data.response[i].turn) {
                 this.playedMatchList.push(res.data.response[i].whitePlayer);
                 this.idList.push(parseInt(res.data.response[i].id));
-              } else {
+              } else if (!(res.data.response[i].turn)) {
                 this.matchList.push(res.data.response[i].whitePlayer);
                 this.idList.push(parseInt(res.data.response[i].id));
               }
