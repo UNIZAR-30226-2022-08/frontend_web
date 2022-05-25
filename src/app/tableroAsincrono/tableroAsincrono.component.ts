@@ -94,7 +94,7 @@ export class TableroAsincronoComponent {
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         if (this.board[i][j] !== "") {
-          var squareToPlacePiece = document.getElementById(this.board[i][j]);
+          var squareToPlacePiece = document.getElementById(this.coordToCode(i,j));
           let pieceToPlace = document.createElement('span');
           let pieceImage = document.createElement('img');
           let [pieceColor, pieceType] = this.parsePiece(this.board[i][j]);
