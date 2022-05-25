@@ -143,7 +143,7 @@ export class TableroAsincronoComponent {
             this.playerIsWhite = false;
             console.log("I am the black player");
           } 
-
+          this.turnWhite = res.data.response.turn;
             // Place white pieces
             for (let i = 0; i < res.data.response.boardState.whitePieces.length; i++) {
               let pieceToPlace = res.data.response.boardState.whitePieces[i];
@@ -2035,6 +2035,7 @@ export class TableroAsincronoComponent {
   // Calls movePiece() if the move is allowed
   checkClick(clicked: string) {
     if (!this.choosingSummon && (this.playerIsWhite == this.turnWhite)) {
+      console.log("correct player");
       if (this.selected === "") {
         let [x, y] = this.codeToCoord(clicked);
         let [color, pieceType] = this.parsePiece(this.board[x][y]);
