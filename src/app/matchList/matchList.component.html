@@ -6,9 +6,9 @@
 
   <ul class="custom-form">
     <h1>Movimientos pendientes:</h1>
-    <li  class='match' *ngFor="let match of idList">
+    <li  class='match' *ngFor="let match of idList; let i = index">
       <div class='name'>
-        Vs. {{matchList[match]}}
+        Vs. {{matchList[i]}}
       </div>
       <div class="play" (click)="playMove(match)">
         ♟️
@@ -18,9 +18,9 @@
 
   <ul class="custom-form">
     <h1>Esperando al rival:</h1>
-    <li  class='match' *ngFor="let match of idList">
+    <li  class='match' *ngFor="let match of idPlayedList; let i = index">
       <div class='name'>
-        Vs. {{playedMatchList[match]}}
+        Vs. {{playedMatchList[i]}}
       </div>
       <div class="play" (click)="playMove(match)">
         ♟️

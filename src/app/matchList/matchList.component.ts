@@ -12,8 +12,10 @@ export class MatchListComponent {
 
   match: string;
   matchList: string[] = [];
+  idPlayedList: number[] = [];
   idList: number[] = [];
   playedMatchList: string[] = [];
+
   //This gets called after constructor (angular doesn't let you access elements in the constructor)
   ngOnInit() {
     axios
@@ -30,13 +32,13 @@ export class MatchListComponent {
                 this.idList.push(parseInt(res.data.response[i].id));
               } else if (!(res.data.response[i].turn)) {
                 this.playedMatchList.push(res.data.response[i].blackPlayer);
-                this.idList.push(parseInt(res.data.response[i].id));
+                this.idPlayedList.push(parseInt(res.data.response[i].id));
               }
             } else if (res.data.response[i].blackPlayer === localStorage.getItem("user")){
               console.log("player is black")
               if (res.data.response[i].turn) {
                 this.playedMatchList.push(res.data.response[i].whitePlayer);
-                this.idList.push(parseInt(res.data.response[i].id));
+                this.idPlayedList.push(parseInt(res.data.response[i].id));
               } else if (!(res.data.response[i].turn)) {
                 this.matchList.push(res.data.response[i].whitePlayer);
                 this.idList.push(parseInt(res.data.response[i].id));
