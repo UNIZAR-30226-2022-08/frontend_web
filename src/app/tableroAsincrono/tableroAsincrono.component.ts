@@ -94,8 +94,7 @@ export class TableroAsincronoComponent {
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         if (this.board[i][j] != "") {
-          let [x, y] = this.codeToCoord(this.board[i][j]);
-          var squareToPlacePiece = document.getElementById(this.board[x][y]);
+          var squareToPlacePiece = document.getElementById(this.board[i][j]);
           let pieceToPlace = document.createElement('span');
           let pieceImage = document.createElement('img');
           let pieceColor, pieceType = this.parsePiece(this.board[i][j]);
@@ -106,6 +105,7 @@ export class TableroAsincronoComponent {
           pieceToPlace.setAttribute('class', "piece");
           pieceToPlace.appendChild(pieceImage);
           squareToPlacePiece?.appendChild(<Node>pieceToPlace);
+          console.log("inserted piece into HTML");
         }
         boardString += this.board[i][j] + ",";
       }
@@ -153,7 +153,8 @@ export class TableroAsincronoComponent {
               let pieceIndex = this.getPieceIndex(pieceToPlace.type);
               this.board[pieceToPlace.pos.x][pieceToPlace.pos.y] = "white_" + pieceToPlace.type + pieceIndex;
             }
-
+            console.log("board initialized");
+            console.log("calling init HTML board...");
             this.initHTMLBoard();
 
         } else {
