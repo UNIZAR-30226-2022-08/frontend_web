@@ -98,7 +98,11 @@ export class TableroAsincronoComponent {
           let pieceToPlace = document.createElement('span');
           let pieceImage = document.createElement('img');
           let [pieceColor, pieceType] = this.parsePiece(this.board[i][j]);
-          pieceImage.setAttribute('src', "../../assets/defaultPieces/" + pieceColor + "_" + pieceType + ".png");
+          let colorString ="";
+          if (pieceColor == true) {
+            colorString = "white";
+          } else colorString = "black";
+          pieceImage.setAttribute('src', "../../assets/defaultPieces/" + colorString + "_" + pieceType + ".png");
           pieceImage.setAttribute('width', "40");
           pieceImage.setAttribute('height', "52");
           pieceToPlace.setAttribute('id', this.board[i][j]);
@@ -2030,7 +2034,7 @@ export class TableroAsincronoComponent {
   // Checks piece clicked matches current player's turn
   // Calls movePiece() if the move is allowed
   checkClick(clicked: string) {
-    if (!this.choosingSummon && (this.playerIsWhite != this.turnWhite)) {
+    if (!this.choosingSummon && (this.playerIsWhite == this.turnWhite)) {
       if (this.selected === "") {
         let [x, y] = this.codeToCoord(clicked);
         let [color, pieceType] = this.parsePiece(this.board[x][y]);
