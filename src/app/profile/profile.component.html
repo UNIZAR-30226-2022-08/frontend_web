@@ -6,17 +6,38 @@
 </div>
 
   <div class="centered">
-    <div class="profile">
-      <div id="usernameText" class="name"></div>
-      <div id="elo" class="elo">
-        🏆 300 LP
+      <div id="usernameText" class="name">
+            <h2 style="color:white" size=1000> Usuario: {{userName}}</h2>
       </div>
-    </div>
+      <div id="wonGames">
+        <h2 style="color:white" size=1000> Partidas ganadas: {{wonGames}}</h2>
+      </div>
+      <div id="playedGames">
+        <h2 style="color:white" size=1000> Partidas jugadas: {{playedGames}}</h2>
+      </div>
+      <div id="wonTournaments">
+        <h2 style="color:white" size=1000> Torneos ganados: {{wonTournaments}}</h2>
+      </div>
+      <div id="playedTournaments">
+        <h2 style="color:white" size=1000> Torneos jugados: {{playedTournaments}}</h2>
+      </div>
+      <div id="elo" class="elo">
+        <h2 style="color:white" size=1000> ELO: {{elo}} 🏆</h2> 
+      </div>
+      <div id="elo" class="elo">
+        <h2 style="color:white" size=1000> Dinero: {{money}} 🪙</h2>
+      </div>
+  </div>
+
+  <div class="centered">
+    <button class="buttonSlideA" (click)="router.navigate(['/history']);">
+        <span>Historial</span>
+    </button>
   </div>
 
   <div class="login">
     <form class="custom-form" method="post">
-      <h1>Cambiar contraseña:</h1>
+      <h1 style="color:white">Cambiar contraseña:</h1>
       <input
         type="text"
         [(ngModel)]="newPassword"

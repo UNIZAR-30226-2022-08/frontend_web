@@ -12,8 +12,16 @@ export class ProfileComponent {
   password: string;
   newPassword: string;
   confirmNewPassword: string;
-  partidasGanadas: number;
-  
+  playedGames: number;
+  wonGames: number;
+  winrate: number;
+  playedTournaments: number;
+  wonTournaments: number;
+  elo: number;
+  money: number;
+  userName: string;
+
+
 
   constructor(public router: Router) {
     
@@ -45,14 +53,15 @@ export class ProfileComponent {
     })
     .then((res) => {
       if (res.status === 200) {
-        localStorage.setItem("user", res.data.response.username);
-        localStorage.setItem("email", res.data.response.email);
-        console.log("Response session data: " + res.data);
-        console.log("Storing username: " + localStorage.getItem("user"));
+        this.playedGames = res.data.response.playedGames;
+        this.wonGames = res.data.response.wonGames;
+        this.wonTournaments = res.data.response.wonTournaments;
+        this.playedTournaments = res.data.response.playedTournaments;
+        this.elo = res.data.response.elo;
+        this.money = res.data.response.money;
+        this.userName = res.data.response.user;
       } else if (res.status === 400) {
-        localStorage.clear();
         console.log("check session error: " + res.status);
-        this.router.navigateByUrl('/home');
       }
     })
     .catch((error) => {

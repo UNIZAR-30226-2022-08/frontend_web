@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { TableroComponent } from './tablerov1/tablero.component';
 import { TableroAsincronoComponent } from './tableroAsincrono/tableroAsincrono.component';
 import { TableroSincronoComponent } from './tableroSincrono/tableroSincrono.component';
+import { HistoryComponent } from './history/history.component';
 import { MainMenuComponent } from './mainMenu/mainMenu.component';
 import { GameModesComponent } from './gameModes/gameModes.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -31,6 +32,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     GameModesComponent,
     TableroAsincronoComponent,
     TableroSincronoComponent,
+    HistoryComponent,
     MainMenuComponent,
     ProfileComponent,
     FriendListComponent,

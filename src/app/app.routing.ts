@@ -5,6 +5,7 @@ import { RegisterComponent } from "./register/register.component";
 import { HomeComponent } from "./home/home.component";
 import { TableroComponent } from "./tablerov1/tablero.component";
 import { TableroAsincronoComponent } from './tableroAsincrono/tableroAsincrono.component';
+import { HistoryComponent } from './history/history.component';
 import { TableroSincronoComponent } from './tableroSincrono/tableroSincrono.component';
 import { MainMenuComponent } from "./mainMenu/mainMenu.component";
 import { GameModesComponent } from "./gameModes/gameModes.component";
@@ -22,6 +23,7 @@ const appRoutes = [
     { path: 'tablero', component: TableroComponent, pathMatch: "full"},
     { path: 'tableroAsincrono', component: TableroAsincronoComponent, pathMatch: "full"},
     { path: 'tableroSincrono', component: TableroSincronoComponent, pathMatch: "full"},
+    { path: 'history', component: HistoryComponent, pathMatch: "full"},
     { path: 'mainMenu', component: MainMenuComponent, pathMatch: "full"},
     { path: 'gameModes', component: GameModesComponent, pathMatch: "full"},
     { path: 'profile', component: ProfileComponent, pathMatch: "full"},
