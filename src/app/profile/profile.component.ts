@@ -55,7 +55,7 @@ export class ProfileComponent {
         if (res.status === 200) {
           console.log(res.data);
           this.playedGames = res.data.response.stats.playedGames;
-          this.wonGames = res.data.response.stats.wonGames.toString;
+          this.wonGames = res.data.response.stats.wonGames;
           this.wonTournaments = res.data.response.stats.wonTournaments;
           this.playedTournaments = res.data.response.stats.playedTournaments;
           this.elo = res.data.response.user.elo;
@@ -70,13 +70,6 @@ export class ProfileComponent {
           var playedTournamentsElement = document.getElementById("playedTournamentsText");
           var eloElement = document.getElementById("eloText");
           var moneyElement = document.getElementById("moneyText");
-          console.log(this.userName);
-          console.log(this.wonGames.toString());
-          console.log(this.playedGames.toString());
-          console.log(this.wonTournaments.toString());
-          console.log(this.playedTournaments.toString());
-          console.log(this.elo.toString());
-          console.log(this.money.toString());
 
 
           if (userElement != undefined) {
@@ -112,13 +105,13 @@ export class ProfileComponent {
 
           if (eloElement != undefined) {
             if (this.elo != null) {
-              eloElement.textContent += this.elo.toString();
+              eloElement.textContent += this.elo.toString() + " 🏆";
             }
           }
 
           if (moneyElement != undefined) {
             if (this.money != null) {
-              moneyElement.textContent += this.money.toString();
+              moneyElement.textContent += this.money.toString() + " 🪙";
             }
           }
         } else if (res.status === 400) {
