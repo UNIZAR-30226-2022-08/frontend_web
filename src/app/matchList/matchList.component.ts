@@ -12,6 +12,7 @@ export class MatchListComponent {
 
   match: string;
   matchList: string[] = [];
+  matchListSync: string[] = [];
   idPlayedList: number[] = [];
   idList: number[] = [];
   playedMatchList: string[] = [];
@@ -44,26 +45,42 @@ export class MatchListComponent {
         if (res.status === 200) {
           for (let i = 0; i < res.data.response.length; i++) {
             console.log(res.data.response[i]);
-            if (res.data.response[i].whitePlayer === localStorage.getItem("user")) {
-              console.log("player is white")
-              if (res.data.response[i].turn) {
-                this.matchList.push(res.data.response[i].blackPlayer);
-                this.idList.push(parseInt(res.data.response[i].id));
-              } else if (!(res.data.response[i].turn)) {
-                this.playedMatchList.push(res.data.response[i].blackPlayer);
-                this.idPlayedList.push(parseInt(res.data.response[i].id));
+            if (res.data.response[i].isAsync) {
+              if (res.data.response[i].whitePlayer === localStorage.getItem("user")) {
+                console.log("player is white")
+                if (res.data.response[i].turn) {
+                  this.matchList.push(res.data.response[i].blackPlayer);
+                  this.idList.push(parseInt(res.data.response[i].id));
+                } else if (!(res.data.response[i].turn)) {
+                  this.playedMatchList.push(res.data.response[i].blackPlayer);
+                  this.idPlayedList.push(parseInt(res.data.response[i].id));
+                }
+              } else if (res.data.response[i].blackPlayer === localStorage.getItem("user")) {
+                console.log("player is black")
+                if (res.data.response[i].turn) {
+                  this.playedMatchList.push(res.data.response[i].whitePlayer);
+                  this.idPlayedList.push(parseInt(res.data.response[i].id));
+                } else if (!(res.data.response[i].turn)) {
+                  this.matchList.push(res.data.response[i].whitePlayer);
+                  this.idList.push(parseInt(res.data.response[i].id));
+                }
+              } else {
+                if (res.data.response[i].whitePlayer === localStorage.getItem("user")) {
+                  console.log("player is white")
+
+                  this.playedMatchList.push(res.data.response[i].blackPlayer);
+                  this.idPlayedList.push(parseInt(res.data.response[i].id));
+
+                } else if (res.data.response[i].blackPlayer === localStorage.getItem("user")) {
+                  console.log("player is black")
+                  this.matchListSync.push(res.data.response[i].whitePlayer);
+                  this.idList.push(parseInt(res.data.response[i].id));
+
+                }
               }
-            } else if (res.data.response[i].blackPlayer === localStorage.getItem("user")){
-              console.log("player is black")
-              if (res.data.response[i].turn) {
-                this.playedMatchList.push(res.data.response[i].whitePlayer);
-                this.idPlayedList.push(parseInt(res.data.response[i].id));
-              } else if (!(res.data.response[i].turn)) {
-                this.matchList.push(res.data.response[i].whitePlayer);
-                this.idList.push(parseInt(res.data.response[i].id));
-              }
-            }
+            
             console.log("\n"); 
+            }
           }
         } else {
           console.log("get matches error: " + res.status);
@@ -76,6 +93,13 @@ export class MatchListComponent {
 
   playMove(match: number) {
     this.router.navigate(['/tableroAsincrono/'],
+    {
+      queryParams: { matchId: match.toString() }
+    });
+  }
+
+  playMoveSync(match: number) {
+    this.router.navigate(['/tableroSincrono/'],
     {
       queryParams: { matchId: match.toString() }
     });

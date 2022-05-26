@@ -5,6 +5,7 @@
   </div>
 
   <ul class="custom-form">
+    <h1 style="color:white">Asíncronos </h1>
     <h1 style="color:white">Es su turno: </h1>
     <li  class='match' *ngFor="let match of idList; let i = index">
       <div class='name'>
@@ -24,6 +25,18 @@
       </div>
       <div class="play" (click)="playMove(match)">
         ♟️
+      </div>
+    </li>
+  </ul>
+
+  <ul class="custom-form">
+    <h1 style="color:white">Síncronos </h1>
+    <li  class='match' *ngFor="let match of idListSync; let i = index">
+      <div class='name'>
+        Vs. {{matchListSync[i]}}
+      </div>
+      <div class="play" (click)="playMoveSync(match)">
+        ⚔️
       </div>
     </li>
   </ul>
