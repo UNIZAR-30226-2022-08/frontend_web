@@ -56,3 +56,15 @@
     </form>
     
   </div>
+
+  <ul class="custom-form">
+    <h1 style="color:white">Historial: </h1>
+    <li  class='match' *ngFor="let match of idList; let i = index">
+      <div class='name'>
+        Vs. {{playedMatchList[i]}}
+      </div>
+      <div class="play">
+        
+      </div>
+    </li>
+  </ul>

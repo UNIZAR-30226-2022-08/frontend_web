@@ -21,7 +21,8 @@ export class ProfileComponent {
   money: number = 0;
   userName: string = "";
 
-
+  matchList: string[] = [];
+  idList: string[] = [];
 
   constructor(public router: Router) {
 
@@ -114,6 +115,19 @@ export class ProfileComponent {
               moneyElement.textContent += this.money.toString() + " 🪙";
             }
           }
+
+          for (let i = 0; i < res.data.response.recentGames.length; i++) {
+            if (res.data.response[i].whitePlayer === localStorage.getItem("user")) {
+              console.log("player is white")
+                this.matchList.push(res.data.response[i].blackPlayer);
+                this.idList.push(res.data.response.recentGames[i].id);
+              
+            } else if (res.data.response[i].blackPlayer === localStorage.getItem("user")) {
+              console.log("player is black")
+                this.matchList.push(res.data.response[i].whitePlayer);
+                this.idList.push(res.data.response.recentGames[i].id);
+            }
+          }
         } else if (res.status === 400) {
           console.log("check session error: " + res.status);
         }
@@ -121,7 +135,7 @@ export class ProfileComponent {
       .catch((error) => {
         console.error(error);
       })
-
+ 
   }
 
   changePassword() {
