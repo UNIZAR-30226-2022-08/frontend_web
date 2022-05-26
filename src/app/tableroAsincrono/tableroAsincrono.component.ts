@@ -2203,8 +2203,9 @@ export class TableroAsincronoComponent {
 
             }
             // Avisar al enemigo negro de jaque
-            else { console.log("Jaque al rey blanco"); }
+            else { alert("Jaque al blanco"); }
             // Check de si es jaque mate mirando si las fichas de su color le pueden defender ( hay movimientos de su color ) hay que hacer funcion nueva
+            
           }
           else {
             // Comprobar rey ahogado
@@ -2221,7 +2222,7 @@ export class TableroAsincronoComponent {
               this.endGame(this.whitePlayerName);
             }
             // Avisar al enemigo negro de jaque
-            else { console.log("Jaque al rey negro"); }
+            else { alert("Jaque al negro"); }
           }
           else {
             // Comprobar rey negro ahogado
