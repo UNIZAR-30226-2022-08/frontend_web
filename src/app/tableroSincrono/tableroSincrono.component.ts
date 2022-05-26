@@ -204,12 +204,7 @@ export class TableroSincronoComponent {
       })
       .catch((error) => {
         console.error(error);
-      })  
-      while(this.playerIsWhite !== this.turnWhite) {
-        await this.delay(1000);
-        this.getGameState();
-        console.log("enemy didn't move yet");
-      }
+      })
   }
 
   startSecondBoard() {
