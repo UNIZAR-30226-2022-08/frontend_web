@@ -69,10 +69,52 @@ export class ProfileComponent {
     })
     
     var userElement = document.getElementById("usernameText");
+    var wonGamesElement = document.getElementById("wonGamesText");
+    var playedGamesElement = document.getElementById("playedGamesText");
+    var wonTournamentsElement = document.getElementById("wonTournamentsText");
+    var playedTournamentsElement = document.getElementById("playedTournamentsText");
+    var eloElement = document.getElementById("eloText");
+    var moneyElement = document.getElementById("moneyText");
+
     if (userElement != undefined) {
-      let username = this.userName;
-      if (username != null) {
-        userElement.textContent += username;
+      if (this.userName != null) {
+        userElement.textContent += this.userName;
+      }
+    }
+
+    if (wonGamesElement != undefined) {
+      if (this.wonGames != null) {
+        wonGamesElement.textContent += this.wonGames.toString();
+      }
+    }
+
+    if (playedGamesElement != undefined) {
+      if (this.playedGames != null) {
+        playedGamesElement.textContent += this.playedGames.toString();
+      }
+    }
+
+    if (wonTournamentsElement != undefined) {
+      if (this.wonTournaments != null) {
+        wonTournamentsElement.textContent += this.wonTournaments.toString();
+      }
+    }
+
+    if (playedTournamentsElement != undefined) {
+      if (this.playedTournaments != null) {
+        playedTournamentsElement.textContent += this.playedTournaments.toString();
+      }
+    }
+
+    if (eloElement != undefined) {
+      if (this.elo != null) {
+        eloElement.textContent += this.elo.toString();
+      }
+    }
+
+    if (moneyElement != undefined) {
+      if (this.money != null) {
+        moneyElement.textContent += this.money.toString();
       }
     }
   }
