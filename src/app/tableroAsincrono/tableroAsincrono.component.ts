@@ -43,7 +43,9 @@ export class TableroAsincronoComponent {
   squareToSummon = "";
   choosingSummon = false;
 
-  opponent = "";
+  whitePlayerName = "";
+  blackPlayerName = "";
+
   matchId = "";
   playerIsWhite = true;
 
@@ -136,6 +138,8 @@ export class TableroAsincronoComponent {
       })
       .then((res) => {
         if (res.status === 200) {
+          this.whitePlayerName =res.data.response.whitePlayer;
+          this.blackPlayerName =res.data.response.blackPlayer;
           if (res.data.response.whitePlayer === localStorage.getItem("user")) {
             this.playerIsWhite = true;
             console.log("I am the white player");
@@ -2195,7 +2199,7 @@ export class TableroAsincronoComponent {
             // Avisar al enemigo blanco de jaque
             if (!(this.examineWhitePossibleMoves(this.board))) {
               console.log("Se acaba el juego, jaque mate al rey blanco");
-              this.endGame("black");
+              this.endGame(this.blackPlayerName);
 
             }
             // Avisar al enemigo negro de jaque
@@ -2214,7 +2218,7 @@ export class TableroAsincronoComponent {
             // Avisar al enemigo negro de jaque mate
             if (!(this.examineBlackPossibleMoves(this.board))) {
               console.log("Se acaba el juego, jaque mate para los negros");
-              this.endGame("white");
+              this.endGame(this.whitePlayerName);
             }
             // Avisar al enemigo negro de jaque
             else { console.log("Jaque al rey negro"); }
@@ -2249,9 +2253,9 @@ export class TableroAsincronoComponent {
       .catch((error) => {
         console.error(error);
       })
-      if (winner === "white") {
+      if (winner === this.whitePlayerName) {
         alert("Ganan las blancas");
-      } else if (winner === "black") {
+      } else if (winner === this.blackPlayerName) {
         alert("Ganan las negras");
       } else alert("Tablas");
       
