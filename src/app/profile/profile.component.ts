@@ -19,6 +19,7 @@ export class ProfileComponent {
   wonTournaments: number;
   elo: number;
   money: number;
+  userName: string;
 
 
 
@@ -58,6 +59,7 @@ export class ProfileComponent {
         this.playedTournaments = res.data.response.playedTournaments;
         this.elo = res.data.response.elo;
         this.money = res.data.response.money;
+        this.userName = res.data.response.user;
       } else if (res.status === 400) {
         console.log("check session error: " + res.status);
       }
