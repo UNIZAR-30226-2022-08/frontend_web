@@ -53,6 +53,7 @@ export class ProfileComponent {
     })
     .then((res) => {
       if (res.status === 200) {
+        console.log(res.data);
         this.playedGames = res.data.response.stats.playedGames;
         this.wonGames = res.data.response.stats.wonGames;
         this.wonTournaments = res.data.response.stats.wonTournaments;
