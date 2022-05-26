@@ -143,7 +143,7 @@ export class TableroAsincronoComponent {
             this.playerIsWhite = false;
             console.log("I am the black player");
           } 
-
+          this.turnWhite = res.data.response.turn;
             // Place white pieces
             for (let i = 0; i < res.data.response.boardState.whitePieces.length; i++) {
               let pieceToPlace = res.data.response.boardState.whitePieces[i];
@@ -2035,6 +2035,7 @@ export class TableroAsincronoComponent {
   // Calls movePiece() if the move is allowed
   checkClick(clicked: string) {
     if (!this.choosingSummon && (this.playerIsWhite == this.turnWhite)) {
+      console.log("correct player");
       if (this.selected === "") {
         let [x, y] = this.codeToCoord(clicked);
         let [color, pieceType] = this.parsePiece(this.board[x][y]);
@@ -2062,27 +2063,87 @@ export class TableroAsincronoComponent {
               break;
             case 1:
               this.castling = true;
-              this.movePiece(clicked);
+              this.movePieceWithoutCall(clicked);
               this.selected = "h1";
-              this.movePiece("f1");
+              this.movePieceWithoutCall("f1");
+              axios
+                .post('https://queenchess-backend.herokuapp.com/game/castle', {
+                  gameId: this.matchId,
+                  side: "right"
+                })
+                .then((res) => {
+                  if (res.status === 200) {
+                    console.log("Castling white right");
+                  } else {
+                    console.log("Castle error: " + res.status);
+                  }
+                })
+                .catch((error) => {
+                  console.error(error);
+                })
               break;
             case 2:
               this.castling = true;
-              this.movePiece(clicked);
+              this.movePieceWithoutCall(clicked);
               this.selected = "a1";
-              this.movePiece("d1");
+              this.movePieceWithoutCall("d1");
+              axios
+                .post('https://queenchess-backend.herokuapp.com/game/castle', {
+                  gameId: this.matchId,
+                  side: "left"
+                })
+                .then((res) => {
+                  if (res.status === 200) {
+                    console.log("Castling white left");
+                  } else {
+                    console.log("Castle error: " + res.status);
+                  }
+                })
+                .catch((error) => {
+                  console.error(error);
+                })
               break;
             case 3:
               this.castling = true;
-              this.movePiece(clicked);
+              this.movePieceWithoutCall(clicked);
               this.selected = "h8";
-              this.movePiece("f8");
+              this.movePieceWithoutCall("f8");
+              axios
+                .post('https://queenchess-backend.herokuapp.com/game/castle', {
+                  gameId: this.matchId,
+                  side: "right"
+                })
+                .then((res) => {
+                  if (res.status === 200) {
+                    console.log("Castling black right");
+                  } else {
+                    console.log("Castle error: " + res.status);
+                  }
+                })
+                .catch((error) => {
+                  console.error(error);
+                })
               break;
             case 4:
               this.castling = true;
-              this.movePiece(clicked);
+              this.movePieceWithoutCall(clicked);
               this.selected = "a8";
-              this.movePiece("d8");
+              this.movePieceWithoutCall("d8");
+              axios
+                .post('https://queenchess-backend.herokuapp.com/game/castle', {
+                  gameId: this.matchId,
+                  side: "left"
+                })
+                .then((res) => {
+                  if (res.status === 200) {
+                    console.log("Castling black left");
+                  } else {
+                    console.log("Castle error: " + res.status);
+                  }
+                })
+                .catch((error) => {
+                  console.error(error);
+                })
               break;
           }
           let [isWhite, pieceType] = this.parsePieceComplete(this.board[x][y]); //ME QUEDO AQUI PARA PONERLE LOS BOOLEANOS SI SE MUEVEN
@@ -2227,6 +2288,26 @@ export class TableroAsincronoComponent {
     this.rookCounter++;
     this.bishopCounter++;
     this.choosingSummon = false;
+
+    let [_, destTypePiece] = this.parsePiece(destType);
+
+    axios
+      .post('https://queenchess-backend.herokuapp.com/game/promotePawn', {
+        x: i,
+        y: j,
+        gameId: this.matchId,
+        wantedPiece: destTypePiece
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("Back promoted " + i+","+j + " to " + destTypePiece);
+        } else {
+          console.log("Move error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
   }
 
   // Moves piece to destiny
@@ -2280,6 +2361,39 @@ export class TableroAsincronoComponent {
         console.error(error);
       })
 
+  }
+
+   // Moves piece to destiny
+   movePieceWithoutCall(destiny: string) {
+    let [i, j] = this.codeToCoord(this.selected);
+    let [x, y] = this.codeToCoord(destiny);
+
+    var domOriginPiece = document.getElementById(this.board[i][j]);
+    var domDestiny = document.getElementById(destiny);
+
+    if (this.board[x][y] != "") {
+      // Normal move
+      var domDestinyPiece = <Node>document.getElementById(this.board[x][y]);
+      var pieceText = domDestinyPiece.textContent;
+
+
+      let [color, _] = this.parsePiece(this.board[x][y]);
+      if (color) {
+        var cemetery = document.getElementById("cemeteryA");
+      } else {
+        var cemetery = document.getElementById("cemeteryB");
+      }
+      if (cemetery != undefined && pieceText != undefined) {
+        cemetery.appendChild(<Node>domDestinyPiece);
+      }
+    }
+    domDestiny?.appendChild(<Node>domOriginPiece);
+
+    let piece = this.board[i][j];
+    this.board[i][j] = "";
+    this.board[x][y] = piece;
+    if (!(this.castling)) { this.turnWhite = !this.turnWhite; }
+    this.castling = false;
   }
 
   prueba() {
