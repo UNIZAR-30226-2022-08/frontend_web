@@ -143,6 +143,29 @@ export class FriendListComponent {
       })
   }
 
+  challengeSync(friendName: string) {
+    console.log("Challenging " + friendName);
+    axios
+      .put('https://queenchess-backend.herokuapp.com/game/newAsyncGame', {
+        whitePlayer: localStorage.getItem("user"),
+        blackPlayer: friendName
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          this.router.navigate(['/tableroSincrono/'],
+          {
+            queryParams: { matchId: res.data.response.id }
+          });
+          
+        } else {
+          console.log("Challenge error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  }
+
   chat(friendName: string) {
     console.log(friendName);
     this.router.navigate(['/chat']);

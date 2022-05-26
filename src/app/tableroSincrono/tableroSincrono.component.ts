@@ -1,7 +1,9 @@
 import { Component } from "@angular/core";
 import { HAMMER_LOADER } from "@angular/platform-browser";
-import { Router } from "@angular/router";
+import { Params, Router } from "@angular/router";
 import { ColdObservable } from "rxjs/internal/testing/ColdObservable";
+import { ActivatedRoute } from '@angular/router';
+import axios from 'axios';
 
 @Component({
   selector: "app-mainMenu",
@@ -12,8 +14,7 @@ import { ColdObservable } from "rxjs/internal/testing/ColdObservable";
 
 export class TableroSincronoComponent {
 
-  constructor(public router: Router) {
-    this.startGame();
+  constructor(public route: ActivatedRoute, public router: Router) {
   }
 
   initialRow: string[] = ["rook_1", "knight_1", "bishop_1", "queen_1", "king_1", "bishop_2", "knight_2", "rook_2"];
@@ -38,10 +39,25 @@ export class TableroSincronoComponent {
   knightCounter = 3;
   rookCounter = 3;
   bishopCounter = 3;
+  pawnCounter = 1;
   squareToSummon = "";
   choosingSummon = false;
 
+  whitePlayerName = "";
+  blackPlayerName = "";
 
+  matchId = "";
+  playerIsWhite = true;
+
+  ngOnInit() {
+    this.route.queryParams
+      .subscribe(params => {
+        this.matchId = params["matchId"];
+        console.log("Id de partida: " + this.matchId);
+        this.startGame();
+      }
+      );
+  }
   // Removes all pieces from board
   clearBoard() {
     for (let i = 0; i <= 8; i++) {
@@ -49,6 +65,60 @@ export class TableroSincronoComponent {
         this.board[i][j] = "";
       }
     }
+  }
+  
+  getPieceIndex(type: string) {
+    switch (type) {
+      case "pawn":
+        this.pawnCounter++;
+        return ("_" + (this.pawnCounter - 1));
+      case "rook":
+        this.rookCounter++;
+        return ("_" + (this.rookCounter - 1));
+      case "bishop":
+        this.bishopCounter++;
+        return ("_" + (this.bishopCounter - 1));
+      case "knight":
+        this.knightCounter++;
+        return ("_" + (this.knightCounter - 1));
+      case "queen":
+        this.queenCounter++;
+        return ("_" + (this.queenCounter - 1));
+      case "king":
+        return ("");
+      default:
+        return ("");
+    }
+  }
+
+  initHTMLBoard() {
+    let boardString ="";
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        if (this.board[i][j] !== "") {
+          var squareToPlacePiece = document.getElementById(this.coordToCode(i,j));
+          let pieceToPlace = document.createElement('span');
+          let pieceImage = document.createElement('img');
+          let [pieceColor, pieceType] = this.parsePiece(this.board[i][j]);
+          let colorString ="";
+          if (pieceColor == true) {
+            colorString = "white";
+          } else colorString = "black";
+          pieceImage.setAttribute('src', "../../assets/defaultPieces/" + colorString + "_" + pieceType + ".png");
+          pieceImage.setAttribute('width', "40");
+          pieceImage.setAttribute('height', "52");
+          pieceToPlace.setAttribute('id', this.board[i][j]);
+          pieceToPlace.setAttribute('class', "piece");
+          pieceToPlace.appendChild(pieceImage);
+          squareToPlacePiece?.appendChild(<Node>pieceToPlace);
+          console.log("inserted piece into HTML");
+        }
+        boardString += this.board[i][j] + ",";
+      }
+      boardString += "\n";
+    }
+    console.log(boardString);
+
   }
 
   // Back-end should initialize board?
@@ -60,21 +130,51 @@ export class TableroSincronoComponent {
     for (let i = 0; i < 8; i++) {
       this.board[i] = [];
       for (let j = 0; j < 8; j++) {
-        if (j == 0) {
-          this.board[i][j] = "white_" + this.initialRow[i];
-        }
-        else if (j == 7) {
-          this.board[i][j] = "black_" + this.initialRow[i];
-        }
-        else if (j == 1) {
-          this.board[i][j] = "white_pawn_" + String.fromCharCode(i + 1 + '0'.charCodeAt(0));
-        }
-        else if (j == 6) {
-          this.board[i][j] = "black_pawn_" + String.fromCharCode(i + 1 + '0'.charCodeAt(0));
-        }
-        else this.board[i][j] = "";
+        this.board[i][j] = "";
       }
     }
+    axios
+      .get('https://queenchess-backend.herokuapp.com/game/getGame?gameId=' + this.matchId, {
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          this.whitePlayerName =res.data.response.whitePlayer;
+          this.blackPlayerName =res.data.response.blackPlayer;
+          if (res.data.response.whitePlayer === localStorage.getItem("user")) {
+            this.playerIsWhite = true;
+            console.log("I am the white player");
+          } else{
+            this.playerIsWhite = false;
+            console.log("I am the black player");
+          } 
+          this.turnWhite = res.data.response.turn;
+            // Place white pieces
+            for (let i = 0; i < res.data.response.boardState.whitePieces.length; i++) {
+              let pieceToPlace = res.data.response.boardState.whitePieces[i];
+              let pieceIndex = this.getPieceIndex(pieceToPlace.type);
+              this.board[pieceToPlace.pos.x][pieceToPlace.pos.y] = "white_" + pieceToPlace.type + pieceIndex;
+              console.log("parsed white " + pieceToPlace.type + " into [" + pieceToPlace.pos.x + "," + pieceToPlace.pos.y + "]");
+            }
+
+            // Place black pieces
+            for (let i = 0; i < res.data.response.boardState.blackPieces.length; i++) {
+              let pieceToPlace = res.data.response.boardState.blackPieces[i];
+              let pieceIndex = this.getPieceIndex(pieceToPlace.type);
+              this.board[pieceToPlace.pos.x][pieceToPlace.pos.y] = "black_" + pieceToPlace.type + pieceIndex;
+              console.log("parsed black " + pieceToPlace.type + " into [" + pieceToPlace.pos.x + "," + pieceToPlace.pos.y + "]");
+            }
+            console.log("board initialized");
+            this.logBoard();
+            console.log("calling init HTML board...");
+            this.initHTMLBoard();
+
+        } else {
+          console.log("get matches error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })  
   }
 
   startSecondBoard() {
@@ -1938,7 +2038,8 @@ export class TableroSincronoComponent {
   // Checks piece clicked matches current player's turn
   // Calls movePiece() if the move is allowed
   checkClick(clicked: string) {
-    if (!this.choosingSummon) {
+    if (!this.choosingSummon && (this.playerIsWhite == this.turnWhite)) {
+      console.log("correct player");
       if (this.selected === "") {
         let [x, y] = this.codeToCoord(clicked);
         let [color, pieceType] = this.parsePiece(this.board[x][y]);
@@ -1958,7 +2059,6 @@ export class TableroSincronoComponent {
         if (this.possibleMoves.includes(clicked)) {
           // Aquí compruebo enroque para hacer dos movs.
           let checkCastling = this.checkCastling(clicked);
-          console.log(this.checkCastling);
           console.log("Castling " + checkCastling);
           switch (checkCastling) {
             case 0:
@@ -1967,27 +2067,87 @@ export class TableroSincronoComponent {
               break;
             case 1:
               this.castling = true;
-              this.movePiece(clicked);
+              this.movePieceWithoutCall(clicked);
               this.selected = "h1";
-              this.movePiece("f1");
+              this.movePieceWithoutCall("f1");
+              axios
+                .post('https://queenchess-backend.herokuapp.com/game/castle', {
+                  gameId: this.matchId,
+                  side: "right"
+                })
+                .then((res) => {
+                  if (res.status === 200) {
+                    console.log("Castling white right");
+                  } else {
+                    console.log("Castle error: " + res.status);
+                  }
+                })
+                .catch((error) => {
+                  console.error(error);
+                })
               break;
             case 2:
               this.castling = true;
-              this.movePiece(clicked);
+              this.movePieceWithoutCall(clicked);
               this.selected = "a1";
-              this.movePiece("d1");
+              this.movePieceWithoutCall("d1");
+              axios
+                .post('https://queenchess-backend.herokuapp.com/game/castle', {
+                  gameId: this.matchId,
+                  side: "left"
+                })
+                .then((res) => {
+                  if (res.status === 200) {
+                    console.log("Castling white left");
+                  } else {
+                    console.log("Castle error: " + res.status);
+                  }
+                })
+                .catch((error) => {
+                  console.error(error);
+                })
               break;
             case 3:
               this.castling = true;
-              this.movePiece(clicked);
+              this.movePieceWithoutCall(clicked);
               this.selected = "h8";
-              this.movePiece("f8");
+              this.movePieceWithoutCall("f8");
+              axios
+                .post('https://queenchess-backend.herokuapp.com/game/castle', {
+                  gameId: this.matchId,
+                  side: "right"
+                })
+                .then((res) => {
+                  if (res.status === 200) {
+                    console.log("Castling black right");
+                  } else {
+                    console.log("Castle error: " + res.status);
+                  }
+                })
+                .catch((error) => {
+                  console.error(error);
+                })
               break;
             case 4:
               this.castling = true;
-              this.movePiece(clicked);
+              this.movePieceWithoutCall(clicked);
               this.selected = "a8";
-              this.movePiece("d8");
+              this.movePieceWithoutCall("d8");
+              axios
+                .post('https://queenchess-backend.herokuapp.com/game/castle', {
+                  gameId: this.matchId,
+                  side: "left"
+                })
+                .then((res) => {
+                  if (res.status === 200) {
+                    console.log("Castling black left");
+                  } else {
+                    console.log("Castle error: " + res.status);
+                  }
+                })
+                .catch((error) => {
+                  console.error(error);
+                })
               break;
           }
           let [isWhite, pieceType] = this.parsePieceComplete(this.board[x][y]); //ME QUEDO AQUI PARA PONERLE LOS BOOLEANOS SI SE MUEVEN
@@ -2039,15 +2199,19 @@ export class TableroSincronoComponent {
             // Avisar al enemigo blanco de jaque
             if (!(this.examineWhitePossibleMoves(this.board))) {
               console.log("Se acaba el juego, jaque mate al rey blanco");
+              this.endGame(this.blackPlayerName);
+
             }
             // Avisar al enemigo negro de jaque
-            else { console.log("Jaque al rey blanco"); }
+            else { alert("Jaque al blanco"); }
             // Check de si es jaque mate mirando si las fichas de su color le pueden defender ( hay movimientos de su color ) hay que hacer funcion nueva
+            
           }
           else {
             // Comprobar rey ahogado
             if (!(this.examineWhitePossibleMoves(this.board))) {
               console.log("Tablas, el rey blanco está ahogado");
+              this.endGame("draw");
             }
           }
         } else if (!(this.turnWhite)) {
@@ -2055,14 +2219,16 @@ export class TableroSincronoComponent {
             // Avisar al enemigo negro de jaque mate
             if (!(this.examineBlackPossibleMoves(this.board))) {
               console.log("Se acaba el juego, jaque mate para los negros");
+              this.endGame(this.whitePlayerName);
             }
             // Avisar al enemigo negro de jaque
-            else { console.log("Jaque al rey negro"); }
+            else { alert("Jaque al negro"); }
           }
           else {
             // Comprobar rey negro ahogado
             if (!(this.examineBlackPossibleMoves(this.board))) {
               console.log("Tablas, el rey negro está ahogado");
+              this.endGame("draw");
             }
           }
         }
@@ -2070,6 +2236,30 @@ export class TableroSincronoComponent {
         this.resetHintSquares();
       }
     }
+  }
+
+  endGame(winner: string) {
+    axios
+      .post('https://queenchess-backend.herokuapp.com/game/endGame', {
+        gameId: this.matchId,
+        winnerPlayer: winner
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("End of the match: winner is " + winner);
+        } else {
+          console.log("End of the match error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      if (winner === this.whitePlayerName) {
+        alert("Ganan las blancas");
+      } else if (winner === this.blackPlayerName) {
+        alert("Ganan las negras");
+      } else alert("Tablas");
+      
   }
 
   showWhiteChoiceButtons() {
@@ -2132,10 +2322,87 @@ export class TableroSincronoComponent {
     this.rookCounter++;
     this.bishopCounter++;
     this.choosingSummon = false;
+
+    let [_, destTypePiece] = this.parsePiece(destType);
+
+    axios
+      .post('https://queenchess-backend.herokuapp.com/game/promotePawn', {
+        x: i,
+        y: j,
+        gameId: this.matchId,
+        wantedPiece: destTypePiece
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("Back promoted " + i+","+j + " to " + destTypePiece);
+        } else {
+          console.log("Move error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
   }
 
   // Moves piece to destiny
   movePiece(destiny: string) {
+    let [i, j] = this.codeToCoord(this.selected);
+    let [x, y] = this.codeToCoord(destiny);
+
+    var domOriginPiece = document.getElementById(this.board[i][j]);
+    var domDestiny = document.getElementById(destiny);
+
+    if (this.board[x][y] != "") {
+      // Normal move
+      var domDestinyPiece = <Node>document.getElementById(this.board[x][y]);
+      var pieceText = domDestinyPiece.textContent;
+
+
+      let [color, _] = this.parsePiece(this.board[x][y]);
+      if (color) {
+        var cemetery = document.getElementById("cemeteryA");
+      } else {
+        var cemetery = document.getElementById("cemeteryB");
+      }
+      if (cemetery != undefined && pieceText != undefined) {
+        cemetery.appendChild(<Node>domDestinyPiece);
+      }
+    }
+    domDestiny?.appendChild(<Node>domOriginPiece);
+
+    let piece = this.board[i][j];
+    this.board[i][j] = "";
+    this.board[x][y] = piece;
+    if (!(this.castling)) { this.turnWhite = !this.turnWhite; }
+    this.castling = false;
+
+    axios
+      .post('https://queenchess-backend.herokuapp.com/game/move', {
+        x1: i,
+        y1: j,
+        x2: x,
+        y2: y,
+        gameId: this.matchId
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("Back moved " + i+","+j + " to " + x +"," + y)
+        } else {
+          console.log("Move error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+
+      while(this.playerIsWhite !== this.turnWhite) {
+        setTimeout(this.ngOnInit, 1000);
+      }
+
+  }
+
+   // Moves piece to destiny
+   movePieceWithoutCall(destiny: string) {
     let [i, j] = this.codeToCoord(this.selected);
     let [x, y] = this.codeToCoord(destiny);
 
@@ -2170,6 +2437,4 @@ export class TableroSincronoComponent {
   prueba() {
     console.log("HOLA");
   }
-
-
 }
