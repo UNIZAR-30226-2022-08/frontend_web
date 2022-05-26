@@ -2195,6 +2195,8 @@ export class TableroAsincronoComponent {
             // Avisar al enemigo blanco de jaque
             if (!(this.examineWhitePossibleMoves(this.board))) {
               console.log("Se acaba el juego, jaque mate al rey blanco");
+              this.endGame("black");
+
             }
             // Avisar al enemigo negro de jaque
             else { console.log("Jaque al rey blanco"); }
@@ -2204,6 +2206,7 @@ export class TableroAsincronoComponent {
             // Comprobar rey ahogado
             if (!(this.examineWhitePossibleMoves(this.board))) {
               console.log("Tablas, el rey blanco está ahogado");
+              this.endGame("draw");
             }
           }
         } else if (!(this.turnWhite)) {
@@ -2211,6 +2214,7 @@ export class TableroAsincronoComponent {
             // Avisar al enemigo negro de jaque mate
             if (!(this.examineBlackPossibleMoves(this.board))) {
               console.log("Se acaba el juego, jaque mate para los negros");
+              this.endGame("white");
             }
             // Avisar al enemigo negro de jaque
             else { console.log("Jaque al rey negro"); }
@@ -2219,6 +2223,7 @@ export class TableroAsincronoComponent {
             // Comprobar rey negro ahogado
             if (!(this.examineBlackPossibleMoves(this.board))) {
               console.log("Tablas, el rey negro está ahogado");
+              this.endGame("draw");
             }
           }
         }
@@ -2226,6 +2231,30 @@ export class TableroAsincronoComponent {
         this.resetHintSquares();
       }
     }
+  }
+
+  endGame(winner: string) {
+    axios
+      .post('https://queenchess-backend.herokuapp.com/game/endGame', {
+        gameId: this.matchId,
+        winner: winner
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("End of the match: winner is " + winner);
+        } else {
+          console.log("End of the match error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      if (winner === "white") {
+        alert("Ganan las blancas");
+      } else if (winner === "black") {
+        alert("Ganan las negras");
+      } else alert("Tablas");
+      
   }
 
   showWhiteChoiceButtons() {
