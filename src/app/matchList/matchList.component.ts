@@ -15,6 +15,7 @@ export class MatchListComponent {
   matchListSync: string[] = [];
   idPlayedList: number[] = [];
   idList: number[] = [];
+  idListSync: number[] = [];
   playedMatchList: string[] = [];
 
   //This gets called after constructor (angular doesn't let you access elements in the constructor)
