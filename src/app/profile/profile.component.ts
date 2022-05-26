@@ -12,6 +12,8 @@ export class ProfileComponent {
   password: string;
   newPassword: string;
   confirmNewPassword: string;
+  partidasGanadas: number;
+  
 
   constructor(public router: Router) {
     
