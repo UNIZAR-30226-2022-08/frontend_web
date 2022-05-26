@@ -152,7 +152,7 @@ export class TableroSincronoComponent {
   }
 
   // Back-end should initialize board?
-  startGame() {
+  async startGame() {
     this.startSecondBoard();
     this.startAuxBoard();
     this.startAuxBoard2();
@@ -205,6 +205,11 @@ export class TableroSincronoComponent {
       .catch((error) => {
         console.error(error);
       })  
+      while(this.playerIsWhite !== this.turnWhite) {
+        await this.delay(1000);
+        this.getGameState();
+        console.log("enemy didn't move yet");
+      }
   }
 
   startSecondBoard() {
@@ -2233,7 +2238,7 @@ export class TableroSincronoComponent {
 
             }
             // Avisar al enemigo negro de jaque
-            else { alert("Jaque al blanco"); }
+            else {  }
             // Check de si es jaque mate mirando si las fichas de su color le pueden defender ( hay movimientos de su color ) hay que hacer funcion nueva
             
           }
@@ -2252,7 +2257,7 @@ export class TableroSincronoComponent {
               this.endGame(this.whitePlayerName);
             }
             // Avisar al enemigo negro de jaque
-            else { alert("Jaque al negro"); }
+            else {  }
           }
           else {
             // Comprobar rey negro ahogado
