@@ -2440,7 +2440,7 @@ export class TableroSincronoComponent {
   }
 
    // Moves piece to destiny
-   movePieceWithoutCall(destiny: string) {
+   async movePieceWithoutCall(destiny: string) {
     let [i, j] = this.codeToCoord(this.selected);
     let [x, y] = this.codeToCoord(destiny);
 
@@ -2468,8 +2468,19 @@ export class TableroSincronoComponent {
     let piece = this.board[i][j];
     this.board[i][j] = "";
     this.board[x][y] = piece;
-    if (!(this.castling)) { this.turnWhite = !this.turnWhite; }
+    if (!(this.castling)) { 
+      this.turnWhite = !this.turnWhite; 
+      while(this.playerIsWhite !== this.turnWhite) {
+        await this.delay(1000);
+        this.getGameState();
+        console.log("enemy didn't move yet");
+      }
+      this.clearHTMLBoard();
+      this.ngOnInit();
+    }
     this.castling = false;
+
+    
   }
 
   prueba() {
