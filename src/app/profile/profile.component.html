@@ -8,10 +8,23 @@
   <div class="centered">
     <div class="profile">
       <div id="usernameText" class="name"></div>
+      <div id="wonGames">Partidas ganadas: {{wonGames}}</div>
+      <div id="playedGames">Partidas jugadas: {{playedGames}}</div>
+      <div id="wonTournaments">Torneos ganados: {{wonTournaments}}</div>
+      <div id="playedTournaments">Torneos jugados: {{playedTournaments}}</div>
       <div id="elo" class="elo">
-        🏆 300 LP
+        ELO: {{elo}} 🏆 
+      </div>
+      <div id="elo" class="elo">
+        Dinero: {{money}} 🪙
       </div>
     </div>
+  </div>
+
+  <div class="left">
+    <button class="buttonSlideA" (click)="router.navigate(['/history']);">
+        <span>Normal</span>
+    </button>
   </div>
 
   <div class="login">

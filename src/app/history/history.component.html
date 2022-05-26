@@ -1,0 +1,15 @@
+<div style="text-align:center">
+  <h1>
+    <img src="../../assets/transparentLogo.png" alt="QueenChess_Logo" class="center" height="200"
+      (click)="router.navigate(['/mainMenu']);">
+  </h1>
+</div>
+
+<ul class="custom-form">
+  <h1>Historial de partidas:</h1>
+  <li  class='hist' *ngFor="let hist of historial">
+    <div class='name'>
+      {{hist}}
+    </div>
+  </li>
+</ul>
