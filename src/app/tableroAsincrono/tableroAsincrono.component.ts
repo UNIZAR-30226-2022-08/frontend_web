@@ -2241,7 +2241,7 @@ export class TableroAsincronoComponent {
     axios
       .post('https://queenchess-backend.herokuapp.com/game/endGame', {
         gameId: this.matchId,
-        winner: winner
+        winnerPlayer: winner
       })
       .then((res) => {
         if (res.status === 200) {
