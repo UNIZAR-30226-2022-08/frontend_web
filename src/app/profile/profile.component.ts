@@ -118,7 +118,7 @@ export class ProfileComponent {
           }
 
           for (let i = 0; i < res.data.response.recentGames.length; i++) {
-            if (res.data.response[i].whitePlayer === localStorage.getItem("user")) {
+            if (res.data.response.recentGames[i].whitePlayer === localStorage.getItem("user")) {
               console.log("player is white")
                 this.matchList.push(res.data.response.recentGames[i].blackPlayer);
                 this.idList.push(res.data.response.recentGames[i].id);
@@ -126,7 +126,7 @@ export class ProfileComponent {
                   this.resultList.push("VICTORIA");
                 } else this.resultList.push("DERROTA");
               
-            } else if (res.data.response[i].blackPlayer === localStorage.getItem("user")) {
+            } else if (res.data.response.recentGames[i].blackPlayer === localStorage.getItem("user")) {
               console.log("player is black")
                 this.matchList.push(res.data.response.recentGames[i].whitePlayer);
                 this.idList.push(res.data.response.recentGames[i].id);
