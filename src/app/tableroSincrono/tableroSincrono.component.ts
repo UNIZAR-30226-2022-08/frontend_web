@@ -2360,8 +2360,12 @@ export class TableroSincronoComponent {
       })
   }
 
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+  }
+
   // Moves piece to destiny
-  movePiece(destiny: string) {
+  async movePiece(destiny: string) {
     let [i, j] = this.codeToCoord(this.selected);
     let [x, y] = this.codeToCoord(destiny);
 
@@ -2412,7 +2416,7 @@ export class TableroSincronoComponent {
       })
 
       while(this.playerIsWhite !== this.turnWhite) {
-        setTimeout(this.getGameState, 1000);
+        await this.delay(1000);
         console.log("enemy didn't move yet");
       }
 
