@@ -23,6 +23,7 @@ export class ProfileComponent {
 
   matchList: string[] = [];
   idList: string[] = [];
+  resultList: string[] = [];
 
   constructor(public router: Router) {
 
@@ -119,13 +120,19 @@ export class ProfileComponent {
           for (let i = 0; i < res.data.response.recentGames.length; i++) {
             if (res.data.response[i].whitePlayer === localStorage.getItem("user")) {
               console.log("player is white")
-                this.matchList.push(res.data.response[i].blackPlayer);
+                this.matchList.push(res.data.response.recentGames[i].blackPlayer);
                 this.idList.push(res.data.response.recentGames[i].id);
+                if (res.data.response.recentGames[i].whiteWon){
+                  this.resultList.push("VICTORIA");
+                } else this.resultList.push("DERROTA");
               
             } else if (res.data.response[i].blackPlayer === localStorage.getItem("user")) {
               console.log("player is black")
-                this.matchList.push(res.data.response[i].whitePlayer);
+                this.matchList.push(res.data.response.recentGames[i].whitePlayer);
                 this.idList.push(res.data.response.recentGames[i].id);
+                if (res.data.response.recentGames[i].whiteWon){
+                  this.resultList.push("DERROTA");
+                } else this.resultList.push("VICTORIA");
             }
           }
         } else if (res.status === 400) {
