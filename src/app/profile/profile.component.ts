@@ -9,17 +9,17 @@ import axios from 'axios';
 })
 export class ProfileComponent { 
 
-  password: string;
-  newPassword: string;
-  confirmNewPassword: string;
-  playedGames: number;
-  wonGames: number;
-  winrate: number;
-  playedTournaments: number;
-  wonTournaments: number;
-  elo: number;
-  money: number;
-  userName: string;
+  password: string = "";
+  newPassword: string = "";
+  confirmNewPassword: string = "";
+  playedGames: number = 0;
+  wonGames: number = 0;
+  winrate: number = 0;
+  playedTournaments: number = 0;
+  wonTournaments: number = 0;
+  elo: number = 0;
+  money: number = 0;
+  userName: string = "";
 
 
 
@@ -55,7 +55,7 @@ export class ProfileComponent {
       if (res.status === 200) {
         console.log(res.data);
         this.playedGames = res.data.response.stats.playedGames;
-        this.wonGames = res.data.response.stats.wonGames;
+        this.wonGames = res.data.response.stats.wonGames.toString;
         this.wonTournaments = res.data.response.stats.wonTournaments;
         this.playedTournaments = res.data.response.stats.playedTournaments;
         this.elo = res.data.response.user.elo;
