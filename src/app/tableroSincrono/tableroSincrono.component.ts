@@ -121,6 +121,20 @@ export class TableroSincronoComponent {
 
   }
 
+  clearHTMLBoard() {
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        var squareToClear = document.getElementById(this.coordToCode(i,j));
+        if(squareToClear != undefined) {
+          while (squareToClear.firstChild) {
+            if (squareToClear.lastChild) squareToClear.removeChild(squareToClear.lastChild);
+          }
+        }
+        
+      }
+    }
+  }
+
   getGameState() {
     axios
       .get('https://queenchess-backend.herokuapp.com/game/getGame?gameId=' + this.matchId, {
@@ -2420,7 +2434,7 @@ export class TableroSincronoComponent {
         this.getGameState();
         console.log("enemy didn't move yet");
       }
-
+      this.clearHTMLBoard();
       this.ngOnInit();
 
   }
