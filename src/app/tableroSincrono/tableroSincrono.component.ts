@@ -121,6 +121,22 @@ export class TableroSincronoComponent {
 
   }
 
+  getGameState() {
+    axios
+      .get('https://queenchess-backend.herokuapp.com/game/getGame?gameId=' + this.matchId, {
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          this.turnWhite = res.data.response.turn;
+        } else {
+          console.log("get matches error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })  
+  }
+
   // Back-end should initialize board?
   startGame() {
     this.startSecondBoard();
@@ -2396,8 +2412,10 @@ export class TableroSincronoComponent {
       })
 
       while(this.playerIsWhite !== this.turnWhite) {
-        setTimeout(this.ngOnInit, 1000);
+        setTimeout(this.getGameState, 1000);
       }
+
+      this.ngOnInit();
 
   }
 
