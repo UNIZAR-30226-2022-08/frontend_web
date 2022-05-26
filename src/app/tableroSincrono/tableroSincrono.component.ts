@@ -2417,6 +2417,7 @@ export class TableroSincronoComponent {
 
       while(this.playerIsWhite !== this.turnWhite) {
         await this.delay(1000);
+        this.getGameState();
         console.log("enemy didn't move yet");
       }
 
