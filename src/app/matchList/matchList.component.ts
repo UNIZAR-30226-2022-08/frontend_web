@@ -65,12 +65,13 @@ export class MatchListComponent {
                   this.matchList.push(res.data.response[i].whitePlayer);
                   this.idList.push(parseInt(res.data.response[i].id));
                 }
+              }
               } else {
                 if (res.data.response[i].whitePlayer === localStorage.getItem("user")) {
                   console.log("player is white")
 
-                  this.playedMatchList.push(res.data.response[i].blackPlayer);
-                  this.idPlayedList.push(parseInt(res.data.response[i].id));
+                  this.matchListSync.push(res.data.response[i].blackPlayer);
+                  this.idList.push(parseInt(res.data.response[i].id));
 
                 } else if (res.data.response[i].blackPlayer === localStorage.getItem("user")) {
                   console.log("player is black")
@@ -81,7 +82,6 @@ export class MatchListComponent {
               }
             
             console.log("\n"); 
-            }
           }
         } else {
           console.log("get matches error: " + res.status);
