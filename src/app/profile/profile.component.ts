@@ -7,7 +7,7 @@ import axios from 'axios';
   templateUrl: "./profile.component.html",
   styleUrls: ["./profile.component.css"]
 })
-export class ProfileComponent { 
+export class ProfileComponent {
 
   password: string = "";
   newPassword: string = "";
@@ -24,109 +24,111 @@ export class ProfileComponent {
 
 
   constructor(public router: Router) {
-    
+
   }
-  
+
   //This gets called after constructor (angular doesn't let you access elements in the constructor)
   ngOnInit() {
     axios
-    .get('https://queenchess-backend.herokuapp.com/account/checkSession', {
-    })
-    .then((res) => {
-      if (res.status === 200) {
-        localStorage.setItem("user", res.data.response.username);
-        localStorage.setItem("email", res.data.response.email);
-        console.log("Response session data: " + res.data);
-        console.log("Storing username: " + localStorage.getItem("user"));
-      } else if (res.status === 400) {
-        localStorage.clear();
-        console.log("check session error: " + res.status);
-        this.router.navigateByUrl('/home');
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    })
+      .get('https://queenchess-backend.herokuapp.com/account/checkSession', {
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          localStorage.setItem("user", res.data.response.username);
+          localStorage.setItem("email", res.data.response.email);
+          console.log("Response session data: " + res.data);
+          console.log("Storing username: " + localStorage.getItem("user"));
+        } else if (res.status === 400) {
+          localStorage.clear();
+          console.log("check session error: " + res.status);
+          this.router.navigateByUrl('/home');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
 
     axios
-    .get('https://queenchess-backend.herokuapp.com/community/getPublicProfile?username=' + localStorage.getItem("user"), {
-    })
-    .then((res) => {
-      if (res.status === 200) {
-        console.log(res.data);
-        this.playedGames = res.data.response.stats.playedGames;
-        this.wonGames = res.data.response.stats.wonGames.toString;
-        this.wonTournaments = res.data.response.stats.wonTournaments;
-        this.playedTournaments = res.data.response.stats.playedTournaments;
-        this.elo = res.data.response.user.elo;
-        this.money = res.data.response.user.money;
-        this.userName = res.data.response.user.username;
-      } else if (res.status === 400) {
-        console.log("check session error: " + res.status);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    })
-    
-    var userElement = document.getElementById("usernameText");
-    var wonGamesElement = document.getElementById("wonGamesText");
-    var playedGamesElement = document.getElementById("playedGamesText");
-    var wonTournamentsElement = document.getElementById("wonTournamentsText");
-    var playedTournamentsElement = document.getElementById("playedTournamentsText");
-    var eloElement = document.getElementById("eloText");
-    var moneyElement = document.getElementById("moneyText");
-    console.log(this.userName);
-    console.log(this.wonGames.toString());
-    console.log(this.playedGames.toString());
-    console.log(this.wonTournaments.toString());
-    console.log(this.playedTournaments.toString());
-    console.log(this.elo.toString());
-    console.log(this.money.toString());
+      .get('https://queenchess-backend.herokuapp.com/community/getPublicProfile?username=' + localStorage.getItem("user"), {
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res.data);
+          this.playedGames = res.data.response.stats.playedGames;
+          this.wonGames = res.data.response.stats.wonGames.toString;
+          this.wonTournaments = res.data.response.stats.wonTournaments;
+          this.playedTournaments = res.data.response.stats.playedTournaments;
+          this.elo = res.data.response.user.elo;
+          this.money = res.data.response.user.money;
+          this.userName = res.data.response.user.username;
 
 
-    if (userElement != undefined) {
-      if (this.userName != null) {
-        userElement.textContent += this.userName;
-      }
-    }
+          var userElement = document.getElementById("usernameText");
+          var wonGamesElement = document.getElementById("wonGamesText");
+          var playedGamesElement = document.getElementById("playedGamesText");
+          var wonTournamentsElement = document.getElementById("wonTournamentsText");
+          var playedTournamentsElement = document.getElementById("playedTournamentsText");
+          var eloElement = document.getElementById("eloText");
+          var moneyElement = document.getElementById("moneyText");
+          console.log(this.userName);
+          console.log(this.wonGames.toString());
+          console.log(this.playedGames.toString());
+          console.log(this.wonTournaments.toString());
+          console.log(this.playedTournaments.toString());
+          console.log(this.elo.toString());
+          console.log(this.money.toString());
 
-    if (wonGamesElement != undefined) {
-      if (this.wonGames != null) {
-        wonGamesElement.textContent += this.wonGames.toString();
-      }
-    }
+
+          if (userElement != undefined) {
+            if (this.userName != null) {
+              userElement.textContent += this.userName;
+            }
+          }
+
+          if (wonGamesElement != undefined) {
+            if (this.wonGames != null) {
+              wonGamesElement.textContent += this.wonGames.toString();
+            }
+          }
 
 
-    if (playedGamesElement != undefined) {
-      if (this.playedGames != null) {
-        playedGamesElement.textContent += this.playedGames.toString();
-      }
-    }
+          if (playedGamesElement != undefined) {
+            if (this.playedGames != null) {
+              playedGamesElement.textContent += this.playedGames.toString();
+            }
+          }
 
-    if (wonTournamentsElement != undefined) {
-      if (this.wonTournaments != null) {
-        wonTournamentsElement.textContent += this.wonTournaments.toString();
-      }
-    }
+          if (wonTournamentsElement != undefined) {
+            if (this.wonTournaments != null) {
+              wonTournamentsElement.textContent += this.wonTournaments.toString();
+            }
+          }
 
-    if (playedTournamentsElement != undefined) {
-      if (this.playedTournaments != null) {
-        playedTournamentsElement.textContent += this.playedTournaments.toString();
-      }
-    }
+          if (playedTournamentsElement != undefined) {
+            if (this.playedTournaments != null) {
+              playedTournamentsElement.textContent += this.playedTournaments.toString();
+            }
+          }
 
-    if (eloElement != undefined) {
-      if (this.elo != null) {
-        eloElement.textContent += this.elo.toString();
-      }
-    }
+          if (eloElement != undefined) {
+            if (this.elo != null) {
+              eloElement.textContent += this.elo.toString();
+            }
+          }
 
-    if (moneyElement != undefined) {
-      if (this.money != null) {
-        moneyElement.textContent += this.money.toString();
-      }
-    }
+          if (moneyElement != undefined) {
+            if (this.money != null) {
+              moneyElement.textContent += this.money.toString();
+            }
+          }
+        } else if (res.status === 400) {
+          console.log("check session error: " + res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+
   }
 
   changePassword() {
@@ -136,7 +138,7 @@ export class ProfileComponent {
     }
     axios
       .post('https://queenchess-backend.herokuapp.com/account/changePassword', {
-        newPassword:this.newPassword
+        newPassword: this.newPassword
       })
       .then((res) => {
         if (res.status === 201) {
