@@ -71,12 +71,12 @@ export class MatchListComponent {
                   console.log("player is white")
 
                   this.matchListSync.push(res.data.response[i].blackPlayer);
-                  this.idList.push(parseInt(res.data.response[i].id));
+                  this.idListSync.push(parseInt(res.data.response[i].id));
 
                 } else if (res.data.response[i].blackPlayer === localStorage.getItem("user")) {
                   console.log("player is black")
                   this.matchListSync.push(res.data.response[i].whitePlayer);
-                  this.idList.push(parseInt(res.data.response[i].id));
+                  this.idListSync.push(parseInt(res.data.response[i].id));
 
                 }
               }
