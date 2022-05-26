@@ -68,6 +68,13 @@ export class ProfileComponent {
       console.error(error);
     })
     
+    var userElement = document.getElementById("usernameText");
+    if (userElement != undefined) {
+      let username = this.userName;
+      if (username != null) {
+        userElement.textContent += username;
+      }
+    }
   }
 
   changePassword() {
