@@ -2413,6 +2413,7 @@ export class TableroSincronoComponent {
 
       while(this.playerIsWhite !== this.turnWhite) {
         setTimeout(this.getGameState, 1000);
+        console.log("enemy didn't move yet");
       }
 
       this.ngOnInit();
