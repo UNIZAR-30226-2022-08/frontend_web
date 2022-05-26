@@ -12,6 +12,8 @@ export class ProfileComponent {
   password: string;
   newPassword: string;
   confirmNewPassword: string;
+  partidasGanadas: number;
+  
 
   constructor(public router: Router) {
     
@@ -21,6 +23,25 @@ export class ProfileComponent {
   ngOnInit() {
     axios
     .get('https://queenchess-backend.herokuapp.com/account/checkSession', {
+    })
+    .then((res) => {
+      if (res.status === 200) {
+        localStorage.setItem("user", res.data.response.username);
+        localStorage.setItem("email", res.data.response.email);
+        console.log("Response session data: " + res.data);
+        console.log("Storing username: " + localStorage.getItem("user"));
+      } else if (res.status === 400) {
+        localStorage.clear();
+        console.log("check session error: " + res.status);
+        this.router.navigateByUrl('/home');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+
+    axios
+    .get('https://queenchess-backend.herokuapp.com/community/getPublicProfile?username=' + localStorage.getItem("user"), {
     })
     .then((res) => {
       if (res.status === 200) {
