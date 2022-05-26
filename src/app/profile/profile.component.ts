@@ -75,6 +75,14 @@ export class ProfileComponent {
     var playedTournamentsElement = document.getElementById("playedTournamentsText");
     var eloElement = document.getElementById("eloText");
     var moneyElement = document.getElementById("moneyText");
+    console.log(this.userName);
+    console.log(this.wonGames.toString());
+    console.log(this.playedGames.toString());
+    console.log(this.wonTournaments.toString());
+    console.log(this.playedTournaments.toString());
+    console.log(this.elo.toString());
+    console.log(this.money.toString());
+
 
     if (userElement != undefined) {
       if (this.userName != null) {
@@ -87,6 +95,7 @@ export class ProfileComponent {
         wonGamesElement.textContent += this.wonGames.toString();
       }
     }
+
 
     if (playedGamesElement != undefined) {
       if (this.playedGames != null) {
