@@ -53,13 +53,13 @@ export class ProfileComponent {
     })
     .then((res) => {
       if (res.status === 200) {
-        this.playedGames = res.data.response.playedGames;
-        this.wonGames = res.data.response.wonGames;
-        this.wonTournaments = res.data.response.wonTournaments;
-        this.playedTournaments = res.data.response.playedTournaments;
-        this.elo = res.data.response.elo;
-        this.money = res.data.response.money;
-        this.userName = res.data.response.user;
+        this.playedGames = res.data.response.stats.playedGames;
+        this.wonGames = res.data.response.stats.wonGames;
+        this.wonTournaments = res.data.response.stats.wonTournaments;
+        this.playedTournaments = res.data.response.stats.playedTournaments;
+        this.elo = res.data.response.user.elo;
+        this.money = res.data.response.user.money;
+        this.userName = res.data.response.user.username;
       } else if (res.status === 400) {
         console.log("check session error: " + res.status);
       }
