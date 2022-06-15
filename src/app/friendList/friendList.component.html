@@ -1,57 +1,68 @@
-<div style="text-align:center">
-  <h1>
-    <img src="../../assets/transparentLogo.png" alt="QueenChess_Logo" class="center" height="200"
-      (click)="router.navigate(['/mainMenu']);">
-  </h1>
-</div>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-<ul class="custom-form">
-  <h1 style="color:white">Amigos:</h1>
-  <li  class='friend' *ngFor="let friend of friends">
-    <div class='name'>
-      {{friend}}
-    </div>
-    <div class='challenge' (click)="challenge(friend)">
-      ♟️
-    </div>
-    <div class='challenge' (click)="challengeSync(friend)">
-      ⚔️
-    </div>
-    <div class='chat' (click)="chat(friend)">
-      💬
-    </div>
-    <div class='remove' (click)="removeFriend(friend)">
-      ❌
-    </div>
-  </li>
-</ul>
+  <body>
+  <div style="text-align:center">
+    <h1>
+      <img src="../../assets/transparentLogo.png" alt="QueenChess_Logo" class="center" height="200"
+        (click)="router.navigate(['/mainMenu']);">
+    </h1>
+  </div>
 
-<ul class="custom-form">
-  <h1 style="color:white">Peticiones de amistad:</h1>
-  <li  class='friend' *ngFor="let friendRequest of friendRequests">
-    <div class='name'>
-      {{friendRequest}}
-    </div>
-    <div class='accept' (click)="acceptFriendRequest(friendRequest)">
-      ✔️
-    </div>
-    <div class='remove' (click)="removeFriend(friendRequest)">
-      ❌
-    </div>
-  </li>
-</ul>
+  <ul class="custom-form">
+    <h1 style="color:white">Amigos:</h1>
+    <hr/>
+    <table class="table table-striped">
+    <tbody *ngFor="let friend of friends">
+      <tr>
+      <th scope="row">
+        {{friend}}
+      </th>
+      <th scope="col" style="cursor: pointer" (click)="challenge(friend)">
+        <button type="button" style="color:black" class="btn btn-primary">Partido asíncrono ♟️</button>
+        
+      </th>
+      <th scope="col" style="cursor: pointer" (click)="challengeSync(friend)">
+        <button type="button" style="color:black" class="btn btn-success">Partido síncrono ⚔️</button>
+      </th>
+      <th scope="col" style="cursor: pointer" (click)="chat(friend)">
+        <button type="button" style="color:black" class="btn btn-danger">Chat 💬</button>
+      </th>
+      <th scope="col" style="cursor: pointer" (click)="removeFriend(friend)">
+        <button type="button" style="color:black" class="btn btn-warning">Eliminar amigo ❌</button>
+      </th>
+    </tr>
+  </tbody>
+  </table>
+  </ul>
 
-<div>
-  <form class="custom-form" method="post">
-    <h1 style="color:white">Añadir amigo:</h1>
-    <input
-      type="text"
-      [(ngModel)]="friendName"
-      name="friendName"
-      placeholder="Nombre"
-      required="required"
-    />
-    <button type="submit" (click)="addFriend()">Enviar petición de amistad</button>
-  </form>
-  
-</div>
+  <ul class="custom-form">
+    <h1 style="color:white">Peticiones de amistad:</h1>
+    <hr/>
+    <table class="table table-striped">
+    <tbody *ngFor="let friendRequest of friendRequests">
+      <tr>
+      <th scope="row">
+        {{friendRequest}}
+      </th>
+      <th scope="col" style="cursor: pointer" (click)="acceptFriendRequest(friendRequest)">
+        <button type="button" style="color:black" class="btn btn-success">Aceptar ✔️</button>
+      </th>
+      <th scope="col" style="cursor: pointer" (click)="removeFriend(friendRequest)">
+        <button type="button" style="color:black" class="btn btn-warning">Rechazar ❌</button>
+      </th>
+    </tr>
+  </tbody>
+  </table>
+  </ul>
+
+  <div>
+    <form class="custom-form" method="post">
+      <h1 style="color:white">Añadir amigo:</h1>
+      <hr/>
+      <input type="text" [(ngModel)]="friendName" name="friendName" placeholder="Nombre" required="required" />
+      <button type="submit" (click)="addFriend()">Enviar petición de amistad</button>
+    </form>
+
+  </div>
+</body>

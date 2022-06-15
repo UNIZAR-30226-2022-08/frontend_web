@@ -32,6 +32,7 @@
   <div class="login">
     <form class="custom-form" method="post">
       <h1 style="color:white">Cambiar contraseña:</h1>
+      <hr/>
       <input
         type="text"
         [(ngModel)]="newPassword"
@@ -53,12 +54,18 @@
 
   <ul class="custom-form">
     <h1 style="color:white">Historial: </h1>
-    <li  class='match' *ngFor="let match of idList; let i = index">
-      <div class='name'>
+    <hr/>
+    <table class="table table-striped">
+    <tbody  class='match' *ngFor="let match of idList; let i = index">
+      <tr>
+      <th scope="row" class='name'>
         Vs. {{matchList[i]}}
-      </div>
-      <div class="play">
-        {{resultList[i]}}
-      </div>
-    </li>
+      </th>
+      <th scope="col">
+        <button type="button" style="color:black" class="btn btn-warning">{{resultList[i]}}</button>
+        
+      </th>
+    </tr>
+    </tbody>
+  </table>
   </ul>

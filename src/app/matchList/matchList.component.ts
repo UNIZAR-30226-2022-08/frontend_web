@@ -20,6 +20,16 @@ export class MatchListComponent {
 
   //This gets called after constructor (angular doesn't let you access elements in the constructor)
   ngOnInit() {
+    /*
+    this.idList.push(1);
+    this.idList.push(2);
+    this.matchList.push("Jaimito");
+    this.matchList.push("Josito");
+    this.idPlayedList.push(3);
+    this.playedMatchList.push("Miguelito");
+    this.idListSync.push(4);
+    this.matchListSync.push("Menganito");
+    */
     axios
     .get('https://queenchess-backend.herokuapp.com/account/checkSession', {
     })

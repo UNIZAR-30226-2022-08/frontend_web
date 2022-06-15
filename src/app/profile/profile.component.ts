@@ -31,6 +31,14 @@ export class ProfileComponent {
 
   //This gets called after constructor (angular doesn't let you access elements in the constructor)
   ngOnInit() {
+    /*
+    this.idList.push("1");
+    this.idList.push("2");
+    this.matchList.push("Menganito");
+    this.matchList.push("Jaimito");
+    this.resultList.push("DERROTA");
+    this.resultList.push("VICTORIA");
+    */
     axios
       .get('https://queenchess-backend.herokuapp.com/account/checkSession', {
       })

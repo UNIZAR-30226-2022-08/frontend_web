@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <body>
 <div style="text-align:center">
     <h1>
       <img src="../../assets/transparentLogo.png" alt="QueenChess_Logo" class="center" height = "200" (click)="router.navigate(['/mainMenu']);">
@@ -6,37 +10,52 @@
 
   <ul class="custom-form">
     <h1 style="color:white">Asíncronos </h1>
+    <hr/>
     <h1 style="color:white">Es su turno: </h1>
-    <li  class='match' *ngFor="let match of idList; let i = index">
-      <div class='name'>
+    <table class="table table-striped">
+    <tbody *ngFor="let match of idList; let i = index">
+      <tr>
+      <th scope="row">
         Vs. {{matchList[i]}}
-      </div>
-      <div class="play" (click)="playMove(match)">
-        ♟️
-      </div>
-    </li>
+      </th>
+      <th scope="col" (click)="playMove(match)">
+        <button type="button" style="color:black" class="btn btn-primary">Jugar movimiento ♟️</button>
+      </th>
+    </tr>
+    </tbody>
+  </table>
   </ul>
-
+  
   <ul class="custom-form">
     <h1 style="color:white">En espera: </h1>
-    <li  class='match' *ngFor="let match of idPlayedList; let i = index">
-      <div class='name'>
+    <table class="table table-striped">
+    <tbody *ngFor="let match of idPlayedList; let i = index">
+      <tr>
+      <th scope="row">
         Vs. {{playedMatchList[i]}}
-      </div>
-      <div class="play" (click)="playMove(match)">
-        ♟️
-      </div>
-    </li>
+      </th>
+      <th scope="col" (click)="playMove(match)">
+        <button type="button" style="color:black" class="btn btn-primary">Ver tablero</button>
+      </th>
+    </tr>
+    </tbody>
+  </table>
   </ul>
 
   <ul class="custom-form">
-    <h1 style="color:white">Síncronos </h1>
-    <li  class='match' *ngFor="let match of idListSync; let i = index">
-      <div class='name'>
+    <h1 style="color:white">Síncronos: </h1>
+    <hr/>
+    <table class="table table-striped">
+    <tbody *ngFor="let match of idListSync; let i = index">
+      <tr>
+      <th scope="row">
         Vs. {{matchListSync[i]}}
-      </div>
-      <div class="play" (click)="playMoveSync(match)">
-        ⚔️
-      </div>
-    </li>
+      </th>
+      <th scope="col" (click)="playMove(match)">
+        <button type="button" style="color:black" class="btn btn-primary">Jugar ⚔️</button>
+      </th>
+    </tr>
+    </tbody>
+  </table>
   </ul>
+</body>
