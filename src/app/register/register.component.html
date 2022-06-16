@@ -4,6 +4,8 @@
     </h1>
   </div>
 
+
+
 <div class="register">
     <form class="custom-form" method="post">
       <h1 style="color:white">Registro:</h1>
@@ -14,6 +16,8 @@
         placeholder="Correo"
         required="required"
       />
+      <h2 style="color:red; display: none" id="email">Introduzca un nombre de correo electrónico válido</h2>
+      <h2 style="color:red; display: none" id="emailValido">El correo electrónico introducido no es válido</h2>
       <input
         type="user"
         [(ngModel)]="username"
@@ -21,6 +25,7 @@
         placeholder="Nombre de usuario"
         required="required"
       />
+      <h2 style="color:red; display: none" id="usuario">Introduzca un nombre de usuario válido</h2>
       <input
         type="password"
         [(ngModel)]="password"
@@ -28,6 +33,10 @@
         placeholder="Contraseña"
         required="required"
       />
+      <h2 style="color:red; display: none" id="contrasenaCorta">La contraseña ha de tener al menos 4 caracteres</h2>
+      <h2 style="color:red; display: none" id="contrasenaLarga">La contraseña no ha de exceder los 50 caracteres</h2>
+      <h2 style="color:red; display: none" id="contrasenaMal">La contraseña debe tener una letra mayúscula y un número</h2>
+      <h2 style="color:red; display: none" id="contrasena">Introduzca una contraseña válida</h2>
       <input
         type="password"
         [(ngModel)]="confirmPassword"
@@ -35,6 +44,7 @@
         placeholder="Repita la contraseña"
         required="required"
       />
+      <h2 style="color:red; display: none" id="contrasenaCoincide">Las contraseñas no coinciden</h2>
       <button type="submit" (click)="register()">Registrarme</button>
     </form>
   </div>

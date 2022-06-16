@@ -20,51 +20,94 @@ export class RegisterComponent {
     return regularExpression.test(String(emailToValidate).toLowerCase());
   }
 
-  validatePassword(passwordToValidate: string): string {
-      if (passwordToValidate.length < 4) {
-          return("La contraseña ha de tener al menos 4 caracteres");
-      } else if (passwordToValidate.length > 50) {
-          return("La contraseña no ha de exceder los 50 caracteres");
-      } else if (passwordToValidate.search(/\d/) == -1) {
-          return("La contraseña ha de contener al menos un número y una mayúscula");
-      } else if (passwordToValidate.search(/[A-Z]/) == -1) {
-          return ("La contraseña ha de contener al menos un número y una mayúscula");
-      } else return ("ok");
-  }
-
   register() {
+    var check = document.getElementById("email");
+    if (check != undefined) {
+      check.style.display = "none";
+    }
+    check = document.getElementById("emailValido");
+    if (check != undefined) {
+      check.style.display = "none";
+    }
+    check = document.getElementById("contrasena");
+    if (check != undefined) {
+      check.style.display = "none";
+    }
+    check = document.getElementById("usuario");
+    if (check != undefined) {
+      check.style.display = "none";
+    }
+    check = document.getElementById("contrasenaCorta");
+    if (check != undefined) {
+      check.style.display = "none";
+    }
+    check = document.getElementById("contrasenaLarga");
+    if (check != undefined) {
+      check.style.display = "none";
+    }
+    check = document.getElementById("contrasenaMal");
+    if (check != undefined) {
+      check.style.display = "none";
+    }
+    check = document.getElementById("contrasenaCoincide");
+    if (check != undefined) {
+      check.style.display = "none";
+    }
+
     console.log(this.email);
     console.log(this.password);
     console.log(this.confirmPassword);
     
     if (this.email == null) {
-      alert("Email requerido");
-      return;
+      var emailIncorrecta = document.getElementById("email");
+      if (emailIncorrecta != undefined) {
+        emailIncorrecta.style.display = "block";
+      }
+    }
+    else if (!this.validateEmail(this.email)){
+      var emailIncorrecta = document.getElementById("emailValido");
+      if (emailIncorrecta != undefined) {
+        emailIncorrecta.style.display = "block";
+      }
     }
     if (this.password == null) {
-      alert("Contraseña requerida");
-      return;
-    }
-    if (this.password == null) {
-      alert("Confirme su contraseña");
-      return;
+      var contrasenaIncorrecta = document.getElementById("contrasena");
+      if (contrasenaIncorrecta != undefined) {
+        contrasenaIncorrecta.style.display = "block";
+      }
     }
     if (this.username == null) {
-      alert("Introduzca un nombre de usuario válido");
-      return;
+      var usuarioIncorrecto = document.getElementById("usuario");
+      if (usuarioIncorrecto != undefined) {
+        usuarioIncorrecto.style.display = "block";
+      }
     }
-    if (!this.validateEmail(this.email)){
-      alert("Email no válido");
-      return;
-    }
-    var passVal = this.validatePassword(this.password);
-    if (passVal != "ok") {
-      alert(passVal);
-      return;
+    if (this.password.length < 4) {
+      var contrasenaIncorrecta = document.getElementById("contrasenaCorta");
+      if (contrasenaIncorrecta != undefined) {
+        contrasenaIncorrecta.style.display = "block";
+      }
+    } else if (this.password.length > 50) {
+      var contrasenaIncorrecta = document.getElementById("contrasenaLarga");
+      if (contrasenaIncorrecta != undefined) {
+        contrasenaIncorrecta.style.display = "block";
+      }
+    } else if (this.password.search(/\d/) == -1) {
+      var contrasenaIncorrecta = document.getElementById("contrasenaMal");
+      if (contrasenaIncorrecta != undefined) {
+        contrasenaIncorrecta.style.display = "block";
+      }
+    } else if (this.password.search(/[A-Z]/) == -1) {
+        var contrasenaIncorrecta = document.getElementById("contrasenaMal");
+        if (contrasenaIncorrecta != undefined) {
+          contrasenaIncorrecta.style.display = "block";
+        }
     }
     if (this.password != this.confirmPassword) {
-      alert("Las contraseñas no coinciden");
-      return;
+      var contrasenaIncorrecta = document.getElementById("contrasenaCoincide");
+      if (contrasenaIncorrecta != undefined) {
+        contrasenaIncorrecta.style.display = "block";
+      }
     }
     
     axios
